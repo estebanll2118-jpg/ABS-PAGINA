@@ -1,0 +1,1540 @@
+<!-- ============================================= -->
+<!--  AMERICAN BUSINESS SCHOOL PLATFORM - PRO IA  -->
+<!--  TODA LA ESTRUCTURA ORIGINAL SE MANTIENE     -->
+<!--  SOLO SE AGREGAN FUNCIONALIDADES AL FINAL    -->
+<!-- ============================================= -->
+
+<!-- PEGA AQUI EXACTAMENTE TU ARCHIVO ORIGINAL COMPLETO -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Portal — American Business School</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body{font-family:'Inter',sans-serif;background-color:#f0f4f8;}
+        .abs-blue{background-color:#003366;}.abs-red{background-color:#CC0000;}
+        .text-abs-blue{color:#003366;}.text-abs-red{color:#CC0000;}
+        .level-card{transition:all .3s;border-bottom:8px solid #003366;cursor:pointer;}
+        .level-card:hover{transform:translateY(-6px);border-color:#CC0000;box-shadow:0 12px 24px rgba(0,0,0,.15);}
+        .topic-item{transition:all .2s;border-left:4px solid #003366;cursor:pointer;}
+        .topic-item:hover{border-left-color:#CC0000;background:#eef3fa;transform:translateX(4px);}
+        .chat-bubble-user{background:#003366;color:#fff;border-radius:18px 18px 4px 18px;}
+        .chat-bubble-bot{background:#fff;color:#1a202c;border-radius:18px 18px 18px 4px;border:1px solid #e2e8f0;}
+        .option-btn{transition:all .2s;cursor:pointer;}
+        .option-btn:hover:not(:disabled){border-color:#003366;background:#eef3fa;}
+        .option-btn.correct{border-color:#16a34a!important;background:#dcfce7!important;color:#15803d!important;}
+        .option-btn.wrong{border-color:#CC0000!important;background:#fee2e2!important;color:#b91c1c!important;}
+        .option-btn:disabled{cursor:not-allowed;opacity:.85;}
+        #chat-box{scroll-behavior:smooth;}
+        .typing-indicator span{width:8px;height:8px;background:#003366;border-radius:50%;display:inline-block;animation:bounce 1.2s infinite;}
+        .typing-indicator span:nth-child(2){animation-delay:.2s}
+        .typing-indicator span:nth-child(3){animation-delay:.4s}
+        @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}}
+        .tab-btn{transition:all .2s;border-bottom:3px solid transparent;}
+        .tab-btn.active{border-bottom:3px solid #CC0000;color:#003366;font-weight:700;}
+        .exercise-dot{width:12px;height:12px;border-radius:50%;background:#e2e8f0;display:inline-block;transition:background .3s;}
+        .exercise-dot.done{background:#16a34a;}.exercise-dot.active{background:#003366;}.exercise-dot.wrong{background:#CC0000;}
+        #overlay-registro{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#003366 0%,#001a33 60%,#110000 100%);display:flex;align-items:center;justify-content:center;transition:opacity .5s ease;}
+        #overlay-registro.oculto{opacity:0;pointer-events:none;}
+        .reg-card{background:white;border-radius:20px;padding:44px 40px;max-width:430px;width:92%;box-shadow:0 32px 64px rgba(0,0,0,.5);border-top:6px solid #CC0000;animation:slideUp .5s ease;}
+        @keyframes slideUp{from{transform:translateY(28px);opacity:0}to{transform:translateY(0);opacity:1}}
+        .reg-input{width:100%;border:2px solid #e2e8f0;border-radius:10px;padding:12px 16px;font-size:15px;outline:none;transition:border-color .2s;font-family:'Inter',sans-serif;box-sizing:border-box;}
+        .reg-input:focus{border-color:#003366;}
+        .reg-btn{width:100%;background-color:#003366;color:white;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;transition:background-color .2s;font-family:'Inter',sans-serif;letter-spacing:.05em;text-transform:uppercase;margin-top:18px;}
+        .reg-btn:hover{background-color:#CC0000;}
+        .reg-error{color:#CC0000;font-size:13px;margin-top:6px;display:none;}
+    </style>
+</head>
+<body>
+<!-- OVERLAY REGISTRO -->
+<div id="overlay-registro">
+  <div class="reg-card">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+      <div style="background:#003366;padding:10px 14px;border-radius:10px;"><span style="color:white;font-weight:900;font-size:18px;font-style:italic;">ABS</span></div>
+      <div>
+        <p style="color:#003366;font-weight:900;font-size:15px;text-transform:uppercase;letter-spacing:.05em;margin:0;">American Business School</p>
+        <p style="color:#999;font-size:12px;margin:0;">Technical Language Training Center</p>
+      </div>
+    </div>
+    <div style="height:3px;background:#CC0000;border-radius:2px;margin-bottom:24px;"></div>
+    <h2 style="color:#1a202c;font-weight:900;font-size:22px;margin:0 0 6px;">Bienvenido al Portal</h2>
+    <p style="color:#666;font-size:14px;margin:0 0 22px;">Ingresa tu nombre para comenzar o continuar tu formación en Business English.</p>
+    <label style="display:block;font-size:12px;font-weight:700;color:#003366;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Tu nombre completo</label>
+    <input id="input-nombre" type="text" class="reg-input" placeholder="Ej: Juan Esteban Romero" onkeydown="if(event.key==='Enter') iniciarSesion()">
+    <p id="error-nombre" class="reg-error">Por favor ingresa tu nombre para continuar.</p>
+    <button class="reg-btn" onclick="iniciarSesion()">Ingresar al Portal</button>
+    <p style="text-align:center;color:#bbb;font-size:12px;margin-top:18px;">Tu progreso se guarda automaticamente en este dispositivo.</p>
+  </div>
+</div>
+<!-- HEADER -->
+<header class="abs-blue text-white shadow-xl sticky top-0 z-50">
+  <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="flex items-center gap-4">
+      <div class="bg-white p-2 rounded shadow-inner"><span class="text-blue-900 font-black text-xl italic">ABS</span></div>
+      <div>
+        <h1 class="text-xl font-black tracking-tight uppercase">American Business School</h1>
+        <p id="subtitulo-header" class="text-xs text-blue-200">Technical Language Training Center</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="text-right">
+        <p class="text-xs uppercase font-bold opacity-70">Progreso General</p>
+        <div class="w-48 bg-blue-900 rounded-full h-3 mt-1"><div id="barra-progreso" class="abs-red h-3 rounded-full transition-all duration-700" style="width:0%"></div></div>
+      </div>
+      <span id="pct" class="font-black text-2xl w-14 text-right">0%</span>
+    </div>
+  </div>
+</header>
+<!-- MAIN -->
+<main class="container mx-auto px-4 py-10">
+  <div class="flex gap-6 mb-8 border-b border-gray-200 pb-2">
+    <button class="tab-btn active text-gray-600 pb-1 text-sm uppercase tracking-wider" onclick="mostrarTab('aprendizaje',this)">Modulos</button>
+    <button class="tab-btn text-gray-600 pb-1 text-sm uppercase tracking-wider" onclick="mostrarTab('chat',this)">Tutor IA</button>
+  </div>
+  <div id="tab-aprendizaje">
+    <div class="mb-8 border-l-8 border-red-600 pl-4">
+      <h2 class="text-3xl font-black text-gray-800 uppercase">Modulos de Aprendizaje</h2>
+      <p class="text-gray-500 text-sm mt-1">Selecciona tu nivel. Cada tema tiene 5 ejercicios; debes completarlos todos sin error para avanzar.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div onclick="mostrarTemas('A1')" class="level-card bg-white rounded-xl shadow p-6">
+        <span class="abs-red text-white text-xs font-bold px-2 py-1 rounded">MODULO 1</span>
+        <h3 class="text-2xl font-black mt-3 text-abs-blue">Nivel A1</h3>
+        <p class="text-sm text-gray-500 mt-1">Basic Office Communication</p>
+        <p class="text-xs text-gray-400 mt-3">10 temas - 5 ejercicios c/u</p>
+      </div>
+      <div onclick="mostrarTemas('A2')" class="level-card bg-white rounded-xl shadow p-6">
+        <span class="abs-red text-white text-xs font-bold px-2 py-1 rounded">MODULO 2</span>
+        <h3 class="text-2xl font-black mt-3 text-abs-blue">Nivel A2</h3>
+        <p class="text-sm text-gray-500 mt-1">Customer Service Skills</p>
+        <p class="text-xs text-gray-400 mt-3">10 temas - 5 ejercicios c/u</p>
+      </div>
+      <div onclick="mostrarTemas('B1')" class="level-card bg-white rounded-xl shadow p-6">
+        <span class="abs-red text-white text-xs font-bold px-2 py-1 rounded">MODULO 3</span>
+        <h3 class="text-2xl font-black mt-3 text-abs-blue">Nivel B1</h3>
+        <p class="text-sm text-gray-500 mt-1">Business Meetings &amp; Intermediate</p>
+        <p class="text-xs text-gray-400 mt-3">10 temas - 5 ejercicios c/u</p>
+      </div>
+      <div onclick="mostrarTemas('B2')" class="level-card bg-white rounded-xl shadow p-6">
+        <span class="abs-red text-white text-xs font-bold px-2 py-1 rounded">MODULO 4</span>
+        <h3 class="text-2xl font-black mt-3 text-abs-blue">Nivel B2</h3>
+        <p class="text-sm text-gray-500 mt-1">Management &amp; Negotiation</p>
+        <p class="text-xs text-gray-400 mt-3">10 temas - 5 ejercicios c/u</p>
+      </div>
+    </div>
+    <section id="lista-temas" class="mt-10 hidden">
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <div class="abs-blue p-4 flex justify-between items-center text-white">
+          <h4 id="lista-titulo" class="font-bold uppercase tracking-widest text-sm"></h4>
+          <button onclick="document.getElementById('lista-temas').classList.add('hidden')" class="hover:text-red-300 font-bold text-lg leading-none">X</button>
+        </div>
+        <div id="lista-cuerpo" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+      </div>
+    </section>
+    <section id="clase-area" class="mt-8 hidden"></section>
+  </div>
+  <div id="tab-chat" class="hidden">
+    <div class="mb-6 border-l-8 border-red-600 pl-4">
+      <h2 class="text-3xl font-black text-gray-800 uppercase">Tutor IA - ABS Assistant</h2>
+      <p class="text-gray-500 text-sm mt-1">Preguntame cualquier tema en español o ingles: gramatica, vocabulario de negocios o los niveles ABS.</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 flex flex-col" style="height:520px">
+      <div id="chat-box" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+      <div class="border-t border-gray-200 p-4 flex gap-3">
+        <input id="chat-input" type="text" placeholder="Ej: explicame el pasado simple, que es el ROI..."
+  class="flex-1 border-2 border-gray-200 rounded-full px-5 py-2 text-sm focus:outline-none focus:border-blue-800"
+  onkeydown="if(event.key==='Enter') enviarMensaje()">
+
+<!-- BOTÓN MICRÓFONO -->
+<button id="mic-btn"
+  onclick="iniciarVoz()"
+  class="border-2 border-gray-300 rounded-full px-4 py-2 text-lg hover:bg-gray-100 transition"
+  title="Hablar">
+  🎤
+</button>
+
+<button onclick="enviarMensaje()"
+  class="abs-blue text-white px-6 py-2 rounded-full font-bold text-sm hover:opacity-90 transition">
+  Enviar
+</button>
+      </div>
+    </div>
+  </div>
+</main>
+<!-- FOOTER -->
+<footer style="margin-top:64px;border-top:1px solid #e2e8f0;padding:24px 0;">
+  <div class="container mx-auto px-6" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="background:#003366;color:white;font-weight:900;font-style:italic;padding:4px 10px;border-radius:6px;font-size:13px;">ABS</span>
+      <span style="color:#aaa;font-size:13px;">2026 American Business School - Technical Language Training Center</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span id="footer-usuario" style="font-size:13px;color:#888;"></span>
+      <button onclick="confirmarReinicio()" style="font-size:13px;font-weight:700;padding:8px 18px;border-radius:50px;border:2px solid #d1d5db;color:#6b7280;background:white;cursor:pointer;font-family:'Inter',sans-serif;" onmouseover="this.style.borderColor='#CC0000';this.style.color='#CC0000';" onmouseout="this.style.borderColor='#d1d5db';this.style.color='#6b7280';">Cerrar sesion / Borrar progreso</button>
+    </div>
+  </div>
+</footer>
+<div id="modal-reinicio" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.55);align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:20px;padding:36px;max-width:360px;width:90%;box-shadow:0 24px 48px rgba(0,0,0,.3);border-top:5px solid #CC0000;">
+    <h3 style="color:#1a202c;font-weight:900;font-size:19px;margin:0 0 8px;">Confirmar reinicio</h3>
+    <p style="color:#666;font-size:14px;margin:0 0 24px;">Se borrara el nombre y todo el progreso. Deseas continuar?</p>
+    <div style="display:flex;gap:10px;">
+      <button onclick="ejecutarReinicio()" style="flex:1;background:#CC0000;color:white;font-weight:700;border:none;border-radius:10px;padding:11px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;">Si, borrar todo</button>
+      <button onclick="document.getElementById('modal-reinicio').style.display='none';" style="flex:1;border:2px solid #e2e8f0;background:white;color:#555;font-weight:700;border-radius:10px;padding:11px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const dbLecciones = {
+    "A1": {
+        titulo: "A1 — Basic Office Communication",
+        temas: [
+            { id:"A1-1", nombre:"Greetings & Introductions",
+              explicacion:`In business English, the greeting changes by time of day:<br><br>☀️ <strong>Good morning</strong> — before 12:00<br>🌤️ <strong>Good afternoon</strong> — 12:00–18:00<br>🌙 <strong>Good evening</strong> — after 18:00<br><br>Introducing yourself: <em>"My name is [Name]. I work as [Position] at [Company]."</em><br>Introducing others: <em>"Allow me to introduce our CFO, Ms. Torres."</em><br><br>❌ Avoid: "Hey!", "Hi buddy!" — too informal for business.`,
+              ejercicios:[
+                { pregunta:"Which greeting is correct at 9:00 AM?", opciones:["Good evening","Good morning","Good night"], correcta:1 },
+                { pregunta:"Complete: '___ my name is Ana Ruiz, I work at ABS.'", opciones:["Hi,","Good afternoon,","Hey,"], correcta:1 },
+                { pregunta:"How do you formally introduce a colleague?", opciones:["This is my friend Pedro.","Allow me to introduce our director, Mr. Pérez.","Meet Pedro, he's cool."], correcta:1 },
+                { pregunta:"Which phrase closes a first meeting professionally?", opciones:["See ya!","It was a pleasure meeting you.","Bye bye!"], correcta:1 },
+                { pregunta:"'Good evening' is used after:", opciones:["12:00","18:00","08:00"], correcta:1 }
+              ]
+            },
+            { id:"A1-2", nombre:"The Office (Articles)",
+              explicacion:`Articles (<strong>a, an, the</strong>) are essential for professional communication:<br><br>📌 <strong>A</strong> — consonant sound, singular: <em>a desk, a meeting</em><br>📌 <strong>An</strong> — vowel sound: <em>an office, an email, an agenda</em><br>📌 <strong>The</strong> — specific/known: <em>the conference room, the printer</em><br>📌 <strong>No article</strong> — general/plural: <em>Offices are important.</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'Please go to ___ conference room on floor 3.'", opciones:["a","an","the"], correcta:2 },
+                { pregunta:"Choose: 'She received ___ email from the manager.'", opciones:["a","an","the"], correcta:1 },
+                { pregunta:"Choose: 'He works in ___ office downtown.'", opciones:["a","an","the"], correcta:0 },
+                { pregunta:"Choose: '___ printer is out of paper.' (specific, known)", opciones:["A","An","The"], correcta:2 },
+                { pregunta:"Which sentence is correct?", opciones:["She has a agenda for today.","She has an agenda for today.","She has the agenda (first mention)."], correcta:1 }
+              ]
+            },
+            { id:"A1-3", nombre:"Professional Profiles (Possessives)",
+              explicacion:`<strong>Possessive adjectives</strong> show ownership:<br><br><strong>my · your · his · her · its · our · their</strong><br><br><em>"<strong>My</strong> name is Carlos. <strong>My</strong> position is Sales Manager."</em><br><em>"<strong>Her</strong> office is on the third floor."</em><br><br>⚠️ <strong>its</strong> (possessive) ≠ <strong>it's</strong> (it is):<br>✅ <em>"The company updated <strong>its</strong> website."</em>`,
+              ejercicios:[
+                { pregunta:"'___ name is Dr. Smith, and ___ specialty is finance.' (he)", opciones:["His / his","Her / her","My / my"], correcta:0 },
+                { pregunta:"Choose: 'The department has ___ own budget.'", opciones:["his","their","its"], correcta:2 },
+                { pregunta:"Choose: '___ team finished the report on time.' (we)", opciones:["Their","Our","My"], correcta:1 },
+                { pregunta:"Which sentence uses a possessive correctly?", opciones:["Its a good report.","It's office is large.","Her presentation was excellent."], correcta:2 },
+                { pregunta:"Choose: 'What is ___ job title?' (you)", opciones:["my","your","his"], correcta:1 }
+              ]
+            },
+            { id:"A1-4", nombre:"Daily Routine (Present Simple)",
+              explicacion:`The <strong>Present Simple</strong> describes habits, routines and facts.<br><br>✅ I/You/We/They + base verb: <em>We open the office at 8 AM.</em><br>✅ He/She/It + verb + <strong>s/es</strong>: <em>She answers the phone.</em><br><br><strong>Negative:</strong> don't / doesn't + base verb<br><strong>Question:</strong> Do / Does + subject + base verb?`,
+              ejercicios:[
+                { pregunta:"Choose: 'She ___ the monthly reports every Friday.'", opciones:["prepare","prepares","is preparing"], correcta:1 },
+                { pregunta:"Choose: 'They ___ work on weekends.'", opciones:["don't","doesn't","isn't"], correcta:0 },
+                { pregunta:"Choose: '___ he attend the weekly briefing?'", opciones:["Do","Does","Is"], correcta:1 },
+                { pregunta:"Choose: 'The CEO ___ the board every quarter.'", opciones:["meet","meets","is meeting"], correcta:1 },
+                { pregunta:"Which sentence is correct?", opciones:["I works in finance.","I work in the finance department.","I am work in finance."], correcta:1 }
+              ]
+            },
+            { id:"A1-5", nombre:"Telling the Time",
+              explicacion:`🕐 <strong>o'clock</strong> — exactly on the hour: <em>3:00 = three o'clock</em><br>🕐 <strong>past</strong> — after the hour: <em>3:15 = quarter past three</em><br>🕐 <strong>to</strong> — before the hour: <em>3:45 = quarter to four</em><br>🕐 <strong>half past</strong>: <em>3:30 = half past three</em><br><br>Use <strong>AM/PM</strong> to avoid ambiguity.`,
+              ejercicios:[
+                { pregunta:"How do you say 9:15?", opciones:["Quarter to nine","Quarter past nine","Half past nine"], correcta:1 },
+                { pregunta:"How do you say 7:30?", opciones:["Half past seven","Quarter past seven","Seven to half"], correcta:0 },
+                { pregunta:"How do you say 10:45?", opciones:["Quarter past ten","Quarter to eleven","Half past ten"], correcta:1 },
+                { pregunta:"'The call is at 14:00.' What time is that?", opciones:["2:00 AM","2:00 PM","4:00 PM"], correcta:1 },
+                { pregunta:"Which is the correct way to schedule a meeting?", opciones:["Meet me at 9 in the morning hours.","The meeting is at 9:00 AM sharp.","We meet at nine of the morning."], correcta:1 }
+              ]
+            },
+            { id:"A1-6", nombre:"Prepositions of Place",
+              explicacion:`📍 <strong>in</strong> — inside: <em>in the office, in the building</em><br>📍 <strong>on</strong> — surface/floor: <em>on the desk, on the third floor</em><br>📍 <strong>at</strong> — specific point: <em>at reception, at the entrance</em><br>📍 <strong>next to</strong> — beside: <em>next to the printer</em><br>📍 <strong>opposite</strong> — facing: <em>opposite the elevator</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'The documents are ___ your desk.'", opciones:["in","on","at"], correcta:1 },
+                { pregunta:"Choose: 'Please meet me ___ reception at 10 AM.'", opciones:["in","on","at"], correcta:2 },
+                { pregunta:"Choose: 'The IT department is ___ the third floor.'", opciones:["at","on","in"], correcta:1 },
+                { pregunta:"Choose: 'The printer is ___ the photocopier.'", opciones:["next to","on","in"], correcta:0 },
+                { pregunta:"'The CEO's office is ___ the elevator.' Which is correct?", opciones:["opposite","on top","at front"], correcta:0 }
+              ]
+            },
+            { id:"A1-7", nombre:"Describing People",
+              explicacion:`In professional settings, focus on <strong>professional qualities</strong>:<br><br><strong>Key adjectives:</strong> reliable, dedicated, proactive, detail-oriented, efficient, analytical<br><br><strong>Structure:</strong> Subject + <em>to be</em> + adjective<br><em>"Our new director is very proactive and detail-oriented."</em>`,
+              ejercicios:[
+                { pregunta:"Which adjective best describes someone who always meets deadlines?", opciones:["Lazy","Reliable","Careless"], correcta:1 },
+                { pregunta:"Choose: 'She is very ___ — she finds solutions before problems arise.'", opciones:["reactive","proactive","inactive"], correcta:1 },
+                { pregunta:"Which describes a colleague professionally?", opciones:["He is tall with brown hair.","He is an efficient and detail-oriented analyst.","He looks tired today."], correcta:1 },
+                { pregunta:"Choose: 'The new employee is ___ — she learns tasks very quickly.'", opciones:["slow","dedicated","fast-learning"], correcta:2 },
+                { pregunta:"Which adjective means 'organized and pays attention to details'?", opciones:["Careless","Detail-oriented","Distracted"], correcta:1 }
+              ]
+            },
+            { id:"A1-8", nombre:"Likes and Dislikes",
+              explicacion:`✅ <strong>like / enjoy / love + verb-ing</strong>: <em>"I enjoy working in teams."</em><br>✅ <strong>don't like / dislike / hate + verb-ing</strong>: <em>"I dislike missing deadlines."</em><br>✅ <strong>prefer + noun/verb-ing</strong>: <em>"I prefer email communication."</em><br><br>Interview: <em>"I really enjoy problem-solving and collaborating with cross-functional teams."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'She enjoys ___ client presentations.'", opciones:["give","gives","giving"], correcta:2 },
+                { pregunta:"Which sentence is grammatically correct?", opciones:["He likes to working late.","He likes working late.","He like working late."], correcta:1 },
+                { pregunta:"Choose: 'I prefer ___ to making phone calls.'", opciones:["send emails","to send emails","sending emails"], correcta:2 },
+                { pregunta:"Which professionally expresses dislike?", opciones:["I hate this job.","I dislike multitasking without clear priorities.","This is terrible."], correcta:1 },
+                { pregunta:"Choose: 'Do you enjoy ___ with international clients?'", opciones:["work","works","working"], correcta:2 }
+              ]
+            },
+            { id:"A1-9", nombre:"Family & Connections (Networking)",
+              explicacion:`In business networking, describe connections clearly:<br><br><strong>Possessive 's:</strong> <em>"This is my CEO's assistant."</em><br><br>Describing connections:<br><em>"She is my direct manager."</em><br><em>"They are our business partners in Brazil."</em><br><br>Networking phrase: <em>"Allow me to introduce [Name], [his/her] company specializes in [field]."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'Have you met ___ colleague from marketing?' (my)", opciones:["my","mine","me"], correcta:0 },
+                { pregunta:"Which describes a professional connection correctly?", opciones:["He is my boss's boss's boss.","She is our regional director and oversees Latin America.","They work somewhere in the company."], correcta:1 },
+                { pregunta:"Choose: 'This is Mr. Kim. ___ company is based in Seoul.'", opciones:["His","Her","Their"], correcta:0 },
+                { pregunta:"Choose the correct networking phrase:", opciones:["You should meet Pedro, he does stuff.","Allow me to introduce Pedro Vargas, our Head of Operations.","Pedro, this is someone."], correcta:1 },
+                { pregunta:"'The CEO's assistant' means:", opciones:["The assistant who owns the CEO","The assistant of the CEO","The CEO who assists"], correcta:1 }
+              ]
+            },
+            { id:"A1-10", nombre:"Abilities (Can)",
+              explicacion:`✅ <strong>Ability:</strong> <em>"I can speak three languages."</em><br>✅ <strong>Possibility:</strong> <em>"We can schedule the meeting for Tuesday."</em><br>✅ <strong>Polite request:</strong> <em>"Could you send me the file?"</em><br><br><strong>Cannot / Can't</strong> = inability or prohibition:<br><em>"You cannot share confidential data externally."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: '___ you manage a team of 10 people?' (ability question)", opciones:["Do","Can","Are"], correcta:1 },
+                { pregunta:"Which expresses ability correctly?", opciones:["She can to manage complex projects.","She can manages complex projects.","She can manage complex projects."], correcta:2 },
+                { pregunta:"Choose: 'I ___ attend the 8 AM meeting — prior commitment.'", opciones:["can","can't","could"], correcta:1 },
+                { pregunta:"Which is the more formal/polite request?", opciones:["Can you send that?","Could you please send the report by EOD?","Send it."], correcta:1 },
+                { pregunta:"'You cannot share this document externally.' This expresses:", opciones:["Ability","Permission","Prohibition"], correcta:2 }
+              ]
+            }
+        ]
+    },
+    "A2": {
+        titulo: "A2 — Customer Service Skills",
+        temas: [
+            { id:"A2-1", nombre:"Past Experiences (Past Simple)",
+              explicacion:`The <strong>Past Simple</strong> is for completed actions: career history, past projects, reports.<br><br><strong>Regular:</strong> verb + <strong>-ed</strong>: launch→launched, manage→managed<br><strong>Key irregular:</strong> make→made, sell→sold, write→wrote, meet→met, give→gave<br><br>✅ <em>"We <strong>launched</strong> the product in Q2 and <strong>exceeded</strong> our target."</em><br>❌ Negative: <em>"We <strong>didn't meet</strong> the deadline."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'The team ___ the project two weeks ago.'", opciones:["finish","finished","has finished"], correcta:1 },
+                { pregunta:"Which is the correct Past Simple of 'make'?", opciones:["maked","made","maden"], correcta:1 },
+                { pregunta:"Choose: 'She ___ the annual report last Friday.'", opciones:["write","wrote","has written"], correcta:1 },
+                { pregunta:"Choose: 'We ___ meet the Q3 target.' (negative)", opciones:["didn't","don't","haven't"], correcta:0 },
+                { pregunta:"Which sentence is in the Past Simple?", opciones:["We are launching a new product.","We launched a new product last year.","We have launched a new product."], correcta:1 }
+              ]
+            },
+            { id:"A2-2", nombre:"Product Comparison (Comparatives)",
+              explicacion:`📌 <strong>Short adjectives:</strong> add <strong>-er + than</strong>: fast→faster than<br>📌 <strong>Long adjectives:</strong> <strong>more + adj + than</strong>: more reliable than<br>📌 <strong>Irregular:</strong> good→better, bad→worse, far→further<br><br>✅ <em>"Our software is <strong>faster</strong> and <strong>more reliable than</strong> the competition."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'Our delivery is ___ the competitor's.' (fast)", opciones:["more fast than","faster than","fastest than"], correcta:1 },
+                { pregunta:"'This solution is ___ the previous model.' (cost-effective)", opciones:["more cost-effective than","cost-effectiver than","cost-effectivest"], correcta:0 },
+                { pregunta:"'Version 2.0 is ___ version 1.0.' (good — irregular)", opciones:["gooder than","more good than","better than"], correcta:2 },
+                { pregunta:"Which comparative is correct?", opciones:["Our service is more cheap than theirs.","Our service is cheaper than theirs.","Our service is cheapest than theirs."], correcta:1 },
+                { pregunta:"'The new terms are ___ the original ones.' (favorable)", opciones:["more favorable than","favorabler than","most favorable than"], correcta:0 }
+              ]
+            },
+            { id:"A2-3", nombre:"Current Projects (Present Continuous)",
+              explicacion:`<strong>Present Continuous</strong> (am/is/are + verb-ing) = actions happening now or ongoing projects.<br><br>✅ <em>"We <strong>are currently developing</strong> a new product line."</em><br>✅ Also used for arranged future: <em>"I <strong>am meeting</strong> the client on Thursday."</em><br><br>⚠️ No continuous for: know, understand, believe, prefer, own.`,
+              ejercicios:[
+                { pregunta:"Choose: 'The marketing team ___ a new campaign right now.'", opciones:["develops","is developing","develop"], correcta:1 },
+                { pregunta:"Choose: 'I ___ the client proposal this afternoon.' (arranged)", opciones:["present","am presenting","presents"], correcta:1 },
+                { pregunta:"Which uses Present Continuous correctly?", opciones:["She is knowing the answer.","She is reviewing the contract now.","She is understand the issue."], correcta:1 },
+                { pregunta:"Choose: '___ you working on the annual report this week?'", opciones:["Do","Are","Is"], correcta:1 },
+                { pregunta:"Choose: 'The CEO ___ a keynote at the conference tomorrow.'", opciones:["is giving","gives","give"], correcta:0 }
+              ]
+            },
+            { id:"A2-4", nombre:"Future Plans (Going to)",
+              explicacion:`<strong>Going to</strong> (am/is/are + going to + base verb) = planned decisions and intentions.<br><br>✅ <em>"We <strong>are going to</strong> launch the product in Q4."</em><br>✅ Also: predictions based on evidence: <em>"Look at those numbers — we <strong>are going to</strong> exceed the target!"</em><br><br>⚠️ Going to = planned · Will = spontaneous`,
+              ejercicios:[
+                { pregunta:"Choose: 'The board ___ approve the new budget next week.'", opciones:["is going to","goes to","go to"], correcta:0 },
+                { pregunta:"Which expresses a pre-planned decision?", opciones:["We will maybe expand.","We are going to open a new branch in Q3.","We expand next year."], correcta:1 },
+                { pregunta:"Choose: '___ the company ___ hire new staff this year?'", opciones:["Does / going to","Is / going to","Are / going to"], correcta:1 },
+                { pregunta:"'Look at those clouds — it ___ rain.' (evidence-based)", opciones:["will","is going to","goes to"], correcta:1 },
+                { pregunta:"Which is correct?", opciones:["She is go to present the results.","She is going to present the results.","She going to present the results."], correcta:1 }
+              ]
+            },
+            { id:"A2-5", nombre:"Giving Directions",
+              explicacion:`➡️ <em>Go straight / Turn left / Turn right</em><br>➡️ <em>Take the elevator to the 4th floor</em><br>➡️ <em>It's on your left / right</em><br>➡️ <em>Go past the reception, then turn left</em><br><br>Formal: <em>"Please proceed straight down the corridor, take the elevator to the third floor, and the boardroom will be on your right."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'Go ___ the corridor and turn right at the end.'", opciones:["past","straight down","across of"], correcta:1 },
+                { pregunta:"Which is the correct directions phrase?", opciones:["Go the elevator up.","Take the elevator to the second floor.","Up the elevator to floor two."], correcta:1 },
+                { pregunta:"Choose: 'The boardroom is ___ the elevator, on the left.'", opciones:["past","opposite","next of"], correcta:1 },
+                { pregunta:"Which correctly tells someone where to go?", opciones:["Is straight and right.","Please proceed to the end of the corridor and turn left.","Go to there."], correcta:1 },
+                { pregunta:"Choose: 'The exit ___ on your right after the security desk.'", opciones:["am","are","is"], correcta:2 }
+              ]
+            },
+            { id:"A2-6", nombre:"Health & Safety at Work",
+              explicacion:`✅ <strong>Must</strong> (obligation): <em>"All employees must wear a hard hat."</em><br>✅ <strong>Mustn't</strong> (prohibition): <em>"You mustn't use your phone while operating machinery."</em><br>✅ <strong>Should</strong> (recommendation): <em>"You should report any hazard immediately."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'Employees ___ wear safety goggles in the lab.' (obligation)", opciones:["should","must","can"], correcta:1 },
+                { pregunta:"Choose: 'You ___ leave emergency exits blocked.' (prohibition)", opciones:["mustn't","shouldn't always","don't need to"], correcta:0 },
+                { pregunta:"Which sentence gives a safety recommendation?", opciones:["You must take a break every hour.","You should take regular breaks to avoid fatigue.","You can rest whenever."], correcta:1 },
+                { pregunta:"Choose: '___ you report accidents to HR?' (recommendation question)", opciones:["Must","Should","Can"], correcta:1 },
+                { pregunta:"'Employees ___ use equipment without training.' Which is correct?", opciones:["must","should","mustn't"], correcta:2 }
+              ]
+            },
+            { id:"A2-7", nombre:"Quantifiers (Much / Many / A lot of)",
+              explicacion:`📊 <strong>Much</strong> + uncountable: <em>much time, much money</em><br>📊 <strong>Many</strong> + countable: <em>many clients, many meetings</em><br>📊 <strong>A lot of</strong> = both: <em>a lot of work, a lot of reports</em><br>📊 <strong>A few</strong> (small number, positive): <em>"We have a few openings."</em><br>📊 <strong>A little</strong> (small amount, positive): <em>"We have a little time left."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'We don't have ___ time before the deadline.' (uncountable)", opciones:["many","much","a few"], correcta:1 },
+                { pregunta:"Choose: 'There are ___ errors in this report.' (countable)", opciones:["much","many","a little"], correcta:1 },
+                { pregunta:"Choose: 'We received ___ applications for the position.' (large amount)", opciones:["a lot of","much of","many a"], correcta:0 },
+                { pregunta:"Choose: 'We still have ___ budget remaining.' (small amount, positive)", opciones:["a few","a little","many"], correcta:1 },
+                { pregunta:"Which sentence is correct?", opciones:["There are much departments in this company.","There are many departments in this company.","There is many departments in this company."], correcta:1 }
+              ]
+            },
+            { id:"A2-8", nombre:"Past Continuous",
+              explicacion:`<strong>Past Continuous</strong> (was/were + verb-ing) = action in progress at a past moment.<br><br>✅ <em>"At 3 PM, the team <strong>was reviewing</strong> the contract."</em><br>✅ Interrupted action: <em>"We <strong>were negotiating</strong> when the market <strong>crashed</strong>."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'At 10 AM, the board ___ the quarterly results.'", opciones:["reviewed","was reviewing","reviews"], correcta:1 },
+                { pregunta:"Choose: 'While the CEO ___ his speech, the fire alarm went off.'", opciones:["gave","was giving","gives"], correcta:1 },
+                { pregunta:"Which uses Past Continuous correctly?", opciones:["She was present the report when he called.","She was presenting the report when he called.","She presented the report when he was calling."], correcta:1 },
+                { pregunta:"Choose: '___ the team working on the prototype last Tuesday?'", opciones:["Did","Were","Was"], correcta:1 },
+                { pregunta:"Choose: 'The analysts ___ the data when the system crashed.'", opciones:["processed","were processing","are processing"], correcta:1 }
+              ]
+            },
+            { id:"A2-9", nombre:"Predictions (Will)",
+              explicacion:`✅ <strong>Predictions:</strong> <em>"Revenue <strong>will grow</strong> by 15% this year."</em><br>✅ <strong>Promises:</strong> <em>"I <strong>will send</strong> the report by EOD."</em><br>✅ <strong>Spontaneous decisions:</strong> <em>"The printer is broken? I<strong>'ll call</strong> IT right now."</em><br><br><strong>Won't</strong> = will not: <em>"The CEO <strong>won't attend</strong> the meeting."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'Analysts predict that revenue ___ increase by 20% in Q4.'", opciones:["is going to","will","would"], correcta:1 },
+                { pregunta:"Choose: 'Don't worry — I ___ handle this complaint personally.'", opciones:["am going to","will","go to"], correcta:1 },
+                { pregunta:"Which is a spontaneous decision using Will?", opciones:["I am going to call IT later.","I'll call IT right now — the system is down.","I called IT yesterday."], correcta:1 },
+                { pregunta:"Choose: 'The merger ___ be finalized by end of year.'", opciones:["won't","will","going to"], correcta:1 },
+                { pregunta:"Which uses Won't correctly?", opciones:["He won't to attend the conference.","The system won't process the request.","They won't going to the summit."], correcta:1 }
+              ]
+            },
+            { id:"A2-10", nombre:"Suggestions (Shall / Let's)",
+              explicacion:`✅ <strong>Shall we...?</strong> — formal: <em>"Shall we move on to the next agenda item?"</em><br>✅ <strong>Let's...</strong> — inclusive: <em>"Let's schedule a follow-up for next week."</em><br>✅ <strong>Why don't we...?</strong>: <em>"Why don't we try a different approach?"</em><br>✅ <strong>How about + verb-ing?</strong>: <em>"How about presenting the results on Friday?"</em>`,
+              ejercicios:[
+                { pregunta:"Choose: '___ we begin the debrief?' (formal)", opciones:["Will","Shall","Would"], correcta:1 },
+                { pregunta:"Choose: '___ review the action items before we close.'", opciones:["Let we","Let's","Shall we to"], correcta:1 },
+                { pregunta:"Which is a correct professional suggestion?", opciones:["You should maybe do this.","Why don't we pilot the program in one department first?","Do the pilot program."], correcta:1 },
+                { pregunta:"Choose: 'How about ___ the vendor for a discount?'", opciones:["to ask","ask","asking"], correcta:2 },
+                { pregunta:"Which correctly makes a suggestion using Shall?", opciones:["Shall we to discuss the budget?","Shall we discuss the budget?","Shall we discussing the budget?"], correcta:1 }
+              ]
+            }
+        ]
+    },
+    "B1": {
+        titulo: "B1 — Business Meetings & Intermediate English",
+        temas: [
+            { id:"B1-1", nombre:"Life Experiences (Present Perfect)",
+              explicacion:`The <strong>Present Perfect</strong> (have/has + past participle) connects past experiences to the present — essential for CVs, interviews and business profiles.<br><br>✅ <em>"She <strong>has managed</strong> international teams for five years."</em><br>✅ <em>"We <strong>have worked</strong> with Fortune 500 companies."</em><br><br><strong>Signal words:</strong> ever, never, already, yet, just, since, for, recently<br><br>⚠️ Do NOT use with specific past times — use Past Simple instead.`,
+              ejercicios:[
+                { pregunta:"Choose: 'The company ___ three international offices since 2020.'", opciones:["opened","has opened","opens"], correcta:1 },
+                { pregunta:"Choose: 'Have you ever ___ a cross-functional team?'", opciones:["lead","led","leaded"], correcta:1 },
+                { pregunta:"Which sentence is correct?", opciones:["We have signed the contract last Monday.","We signed the contract last Monday.","We have sign the contract last Monday."], correcta:1 },
+                { pregunta:"Choose: 'The CEO ___ just announced the merger.'", opciones:["has","have","had"], correcta:0 },
+                { pregunta:"Which signal word is typically used with Present Perfect?", opciones:["Yesterday","Last year","Recently"], correcta:2 }
+              ]
+            },
+            { id:"B1-2", nombre:"Cause & Effect (Because / Therefore / Due to)",
+              explicacion:`📌 <strong>Because</strong> + clause: <em>"Sales declined <strong>because</strong> the market became saturated."</em><br>📌 <strong>Due to</strong> + noun phrase: <em>"Sales declined <strong>due to</strong> market saturation."</em><br>📌 <strong>Therefore / As a result / Consequently</strong>: <em>"Costs increased; <strong>therefore</strong>, we revised our pricing."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'Revenue dropped ___ a global supply chain disruption.'", opciones:["because","due to","therefore"], correcta:1 },
+                { pregunta:"Choose: 'The system failed; ___, all meetings were cancelled.'", opciones:["due to","because","as a result"], correcta:2 },
+                { pregunta:"Choose: 'Sales increased ___ we launched an aggressive marketing campaign.'", opciones:["due to","because","consequently"], correcta:1 },
+                { pregunta:"Which sentence correctly expresses cause and effect?", opciones:["We lost the client. Because bad service.","Poor customer service led to the loss of our biggest client.","Therefore we lost a client bad service."], correcta:1 },
+                { pregunta:"Choose: 'The budget was cut; ___, the project had to be scaled back.'", opciones:["because","due to","consequently"], correcta:2 }
+              ]
+            },
+            { id:"B1-3", nombre:"Reported Speech",
+              explicacion:`<strong>Reported speech</strong> shifts tenses back — essential for meeting minutes and summaries.<br><br>Present Simple → Past Simple: <em>"We need data." → He said they <strong>needed</strong> data.</em><br>Will → Would: <em>"We will expand." → She said they <strong>would</strong> expand.</em><br>Present Perfect → Past Perfect: <em>"We have completed it." → He said they <strong>had completed</strong> it.</em>`,
+              ejercicios:[
+                { pregunta:"Convert: The manager said, 'We are launching next quarter.'", opciones:["He said they are launching next quarter.","He said they were launching next quarter.","He said they will launch next quarter."], correcta:1 },
+                { pregunta:"Convert: The CEO said, 'We have exceeded our targets.'", opciones:["She said they exceeded their targets.","She said they had exceeded their targets.","She said they have exceeded their targets."], correcta:1 },
+                { pregunta:"Convert: The analyst said, 'The market will recover.'", opciones:["He said the market would recover.","He said the market will recover.","He said the market recovers."], correcta:0 },
+                { pregunta:"Which reporting verb means the speaker gave a formal recommendation?", opciones:["Denied","Proposed","Refused"], correcta:1 },
+                { pregunta:"Choose: 'The director ___ that the new policy had been approved.'", opciones:["told","said","spoke"], correcta:1 }
+              ]
+            },
+            { id:"B1-4", nombre:"Hypothetical Situations (Second Conditional)",
+              explicacion:`The <strong>Second Conditional</strong> (If + past simple, would + base verb) describes hypothetical or unlikely situations — widely used in planning and negotiations.<br><br>✅ <em>"If we <strong>had</strong> more capital, we <strong>would expand</strong> into three new markets."</em><br><br>⚠️ Use <strong>were</strong> instead of <strong>was</strong> in formal contexts:<br><em>"If I <strong>were</strong> the CEO, I <strong>would</strong> restructure the sales team."</em>`,
+              ejercicios:[
+                { pregunta:"Which uses the Second Conditional correctly?", opciones:["If we had more funding, we expand.","If we had more funding, we would expand into new markets.","If we will have funding, we would expand."], correcta:1 },
+                { pregunta:"Choose: 'If the client ___ the contract, we ___ hire 20 new staff.'", opciones:["signs / will","signed / would","has signed / would"], correcta:1 },
+                { pregunta:"Which is the formal alternative to 'If I was the CEO...'?", opciones:["If I am the CEO...","If I were the CEO...","If I will be the CEO..."], correcta:1 },
+                { pregunta:"Choose: 'If we ___ our prices, we ___ attract more budget-conscious clients.'", opciones:["reduce / will","reduced / would","reducing / would"], correcta:1 },
+                { pregunta:"In what business context is the Second Conditional most useful?", opciones:["Describing past events","Exploring hypothetical plans and negotiation scenarios","Making factual reports"], correcta:1 }
+              ]
+            },
+            { id:"B1-5", nombre:"Making Proposals (I suggest / recommend / propose)",
+              explicacion:`✅ <strong>I suggest + verb-ing:</strong> <em>"I suggest reviewing the Q3 data before deciding."</em><br>✅ <strong>I recommend + verb-ing:</strong> <em>"I recommend delaying the launch."</em><br>✅ <strong>I propose + that + clause:</strong> <em>"I propose that we allocate 20% more to R&D."</em><br>✅ <strong>My recommendation is to:</strong> <em>"My recommendation is to consolidate the two divisions."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'I suggest ___ an external consultant before proceeding.'", opciones:["to hire","hire","hiring"], correcta:2 },
+                { pregunta:"Which is the correct formal proposal?", opciones:["We should maybe try something.","I propose that we allocate additional resources to the R&D department.","Let's just do it."], correcta:1 },
+                { pregunta:"Choose: 'I recommend ___ the pricing strategy for the Asian market.'", opciones:["to revise","revise","revising"], correcta:2 },
+                { pregunta:"Which verb is most formal for making a proposal in a board meeting?", opciones:["I suggest","I propose","I think"], correcta:1 },
+                { pregunta:"Choose: 'My recommendation ___ to postpone the product launch until Q2.'", opciones:["are","is","be"], correcta:1 }
+              ]
+            },
+            { id:"B1-6", nombre:"Describing Processes (Passive Voice)",
+              explicacion:`The <strong>Passive Voice</strong> (be + past participle) is standard in business reports and process descriptions — it focuses on the action, not the person.<br><br>✅ <em>"The report <strong>is submitted</strong> every Friday."</em><br>✅ <em>"The contract <strong>was signed</strong> by both parties."</em><br>✅ <em>"The proposal <strong>will be reviewed</strong> by the board."</em>`,
+              ejercicios:[
+                { pregunta:"Convert to passive: 'The team submits the report every Friday.'", opciones:["The report submits every Friday.","The report is submitted every Friday.","The report was submitted every Friday."], correcta:1 },
+                { pregunta:"Choose: 'The new software ___ installed on all workstations last week.'", opciones:["is","was","were"], correcta:1 },
+                { pregunta:"Why is passive voice preferred in business reports?", opciones:["It sounds casual","It focuses on the action and sounds more objective","It makes sentences shorter"], correcta:1 },
+                { pregunta:"Choose: 'The merger ___ finalized by the end of the fiscal year.' (future)", opciones:["is","was","will be"], correcta:2 },
+                { pregunta:"Which sentence is correctly in the passive voice?", opciones:["The client was satisfied the team.","The contract was signed by both parties.","The board approved was the budget."], correcta:1 }
+              ]
+            },
+            { id:"B1-7", nombre:"Discussing Trends (Present Perfect Continuous)",
+              explicacion:`<strong>Present Perfect Continuous</strong> (have/has + been + verb-ing) emphasizes an ongoing action still continuing — ideal for discussing business trends.<br><br>✅ <em>"Revenue <strong>has been growing</strong> steadily since Q1."</em><br><br>Simple = completed result: <em>"We <strong>have launched</strong> the product."</em><br>Continuous = ongoing process: <em>"We <strong>have been developing</strong> the product."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'The company ___ its market share steadily since 2023.'", opciones:["has grown","has been growing","grew"], correcta:1 },
+                { pregunta:"Choose: 'Our engineers ___ on this solution for the past eight months.'", opciones:["worked","have worked","have been working"], correcta:2 },
+                { pregunta:"Which sentence emphasizes an ongoing process?", opciones:["We launched a new campaign.","We have launched a new campaign.","We have been developing a new campaign for three months."], correcta:2 },
+                { pregunta:"Choose: 'Customer complaints ___ since we updated the software.'", opciones:["declined","have been declining","decline"], correcta:1 },
+                { pregunta:"What is the key difference between Present Perfect Simple and Continuous?", opciones:["There is no difference","Simple focuses on the result; Continuous focuses on the ongoing process","Continuous is only used informally"], correcta:1 }
+              ]
+            },
+            { id:"B1-8", nombre:"Expressing Purpose (In order to / So that)",
+              explicacion:`📌 <strong>To + base verb</strong> (simple): <em>"We hired more staff <strong>to</strong> handle demand."</em><br>📌 <strong>In order to</strong> (formal): <em>"We restructured <strong>in order to</strong> reduce costs."</em><br>📌 <strong>So that + clause</strong>: <em>"We invested in training <strong>so that</strong> employees could develop new skills."</em><br>📌 <strong>With the aim of + verb-ing</strong>: <em>"We expanded <strong>with the aim of</strong> entering new markets."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'We redesigned the process ___ reduce production time.'", opciones:["so that","in order to","with the aim"], correcta:1 },
+                { pregunta:"Choose: 'We introduced flexible hours ___ employees could improve work-life balance.'", opciones:["in order to","to","so that"], correcta:2 },
+                { pregunta:"Which is the most formal way to express purpose?", opciones:["To cut costs...","In order to reduce operational expenditure...","Because of costs..."], correcta:1 },
+                { pregunta:"Choose: 'The firm expanded into Asia ___ increasing its global market share.'", opciones:["with the aim of","in order to","so that"], correcta:0 },
+                { pregunta:"Which sentence expresses purpose correctly?", opciones:["We hired consultants for reduce costs.","We hired consultants to reduce costs.","We hired consultants so reduce costs."], correcta:1 }
+              ]
+            },
+            { id:"B1-9", nombre:"Numbers & Statistics in Presentations",
+              explicacion:`📊 <strong>Approximations:</strong> approximately, roughly, around, nearly, just over, just under<br>📊 <strong>Trends:</strong> a sharp increase, a gradual decline, a significant rise, a slight drop<br>📊 <strong>Comparisons:</strong> twice as much, three times higher, 50% more than<br><br>Example: <em>"Revenue grew by <strong>approximately</strong> 18%, reaching <strong>just over</strong> $2 million."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: 'Sales increased by ___ 15% — the final figure was 14.8%.'", opciones:["exactly","approximately","precisely"], correcta:1 },
+                { pregunta:"Choose: 'Our market share is now ___ as large as our nearest competitor.'", opciones:["double","twice","two times more"], correcta:1 },
+                { pregunta:"Which phrase describes a small decrease?", opciones:["A sharp decline","A slight drop","A massive fall"], correcta:1 },
+                { pregunta:"Choose: '___ three-quarters of our revenue now comes from digital channels.'", opciones:["Almost","Roughly","Nearly"], correcta:2 },
+                { pregunta:"Which sentence presents statistics most professionally?", opciones:["We made like a lot more money.","Revenue increased by approximately 22%, reaching just over $5 million in Q3.","Sales went way up this quarter."], correcta:1 }
+              ]
+            },
+            { id:"B1-10", nombre:"Linking Ideas (Cohesion in Business Writing)",
+              explicacion:`➕ <strong>Adding:</strong> Furthermore, Moreover, In addition, Additionally<br>🔄 <strong>Contrasting:</strong> However, Nevertheless, On the other hand, Despite<br>✅ <strong>Concluding:</strong> Therefore, Consequently, As a result, In conclusion<br>📝 <strong>Exemplifying:</strong> For instance, For example, Such as, Namely`,
+              ejercicios:[
+                { pregunta:"Choose: 'The project was delayed. ___, the client remained satisfied.'", opciones:["Furthermore","Nevertheless","Therefore"], correcta:1 },
+                { pregunta:"Choose: 'We reduced costs by 10%. ___, we increased productivity.'", opciones:["However","In addition","Despite"], correcta:1 },
+                { pregunta:"Choose: '___ the high cost, the board approved the new software.'", opciones:["Despite","However","Furthermore"], correcta:0 },
+                { pregunta:"Choose: 'The campaign was successful; ___, we will increase the Q4 budget.'", opciones:["nevertheless","therefore","despite"], correcta:1 },
+                { pregunta:"Which word introduces an example in a report?", opciones:["Nevertheless","For instance","Therefore"], correcta:1 }
+              ]
+            }
+        ]
+    },
+    "B2": {
+        titulo: "B2 — Management & Negotiation",
+        temas: [
+            { id:"B2-1", nombre:"Complex Negotiations (Advanced Language)",
+              explicacion:`🔵 <strong>Opening:</strong> <em>"We'd like to propose an initial framework for discussion."</em><br>🔵 <strong>Concessions:</strong> <em>"We're willing to be flexible on the timeline if you can accommodate our pricing."</em><br>🔵 <strong>Countering:</strong> <em>"We appreciate your position; however, those terms require further discussion."</em><br>🔵 <strong>Closing:</strong> <em>"I believe we've reached a mutually beneficial agreement."</em><br><br>Key concept: <strong>BATNA</strong> = Best Alternative To a Negotiated Agreement.`,
+              ejercicios:[
+                { pregunta:"Which phrase professionally opens a negotiation?", opciones:["Here's what we want.","We'd like to propose an initial framework for discussion.","Take it or leave it."], correcta:1 },
+                { pregunta:"Which phrase makes a conditional concession?", opciones:["Fine, we'll lower the price.","We're willing to adjust the timeline if you can meet our pricing requirements.","We can't do that."], correcta:1 },
+                { pregunta:"What does BATNA stand for?", opciones:["Business Approach To Negotiating Assets","Best Alternative To a Negotiated Agreement","Best Action Towards New Agreements"], correcta:1 },
+                { pregunta:"Which phrase professionally counters a proposal?", opciones:["That's wrong.","We appreciate your position; however, those terms require further discussion.","No way."], correcta:1 },
+                { pregunta:"Why is knowing your BATNA critical before entering a negotiation?", opciones:["It helps you seem more powerful","It defines your walk-away point and strengthens your position","It is not important"], correcta:1 }
+              ]
+            },
+            { id:"B2-2", nombre:"Third Conditional (Past Regrets & Analysis)",
+              explicacion:`The <strong>Third Conditional</strong> (If + past perfect, would have + past participle) analyzes past decisions — essential for post-mortems and strategy reviews.<br><br>✅ <em>"If we <strong>had launched</strong> earlier, we <strong>would have captured</strong> a larger share."</em><br><br><strong>Mixed conditional:</strong> past cause → present result<br><em>"If we <strong>had invested</strong> in R&D, we <strong>would be</strong> the market leader now."</em>`,
+              ejercicios:[
+                { pregunta:"Which is a correct Third Conditional sentence?", opciones:["If we launched earlier, we would capture more share.","If we had launched earlier, we would have captured more market share.","If we would launch earlier, we would have captured more share."], correcta:1 },
+                { pregunta:"Choose: 'If the team ___ the issue earlier, the project ___ been cancelled.'", opciones:["identified / wouldn't have","had identified / wouldn't have","would identify / hadn't"], correcta:1 },
+                { pregunta:"What is a 'mixed conditional'?", opciones:["A mix of formal and informal language","A past condition with a present result","A question with a conditional answer"], correcta:1 },
+                { pregunta:"Choose: 'If we ___ more in training, our retention rate ___ higher now.' (mixed)", opciones:["had invested / would be","invested / will be","have invested / would be"], correcta:0 },
+                { pregunta:"In which business context is the Third Conditional most useful?", opciones:["Making future plans","Analyzing past decisions and what could have been done differently","Describing current projects"], correcta:1 }
+              ]
+            },
+            { id:"B2-3", nombre:"Advanced Hedging & Diplomacy",
+              explicacion:`<strong>Hedging language</strong> softens statements and signals openness to discussion — critical in senior-level communication.<br><br>📌 <strong>Tentative verbs:</strong> tend to, seem to, appear to, would suggest<br>📌 <strong>Adverbs:</strong> possibly, arguably, apparently, seemingly<br>📌 <strong>Modal hedges:</strong> might, may, could, would<br><br>✅ <em>"It <strong>would appear that</strong> our strategy <strong>may</strong> need revision."</em>`,
+              ejercicios:[
+                { pregunta:"Which sentence uses hedging language correctly?", opciones:["The strategy is wrong.","It would appear that the current strategy may require significant revision.","Change the strategy now."], correcta:1 },
+                { pregunta:"Which adverb is a hedging device?", opciones:["Certainly","Absolutely","Arguably"], correcta:2 },
+                { pregunta:"Choose: 'The results ___ suggest that consumer confidence is recovering.'", opciones:["definitely","would tend to","clearly"], correcta:1 },
+                { pregunta:"Why is hedging important in senior-level business communication?", opciones:["It avoids responsibility","It signals openness to discussion and reduces the risk of conflict","It makes you sound unsure"], correcta:1 },
+                { pregunta:"Choose: 'It ___ that the merger ___ face regulatory challenges.'", opciones:["seems / might","is / will certainly","looks / must"], correcta:0 }
+              ]
+            },
+            { id:"B2-4", nombre:"Persuasive Writing (Reports & Proposals)",
+              explicacion:`📝 <strong>Structure:</strong> Context → Problem → Evidence → Solution → Call to Action<br><br>✅ <strong>Logos</strong> (data): <em>"A 40% reduction in costs has been achieved by comparable firms."</em><br>✅ <strong>Ethos</strong> (credibility): <em>"With 15 years of industry expertise, our team is uniquely positioned..."</em><br>✅ <strong>Pathos</strong> (emotion): <em>"This initiative will directly benefit 500 employees and their families."</em>`,
+              ejercicios:[
+                { pregunta:"'A 40% cost reduction has been achieved by comparable firms.' — This uses:", opciones:["Pathos","Ethos","Logos"], correcta:2 },
+                { pregunta:"'With 15 years of industry expertise, our team is uniquely positioned.' — This uses:", opciones:["Logos","Ethos","Pathos"], correcta:1 },
+                { pregunta:"'This initiative will directly benefit 500 employees and their families.' — This uses:", opciones:["Ethos","Logos","Pathos"], correcta:2 },
+                { pregunta:"What is the correct structure for a persuasive business proposal?", opciones:["Conclusion, Evidence, Problem, Context","Context, Problem, Evidence, Solution, Call to Action","Solution, Pathos, Logos, Ethos"], correcta:1 },
+                { pregunta:"Why is combining Logos, Ethos and Pathos effective in business writing?", opciones:["It confuses the reader","It appeals to logic, credibility and emotion simultaneously for maximum persuasion","It is required by corporate law"], correcta:1 }
+              ]
+            },
+            { id:"B2-5", nombre:"Formal Discourse Markers",
+              explicacion:`🔷 <strong>Conceding:</strong> Admittedly, Granted, While it is true that...<br>🔷 <strong>Reinforcing:</strong> Indeed, In fact, As a matter of fact<br>🔷 <strong>Reformulating:</strong> In other words, That is to say, To put it another way<br>🔷 <strong>Summarizing:</strong> On balance, All things considered, To summarize<br><br>Example: <em>"<strong>Admittedly</strong>, costs are high. <strong>In fact</strong>, comparable firms report a 35% return."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: '___, the initial investment is significant; however, the ROI justifies it.'", opciones:["Therefore","Admittedly","Consequently"], correcta:1 },
+                { pregunta:"Choose: 'The strategy has risks. ___, it offers the highest potential return.'", opciones:["Admittedly","In fact","In other words"], correcta:1 },
+                { pregunta:"Which discourse marker reformulates an idea more simply?", opciones:["In fact","To put it another way","On balance"], correcta:1 },
+                { pregunta:"'___, the data confirms our hypothesis — this market is underserved.'", opciones:["Admittedly","Indeed","Nevertheless"], correcta:1 },
+                { pregunta:"Choose: '___ all factors, the proposed merger represents the strongest growth option.'", opciones:["On balance, considering","Considering all","All things considered,"], correcta:2 }
+              ]
+            },
+            { id:"B2-6", nombre:"Speculating & Drawing Conclusions",
+              explicacion:`🔵 <strong>High certainty:</strong> must, is certain to, is bound to<br><em>"The competitor <strong>must</strong> be aware of our strategy."</em><br><br>🔵 <strong>Moderate certainty:</strong> should, ought to, is likely to<br><em>"The project <strong>should</strong> be completed by Q3."</em><br><br>🔵 <strong>Low certainty:</strong> might, may, could, possibly<br><em>"The regulation changes <strong>could</strong> impact our expansion plans."</em>`,
+              ejercicios:[
+                { pregunta:"Which expresses HIGH certainty about a present situation?", opciones:["They might know about this.","They must be aware of the new pricing strategy.","They could possibly know."], correcta:1 },
+                { pregunta:"Choose: 'The new regulation ___ significantly impact our supply chain.' (moderate)", opciones:["must","should","might"], correcta:1 },
+                { pregunta:"Choose: 'Given the data, the market ___ recover by Q4.' (likely)", opciones:["might possibly","is likely to","must surely"], correcta:1 },
+                { pregunta:"Which expresses LOW certainty?", opciones:["This will definitely succeed.","This is bound to succeed.","This could potentially succeed."], correcta:2 },
+                { pregunta:"Choose: 'The competitor ___ launching a similar product — our intelligence suggests so.'", opciones:["might be","must be","is certainly"], correcta:1 }
+              ]
+            },
+            { id:"B2-7", nombre:"Inversion for Emphasis (Advanced Grammar)",
+              explicacion:`<strong>Inversion</strong> (auxiliary before subject) is used in formal writing and speeches for emphasis.<br><br>📌 <strong>Not only... but also:</strong> <em>"<strong>Not only did</strong> we exceed the target, <strong>but</strong> we also reduced costs."</em><br>📌 <strong>Never / Rarely / Seldom:</strong> <em>"<strong>Never before has</strong> the company seen such growth."</em><br>📌 <strong>Only after:</strong> <em>"<strong>Only after</strong> due diligence <strong>did</strong> the board approve the merger."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: '___ did we exceed the target, but we also reduced costs by 15%.'", opciones:["Not only","Only","Never"], correcta:0 },
+                { pregunta:"Which uses inversion correctly?", opciones:["Never before the company has seen such growth.","Never before has the company seen such growth.","Never the company has seen such growth before."], correcta:1 },
+                { pregunta:"Choose: '___ had we signed the contract than the market conditions changed.'", opciones:["No sooner","Rarely","Only after"], correcta:0 },
+                { pregunta:"Why is inversion used in formal business communication?", opciones:["To confuse the reader","To add emphasis and formal tone to key statements","It is mandatory in English"], correcta:1 },
+                { pregunta:"Choose: '___ after a full audit ___ the board approve the acquisition.'", opciones:["Only / will","Only / did","Never / has"], correcta:1 }
+              ]
+            },
+            { id:"B2-8", nombre:"Nominalization in Business Writing",
+              explicacion:`<strong>Nominalization</strong> converts verbs/adjectives into nouns — it makes business writing more formal, concise and objective.<br><br>📌 decide → <strong>decision</strong> · analyse → <strong>analysis</strong> · improve → <strong>improvement</strong><br><br>✅ Informal: <em>"We decided to expand."</em><br>✅ Formal: <em>"The <strong>decision to expand</strong> was reached after extensive consultation."</em>`,
+              ejercicios:[
+                { pregunta:"Nominalize: 'We decided to merge the two divisions.'", opciones:["The deciding to merge was made.","The decision to merge the two divisions was approved.","We made deciding about the merger."], correcta:1 },
+                { pregunta:"What is the nominalized form of 'investigate'?", opciones:["Investigating","Investigation","Investigated"], correcta:1 },
+                { pregunta:"Why is nominalization used in formal business writing?", opciones:["It makes writing more casual","It makes writing more formal, objective and concise","It is easier to read"], correcta:1 },
+                { pregunta:"Nominalize: 'The team performed well.'", opciones:["The team's performing was well.","The team's performance exceeded expectations.","The team did good performance."], correcta:1 },
+                { pregunta:"Choose the nominalized version: 'We failed to deliver on time.'", opciones:["Our failing was on time.","The failure to deliver on schedule resulted in financial penalties.","We did a fail of delivery."], correcta:1 }
+              ]
+            },
+            { id:"B2-9", nombre:"Cross-Cultural Business Communication",
+              explicacion:`🌏 <strong>High-context cultures</strong> (Japan, Middle East, Latin America): implicit communication, relationships matter. A direct "no" is often avoided.<br><br>🌍 <strong>Low-context cultures</strong> (USA, Germany, Scandinavia): direct, explicit communication is expected and valued. Ambiguity is seen as unprofessional.<br><br>💡 Adapt your style to build trust and avoid offense.`,
+              ejercicios:[
+                { pregunta:"What is a key feature of high-context cultures in business?", opciones:["They prefer direct and explicit communication","They rely on implicit messages, relationships and context","They avoid all written communication"], correcta:1 },
+                { pregunta:"Which country is typically considered a low-context culture?", opciones:["Japan","Brazil","Germany"], correcta:2 },
+                { pregunta:"What might direct communication from a US executive seem like to a Japanese colleague?", opciones:["Polite and professional","Rude or inappropriately blunt","A sign of deep respect"], correcta:1 },
+                { pregunta:"In a high-context culture, a 'no' is often:", opciones:["Stated loudly and clearly","Communicated indirectly through tone, silence or context","Sent via formal letter"], correcta:1 },
+                { pregunta:"Why is adapting your communication style important in global business?", opciones:["It is not important in modern business","It builds trust and avoids costly misunderstandings in international partnerships","It only matters in social situations"], correcta:1 }
+              ]
+            },
+            { id:"B2-10", nombre:"Emphasis & Cleft Sentences",
+              explicacion:`<strong>Cleft sentences</strong> add rhetorical power in presentations and formal writing.<br><br>📌 <strong>It is/was... that/who:</strong> <em>"<strong>It was</strong> the new pricing model <strong>that</strong> drove the 30% growth."</em><br>📌 <strong>What... is/was:</strong> <em>"<strong>What</strong> the client needs <strong>is</strong> a reliable, scalable solution."</em><br>📌 <strong>Do/Did for emphasis:</strong> <em>"We <strong>did</strong> meet the deadline — against all odds."</em>`,
+              ejercicios:[
+                { pregunta:"Choose: '___ the leadership team ___ turned the company around.'", opciones:["It was / that","What / is","The reason / is that"], correcta:0 },
+                { pregunta:"Choose: '___ our clients need is a cost-effective and scalable solution.'", opciones:["It is","What","The reason"], correcta:1 },
+                { pregunta:"Which uses a cleft sentence correctly?", opciones:["It was the new strategy drove growth.","It was the new strategy that drove the 30% revenue growth.","It the new strategy was that drove growth."], correcta:1 },
+                { pregunta:"Choose: 'We ___ deliver the project on time, despite the budget cuts.' (emphatic do)", opciones:["do","did","done"], correcta:1 },
+                { pregunta:"Why are cleft sentences used in formal presentations?", opciones:["To make sentences shorter","To add emphasis and direct the audience's attention to key information","They are grammatically required"], correcta:1 }
+              ]
+            }
+        ]
+    }
+};
+
+const conocimientoIA = {
+
+    // ── A1 ──────────────────────────────────────────────────
+    "saludos": {
+        titulo: "Greetings & Introductions (Saludos y Presentaciones)",
+        body: `En inglés de negocios, el saludo depende de la hora del día:<br>
+        ☀️ <strong>Good morning</strong> — antes de las 12:00<br>
+        🌤️ <strong>Good afternoon</strong> — 12:00 a 18:00<br>
+        🌙 <strong>Good evening</strong> — después de las 18:00<br><br>
+        Para presentarte: <em>"My name is [Nombre]. I work as [Cargo] at [Empresa]."</em><br>
+        Para presentar a alguien: <em>"Allow me to introduce our CFO, Ms. Torres."</em><br><br>
+        💡 <strong>Evita</strong> "Hey!" o "Hi buddy!" — son demasiado informales para negocios.`
+    },
+    "articulos": {
+        titulo: "The Office — Articles (Artículos: a, an, the)",
+        body: `Los artículos son esenciales en inglés de negocios:<br><br>
+        📌 <strong>A</strong> — sonido consonante, primera mención: <em>a desk, a meeting</em><br>
+        📌 <strong>An</strong> — sonido vocal: <em>an office, an email, an agenda</em><br>
+        📌 <strong>The</strong> — específico/conocido: <em>the conference room, the printer</em><br>
+        📌 <strong>Sin artículo</strong> — general/plural: <em>Offices are important.</em><br><br>
+        💡 <strong>Ejemplo:</strong> <em>"There is <u>a</u> meeting in <u>the</u> conference room on floor 3."</em>`
+    },
+    "posesivos": {
+        titulo: "Professional Profiles — Possessives (Posesivos)",
+        body: `Los adjetivos posesivos muestran pertenencia:<br><br>
+        <strong>my · your · his · her · its · our · their</strong><br><br>
+        <em>"<strong>My</strong> name is Carlos. <strong>My</strong> position is Sales Manager."</em><br>
+        <em>"<strong>Her</strong> office is on the third floor."</em><br><br>
+        ⚠️ <strong>its</strong> (posesivo) ≠ <strong>it's</strong> (it is):<br>
+        ✅ <em>"The company updated <strong>its</strong> website."</em>`
+    },
+    "presente simple": {
+        titulo: "Daily Routine — Present Simple (Presente Simple)",
+        body: `El <strong>Presente Simple</strong> describe hábitos, rutinas y hechos.<br><br>
+        ✅ I/You/We/They + verbo base: <em>"We open the office at 8 AM."</em><br>
+        ✅ He/She/It + verbo + <strong>s/es</strong>: <em>"She answers the phone."</em><br><br>
+        <strong>Negativo:</strong> don't / doesn't + verbo base<br>
+        <em>"He doesn't attend Monday meetings."</em><br><br>
+        <strong>Pregunta:</strong> Do / Does + sujeto + verbo?<br>
+        <em>"Does she manage the accounts?"</em>`
+    },
+    "la hora": {
+        titulo: "Telling the Time (Decir la Hora)",
+        body: `Vocabulario esencial para agendar reuniones:<br><br>
+        🕐 <strong>o'clock</strong> — hora exacta: <em>3:00 = three o'clock</em><br>
+        🕐 <strong>past</strong> — minutos después: <em>3:15 = quarter past three</em><br>
+        🕐 <strong>to</strong> — minutos antes: <em>3:45 = quarter to four</em><br>
+        🕐 <strong>half past</strong>: <em>3:30 = half past three</em><br><br>
+        💡 Usa <strong>AM/PM</strong> para evitar ambigüedad en negocios.<br>
+        <em>"The meeting is at <strong>9:00 AM sharp</strong>."</em>`
+    },
+    "preposiciones": {
+        titulo: "Prepositions of Place (Preposiciones de Lugar)",
+        body: `Preposiciones fundamentales en el entorno de oficina:<br><br>
+        📍 <strong>in</strong> — dentro: <em>in the office, in the building</em><br>
+        📍 <strong>on</strong> — superficie/piso: <em>on the desk, on the third floor</em><br>
+        📍 <strong>at</strong> — punto específico: <em>at reception, at the entrance</em><br>
+        📍 <strong>next to</strong> — al lado de: <em>next to the printer</em><br>
+        📍 <strong>opposite</strong> — frente a: <em>opposite the elevator</em>`
+    },
+    "describir personas": {
+        titulo: "Describing People (Describir Personas)",
+        body: `En negocios, enfócate en cualidades profesionales:<br><br>
+        🔑 <strong>Adjetivos clave:</strong> reliable (confiable), dedicated (dedicado), proactive (proactivo), detail-oriented (meticuloso), efficient (eficiente), analytical (analítico)<br><br>
+        <strong>Estructura:</strong> Subject + to be + adjective<br>
+        <em>"Our new director is very <strong>proactive</strong> and <strong>detail-oriented</strong>."</em><br><br>
+        💡 Evita describir apariencia física en contextos profesionales formales.`
+    },
+    "gustos": {
+        titulo: "Likes and Dislikes (Gustos y Disgustos)",
+        body: `Expresar preferencias profesionalmente:<br><br>
+        ✅ <strong>like / enjoy / love + verb-ing:</strong> <em>"I enjoy working in teams."</em><br>
+        ✅ <strong>don't like / dislike / hate + verb-ing:</strong> <em>"I dislike missing deadlines."</em><br>
+        ✅ <strong>prefer + noun/verb-ing:</strong> <em>"I prefer email communication."</em><br><br>
+        💡 En entrevistas: <em>"I really enjoy <strong>problem-solving</strong> and <strong>collaborating</strong> with cross-functional teams."</em>`
+    },
+    "networking": {
+        titulo: "Family & Connections — Networking",
+        body: `En networking profesional, describe conexiones con claridad:<br><br>
+        <strong>Posesivo 's:</strong> <em>"This is my CEO's assistant."</em><br><br>
+        Presentar conexiones:<br>
+        <em>"She is my <strong>direct manager</strong>."</em><br>
+        <em>"They are our <strong>business partners</strong> in Brazil."</em><br><br>
+        💡 Frase clave: <em>"Allow me to introduce [Name], [his/her] company specializes in [field]."</em>`
+    },
+    "can": {
+        titulo: "Abilities — Can (Habilidades con Can)",
+        body: `<strong>Can</strong> expresa habilidad, posibilidad y permiso:<br><br>
+        ✅ <strong>Habilidad:</strong> <em>"I can speak three languages."</em><br>
+        ✅ <strong>Posibilidad:</strong> <em>"We can schedule the meeting for Tuesday."</em><br>
+        ✅ <strong>Solicitud formal:</strong> <em>"Could you send me the file?"</em><br><br>
+        <strong>Cannot / Can't</strong> = incapacidad o prohibición:<br>
+        <em>"You <strong>cannot</strong> share confidential data externally."</em>`
+    },
+
+    // ── A2 ──────────────────────────────────────────────────
+    "pasado simple": {
+        titulo: "Past Experiences — Past Simple (Pasado Simple)",
+        body: `El <strong>Pasado Simple</strong> describe acciones completadas: historial laboral, proyectos pasados.<br><br>
+        <strong>Verbos regulares:</strong> verbo + <strong>-ed</strong><br>
+        launch→launched, manage→managed, sign→signed<br><br>
+        <strong>Irregulares clave:</strong><br>
+        make→made · sell→sold · write→wrote · meet→met · give→gave<br><br>
+        ✅ <em>"We <strong>launched</strong> the product in Q2 and <strong>exceeded</strong> our target."</em><br>
+        ❌ Negativo: <em>"We <strong>didn't meet</strong> the deadline."</em>`
+    },
+    "comparativos": {
+        titulo: "Product Comparison — Comparatives (Comparativos)",
+        body: `Adjetivos comparativos esenciales para ventas y presentaciones:<br><br>
+        📌 <strong>Adjetivos cortos:</strong> + <strong>-er + than</strong> → faster than, cheaper than<br>
+        📌 <strong>Adjetivos largos:</strong> <strong>more + adj + than</strong> → more reliable than<br>
+        📌 <strong>Irregulares:</strong> good→better, bad→worse, far→further<br><br>
+        💡 <em>"Our software is <strong>faster</strong> and <strong>more reliable than</strong> the competition."</em>`
+    },
+    "presente continuo": {
+        titulo: "Current Projects — Present Continuous (Presente Continuo)",
+        body: `<strong>Present Continuous</strong> (am/is/are + verb-ing) = acciones en curso ahora mismo o proyectos activos.<br><br>
+        ✅ <em>"We <strong>are currently developing</strong> a new product line."</em><br>
+        ✅ También para futuro acordado: <em>"I <strong>am meeting</strong> the client on Thursday."</em><br><br>
+        ⚠️ Sin forma continua para: know, understand, believe, prefer, own.`
+    },
+    "going to": {
+        titulo: "Future Plans — Going to (Planes Futuros)",
+        body: `<strong>Going to</strong> (am/is/are + going to + base verb) = decisiones planificadas.<br><br>
+        ✅ <em>"We <strong>are going to</strong> launch the product in Q4."</em><br>
+        ✅ Predicciones basadas en evidencia:<br>
+        <em>"Look at those numbers — we <strong>are going to</strong> exceed the annual target!"</em><br><br>
+        ⚠️ Going to = planificado · Will = espontáneo`
+    },
+    "direcciones": {
+        titulo: "Giving Directions (Dar Indicaciones)",
+        body: `Vocabulario para guiar en oficinas, conferencias o por teléfono:<br><br>
+        ➡️ Go straight (sigue recto) / Turn left (gira a la izquierda) / Turn right (gira a la derecha)<br>
+        ➡️ Take the elevator to the 4th floor (toma el ascensor al 4to piso)<br>
+        ➡️ It's on your left / right (está a tu izquierda / derecha)<br><br>
+        💡 <em>"Please proceed straight down the corridor, take the elevator to the third floor, and the boardroom will be on your right."</em>`
+    },
+    "salud y seguridad": {
+        titulo: "Health & Safety — Must / Should (Salud y Seguridad)",
+        body: `Lenguaje de seguridad laboral con modales:<br><br>
+        ✅ <strong>Must</strong> (obligación): <em>"All employees must wear a hard hat."</em><br>
+        ✅ <strong>Mustn't</strong> (prohibición): <em>"You mustn't use your phone while operating machinery."</em><br>
+        ✅ <strong>Should</strong> (recomendación): <em>"You should report any hazard to your supervisor immediately."</em>`
+    },
+    "cuantificadores": {
+        titulo: "Quantifiers — Much / Many / A lot of (Cuantificadores)",
+        body: `Esenciales para hablar de cantidades en reportes y análisis:<br><br>
+        📊 <strong>Much</strong> + incontable: <em>much time, much money, much progress</em><br>
+        📊 <strong>Many</strong> + contable: <em>many clients, many meetings, many employees</em><br>
+        📊 <strong>A lot of</strong> = ambos: <em>a lot of work, a lot of reports</em><br>
+        📊 <strong>A few</strong> (pocos, positivo): <em>"We have a few openings."</em><br>
+        📊 <strong>A little</strong> (poco, positivo): <em>"We have a little time left."</em>`
+    },
+    "pasado continuo": {
+        titulo: "Past Continuous (Pasado Continuo)",
+        body: `<strong>Past Continuous</strong> (was/were + verb-ing) = acción en progreso en un momento pasado.<br><br>
+        ✅ <em>"At 3 PM, the team <strong>was reviewing</strong> the contract."</em><br>
+        ✅ Acción interrumpida:<br>
+        <em>"We <strong>were negotiating</strong> when the market <strong>crashed</strong>."</em><br><br>
+        💡 Usa Past Continuous + Past Simple para narrar interrupciones en reportes o reuniones.`
+    },
+    "will": {
+        titulo: "Predictions — Will (Predicciones con Will)",
+        body: `<strong>Will</strong> + base verb = predicciones, promesas y decisiones espontáneas.<br><br>
+        ✅ <strong>Predicciones:</strong> <em>"Revenue <strong>will grow</strong> by 15% this year."</em><br>
+        ✅ <strong>Promesas:</strong> <em>"I <strong>will send</strong> you the report by EOD."</em><br>
+        ✅ <strong>Decisión espontánea:</strong> <em>"The printer is broken? I<strong>'ll call</strong> IT right now."</em><br><br>
+        <strong>Won't</strong> = will not: <em>"The CEO <strong>won't attend</strong> the meeting."</em>`
+    },
+    "sugerencias": {
+        titulo: "Suggestions — Shall / Let's (Sugerencias)",
+        body: `Hacer sugerencias profesionales en reuniones:<br><br>
+        ✅ <strong>Shall we...?</strong> — formal: <em>"Shall we move on to the next agenda item?"</em><br>
+        ✅ <strong>Let's...</strong> — inclusivo: <em>"Let's schedule a follow-up for next week."</em><br>
+        ✅ <strong>Why don't we...?</strong>: <em>"Why don't we try a different approach?"</em><br>
+        ✅ <strong>How about + verb-ing?</strong>: <em>"How about presenting the results on Friday?"</em>`
+    },
+
+    // ── B1 ──────────────────────────────────────────────────
+    "present perfect": {
+        titulo: "Life Experiences — Present Perfect (Presente Perfecto)",
+        body: `El <strong>Present Perfect</strong> (have/has + participio pasado) conecta experiencias del pasado con el presente — esencial en CVs y entrevistas.<br><br>
+        ✅ <em>"She <strong>has managed</strong> international teams for five years."</em><br>
+        ✅ <em>"We <strong>have worked</strong> with Fortune 500 companies."</em><br><br>
+        <strong>Signal words:</strong> ever, never, already, yet, just, since, for, recently<br><br>
+        ⚠️ NO uses con tiempos pasados específicos — usa Past Simple:<br>
+        ❌ "She has joined the company in 2019."<br>
+        ✅ "She <strong>joined</strong> the company in 2019."`
+    },
+    "causa efecto": {
+        titulo: "Cause & Effect — Because / Therefore / Due to",
+        body: `Lenguaje de causa y efecto en reportes y análisis:<br><br>
+        📌 <strong>Because</strong> + cláusula: <em>"Sales declined <strong>because</strong> the market became saturated."</em><br>
+        📌 <strong>Due to</strong> + frase nominal: <em>"Sales declined <strong>due to</strong> market saturation."</em><br>
+        📌 <strong>Therefore / As a result / Consequently:</strong><br>
+        <em>"Costs increased; <strong>therefore</strong>, we revised our pricing."</em><br>
+        📌 <strong>This led to:</strong> <em>"The delay <strong>led to</strong> a loss of confidence."</em>`
+    },
+    "estilo indirecto": {
+        titulo: "Reported Speech (Estilo Indirecto)",
+        body: `El estilo indirecto cambia los tiempos verbales hacia atrás:<br><br>
+        Present Simple → Past Simple: <em>"We need data." → He said they <strong>needed</strong> data.</em><br>
+        Will → Would: <em>"We will expand." → She said they <strong>would</strong> expand.</em><br>
+        Present Perfect → Past Perfect: <em>"We have completed it." → He said they <strong>had completed</strong> it.</em><br><br>
+        <strong>Verbos de reporte:</strong> said, stated, confirmed, suggested, warned, proposed`
+    },
+    "segundo condicional": {
+        titulo: "Hypothetical Situations — Second Conditional",
+        body: `El <strong>Second Conditional</strong> (If + past simple, would + base verb) describe situaciones hipotéticas — muy usado en planificación y negociaciones.<br><br>
+        ✅ <em>"If we <strong>had</strong> more capital, we <strong>would expand</strong> into three new markets."</em><br><br>
+        ⚠️ Usa <strong>were</strong> en contextos formales:<br>
+        <em>"If I <strong>were</strong> the CEO, I <strong>would</strong> restructure the sales team."</em>`
+    },
+    "propuestas": {
+        titulo: "Making Proposals — I suggest / recommend / propose",
+        body: `Estructuras formales para hacer propuestas:<br><br>
+        ✅ <strong>I suggest + verb-ing:</strong> <em>"I suggest reviewing the Q3 data."</em><br>
+        ✅ <strong>I recommend + verb-ing:</strong> <em>"I recommend delaying the launch."</em><br>
+        ✅ <strong>I propose + that + clause:</strong> <em>"I propose that we allocate 20% more to R&D."</em><br>
+        ✅ <strong>My recommendation is to:</strong> <em>"My recommendation is to consolidate the divisions."</em>`
+    },
+    "voz pasiva": {
+        titulo: "Passive Voice — Voz Pasiva en Reportes",
+        body: `La <strong>Voz Pasiva</strong> (be + participio pasado) es estándar en reportes y descripciones de procesos — enfoca la acción, no el actor.<br><br>
+        ✅ <em>"The report <strong>is submitted</strong> every Friday."</em> (presente)<br>
+        ✅ <em>"The contract <strong>was signed</strong> by both parties."</em> (pasado)<br>
+        ✅ <em>"The proposal <strong>will be reviewed</strong> by the board."</em> (futuro)<br><br>
+        💡 Úsala cuando el actor es desconocido, obvio o menos importante.`
+    },
+    "present perfect continuous": {
+        titulo: "Present Perfect Continuous — Tendencias en Curso",
+        body: `<strong>Present Perfect Continuous</strong> (have/has + been + verb-ing) — acción que empezó en el pasado y continúa ahora.<br><br>
+        ✅ <em>"Revenue <strong>has been growing</strong> steadily since Q1."</em><br>
+        ✅ <em>"The team <strong>has been working</strong> on the prototype for six months."</em><br><br>
+        <strong>Diferencia clave:</strong><br>
+        Simple = resultado completado: <em>"We <strong>have launched</strong> the product."</em><br>
+        Continuous = proceso en curso: <em>"We <strong>have been developing</strong> the product."</em>`
+    },
+    "proposito": {
+        titulo: "Expressing Purpose — In order to / So that",
+        body: `Expresar propósito claramente en escritura y presentaciones:<br><br>
+        📌 <strong>To + base verb</strong> (simple): <em>"We hired staff <strong>to</strong> handle demand."</em><br>
+        📌 <strong>In order to</strong> (formal): <em>"We restructured <strong>in order to</strong> reduce costs."</em><br>
+        📌 <strong>So that + clause:</strong> <em>"We invested in training <strong>so that</strong> employees could develop skills."</em><br>
+        📌 <strong>With the aim of + verb-ing:</strong> <em>"We expanded <strong>with the aim of</strong> entering new markets."</em>`
+    },
+    "estadisticas": {
+        titulo: "Numbers & Statistics in Presentations (Cifras y Estadísticas)",
+        body: `Presentar datos profesionalmente:<br><br>
+        📊 <strong>Aproximaciones:</strong> approximately, roughly, around, nearly, just over, just under<br>
+        📊 <strong>Tendencias:</strong> a sharp increase, a gradual decline, a significant rise, a slight drop<br>
+        📊 <strong>Comparaciones:</strong> twice as much, three times higher, 50% more than<br><br>
+        💡 <em>"Revenue grew by <strong>approximately</strong> 18%, reaching <strong>just over</strong> $2 million."</em>`
+    },
+    "cohesion": {
+        titulo: "Linking Ideas — Cohesion in Business Writing",
+        body: `Conectores para escritura cohesiva en reportes y propuestas:<br><br>
+        ➕ <strong>Agregar:</strong> Furthermore, Moreover, In addition, Additionally<br>
+        🔄 <strong>Contrastar:</strong> However, Nevertheless, On the other hand, Despite<br>
+        ✅ <strong>Concluir:</strong> Therefore, Consequently, As a result, In conclusion<br>
+        📝 <strong>Ejemplificar:</strong> For instance, For example, Such as, Namely<br><br>
+        💡 <em>"Sales declined. <strong>However</strong>, retention improved. <strong>Furthermore</strong>, client satisfaction rose by 12%."</em>`
+    },
+
+    // ── B2 ──────────────────────────────────────────────────
+    "negociacion": {
+        titulo: "Complex Negotiations — Advanced Language (Negociaciones Avanzadas)",
+        body: `Lenguaje para cada etapa de la negociación:<br><br>
+        🔵 <strong>Abrir:</strong> <em>"We'd like to propose an initial framework for discussion."</em><br>
+        🔵 <strong>Conceder:</strong> <em>"We're willing to be flexible on the timeline if you can accommodate our pricing."</em><br>
+        🔵 <strong>Rechazar:</strong> <em>"Those terms require further discussion; however, we could explore alternatives."</em><br>
+        🔵 <strong>Cerrar:</strong> <em>"I believe we've reached a mutually beneficial agreement."</em><br><br>
+        💡 Concepto clave: <strong>BATNA</strong> = Best Alternative To a Negotiated Agreement`
+    },
+    "tercer condicional": {
+        titulo: "Third Conditional — Past Regrets & Analysis",
+        body: `El <strong>Third Conditional</strong> (If + past perfect, would have + past participle) analiza decisiones pasadas — esencial en post-mortems.<br><br>
+        ✅ <em>"If we <strong>had launched</strong> earlier, we <strong>would have captured</strong> more share."</em><br><br>
+        <strong>Condicional mixto</strong> — causa pasada, resultado presente:<br>
+        <em>"If we <strong>had invested</strong> in R&D, we <strong>would be</strong> the market leader now."</em>`
+    },
+    "hedging": {
+        titulo: "Advanced Hedging & Diplomacy (Lenguaje Diplomático)",
+        body: `El hedging suaviza afirmaciones y señala apertura al diálogo:<br><br>
+        📌 <strong>Verbos tentativos:</strong> tend to, seem to, appear to, would suggest<br>
+        📌 <strong>Adverbios:</strong> possibly, arguably, apparently, seemingly<br>
+        📌 <strong>Modales:</strong> might, may, could, would<br><br>
+        ✅ <em>"It <strong>would appear that</strong> our strategy <strong>may</strong> need revision."</em><br>
+        ✅ <em>"The data <strong>tends to suggest</strong> a gradual shift in consumer behavior."</em>`
+    },
+    "escritura persuasiva": {
+        titulo: "Persuasive Writing — Reports & Proposals (Escritura Persuasiva)",
+        body: `Estructura para reportes y propuestas persuasivas:<br><br>
+        📝 <strong>Estructura:</strong> Contexto → Problema → Evidencia → Solución → Call to Action<br><br>
+        ✅ <strong>Logos</strong> (datos/lógica): <em>"A 40% reduction in costs has been achieved by comparable firms."</em><br>
+        ✅ <strong>Ethos</strong> (credibilidad): <em>"With 15 years of industry expertise, our team is uniquely positioned..."</em><br>
+        ✅ <strong>Pathos</strong> (emoción): <em>"This initiative will directly benefit 500 employees and their families."</em>`
+    },
+    "discourse markers": {
+        titulo: "Formal Discourse Markers (Marcadores del Discurso)",
+        body: `Marcadores para estructurar argumentos complejos en B2:<br><br>
+        🔷 <strong>Conceder:</strong> Admittedly, Granted, While it is true that...<br>
+        🔷 <strong>Reforzar:</strong> Indeed, In fact, As a matter of fact<br>
+        🔷 <strong>Reformular:</strong> In other words, That is to say, To put it another way<br>
+        🔷 <strong>Resumir:</strong> On balance, All things considered, To summarize<br><br>
+        💡 <em>"<strong>Admittedly</strong>, costs are high. <strong>In fact</strong>, comparable firms report a 35% return."</em>`
+    },
+    "especulacion": {
+        titulo: "Speculating & Drawing Conclusions (Especular y Concluir)",
+        body: `Expresar grados de certeza en análisis profesional:<br><br>
+        🔵 <strong>Alta certeza:</strong> must, is certain to, is bound to<br>
+        <em>"The competitor <strong>must</strong> be aware of our strategy."</em><br><br>
+        🔵 <strong>Certeza moderada:</strong> should, ought to, is likely to<br>
+        <em>"The project <strong>should</strong> be completed by Q3."</em><br><br>
+        🔵 <strong>Baja certeza:</strong> might, may, could, possibly<br>
+        <em>"The changes <strong>could</strong> impact our expansion plans."</em>`
+    },
+    "inversion": {
+        titulo: "Inversion for Emphasis (Inversión para Énfasis)",
+        body: `La <strong>inversión</strong> (auxiliar antes del sujeto) añade énfasis formal:<br><br>
+        📌 <strong>Not only... but also:</strong><br>
+        <em>"<strong>Not only did</strong> we exceed the target, <strong>but</strong> we also reduced costs."</em><br>
+        📌 <strong>Never / Rarely / Seldom:</strong><br>
+        <em>"<strong>Never before has</strong> the company seen such growth."</em><br>
+        📌 <strong>Only after:</strong><br>
+        <em>"<strong>Only after</strong> due diligence <strong>did</strong> the board approve the merger."</em>`
+    },
+    "nominalizacion": {
+        titulo: "Nominalization in Business Writing (Nominalización)",
+        body: `La <strong>nominalización</strong> convierte verbos en sustantivos — hace la escritura más formal y objetiva.<br><br>
+        📌 decide → <strong>decision</strong> · analyse → <strong>analysis</strong> · improve → <strong>improvement</strong><br><br>
+        ✅ Informal: <em>"We decided to expand."</em><br>
+        ✅ Formal: <em>"The <strong>decision to expand</strong> was reached after extensive consultation."</em><br><br>
+        💡 Muy utilizado en reportes ejecutivos, actas y propuestas formales.`
+    },
+    "culturas": {
+        titulo: "Cross-Cultural Business Communication (Comunicación Intercultural)",
+        body: `Estilos de comunicación en negocios globales:<br><br>
+        🌏 <strong>Culturas de alto contexto</strong> (Japón, Oriente Medio, Latinoamérica): comunicación implícita, las relaciones importan. El "no" se evita directamente.<br><br>
+        🌍 <strong>Culturas de bajo contexto</strong> (EEUU, Alemania, Escandinavia): comunicación directa y explícita. La ambigüedad se percibe como poco profesional.<br><br>
+        💡 Adapta tu estilo comunicativo a tu audiencia para construir confianza.`
+    },
+    "cleft sentences": {
+        titulo: "Emphasis & Cleft Sentences (Énfasis y Oraciones Escindidas)",
+        body: `Las <strong>cleft sentences</strong> añaden énfasis retórico en presentaciones:<br><br>
+        📌 <strong>It is/was... that/who:</strong><br>
+        <em>"<strong>It was</strong> the new pricing model <strong>that</strong> drove the 30% growth."</em><br>
+        📌 <strong>What... is/was:</strong><br>
+        <em>"<strong>What</strong> the client needs <strong>is</strong> a reliable, scalable solution."</em><br>
+        📌 <strong>Do/Did enfático:</strong><br>
+        <em>"We <strong>did</strong> meet the deadline — against all odds."</em>`
+    },
+
+    // ── CONCEPTOS DE NEGOCIOS EXTRA ───────────────────────────
+    "roi": {
+        titulo: "ROI — Return on Investment (Retorno sobre la Inversión)",
+        body: `<strong>ROI</strong> mide la rentabilidad de una inversión.<br><br>
+        📐 Fórmula: <strong>ROI = (Ganancia neta / Costo de inversión) × 100</strong><br><br>
+        💡 <strong>Ejemplo en inglés:</strong><br>
+        <em>"The campaign generated a <strong>25% ROI</strong>, meaning every $1 invested returned $1.25 in net profit."</em><br><br>
+        📊 Úsalo en reportes: <em>"The project delivered a positive ROI within the first quarter."</em>`
+    },
+    "kpi": {
+        titulo: "KPI — Key Performance Indicator (Indicador Clave de Desempeño)",
+        body: `Un <strong>KPI</strong> es una métrica que mide el progreso hacia un objetivo estratégico.<br><br>
+        💡 <strong>Ejemplos comunes en inglés:</strong><br>
+        📊 <em>"Our <strong>KPI</strong> for Q3 is to increase customer retention by 15%."</em><br>
+        📊 <em>"Sales conversion rate is one of our most important <strong>KPIs</strong>."</em><br><br>
+        🔑 Tipos: Financial KPIs (revenue, profit margin), Customer KPIs (NPS, retention), Process KPIs (cycle time, error rate)`
+    },
+    "ebitda": {
+        titulo: "EBITDA — Earnings Before Interest, Taxes, Depreciation & Amortization",
+        body: `<strong>EBITDA</strong> mide la rentabilidad operativa central de una empresa antes de factores financieros y contables.<br><br>
+        💡 <strong>En contexto:</strong><br>
+        <em>"Our <strong>EBITDA margin</strong> improved from 18% to 24% this fiscal year, reflecting stronger operational efficiency."</em><br><br>
+        📊 Es el indicador favorito de inversores y analistas para comparar empresas de diferentes sectores.`
+    },
+    "break even": {
+        titulo: "Break-Even Point (Punto de Equilibrio)",
+        body: `El <strong>break-even point</strong> es cuando los ingresos totales igualan los costos totales — ni ganancia ni pérdida.<br><br>
+        💡 <strong>En inglés:</strong><br>
+        <em>"We expect to <strong>break even</strong> by the end of Q2."</em><br>
+        <em>"The project's <strong>break-even point</strong> is projected at 18 months."</em><br><br>
+        📊 Fundamental en presentaciones a inversores y análisis de viabilidad financiera.`
+    },
+    "cash flow": {
+        titulo: "Cash Flow (Flujo de Caja)",
+        body: `<strong>Cash flow</strong> = movimiento neto de dinero que entra y sale de un negocio.<br><br>
+        🔑 Tipos:<br>
+        📊 <strong>Positive cash flow:</strong> más dinero entra que sale → empresa sólida.<br>
+        📊 <strong>Negative cash flow:</strong> más dinero sale que entra → señal de alerta.<br><br>
+        💡 <em>"Despite strong sales, the company faced <strong>cash flow</strong> issues due to delayed payments from clients."</em>`
+    },
+    "batna": {
+        titulo: "BATNA — Best Alternative To a Negotiated Agreement",
+        body: `Tu <strong>BATNA</strong> es la mejor opción que tienes si la negociación fracasa — define tu punto de abandono.<br><br>
+        💡 <strong>Por qué importa:</strong><br>
+        <em>"Knowing your <strong>BATNA</strong> gives you the confidence to walk away from an unfavorable deal."</em><br><br>
+        📊 <strong>Regla de oro:</strong> Nunca entres a una negociación sin haber identificado tu BATNA — define cuánto puedes conceder.`
+    },
+    "verbo to be": {
+        titulo: "The Verb To Be (El Verbo To Be)",
+        body: `El verbo <strong>to be</strong> es el más fundamental del inglés:<br><br>
+        📋 <strong>Formas:</strong><br>
+        I <strong>am</strong> · He/She/It <strong>is</strong> · You/We/They <strong>are</strong><br><br>
+        ✅ Afirmativo: <em>"I <strong>am</strong> the project manager."</em><br>
+        ❌ Negativo: <em>"She <strong>is not</strong> available right now."</em><br>
+        ❓ Pregunta: <em>"<strong>Are</strong> you the account director?"</em><br><br>
+        💡 En pasado: was (I/he/she/it) · were (you/we/they)`
+    },
+    "modales": {
+        titulo: "Modal Verbs (Verbos Modales en Negocios)",
+        body: `Los modales expresan obligación, recomendación, posibilidad y permiso:<br><br>
+        📌 <strong>Must</strong> — obligación fuerte: <em>"You must sign the NDA."</em><br>
+        📌 <strong>Should</strong> — recomendación: <em>"You should review the report before the meeting."</em><br>
+        📌 <strong>Could</strong> — posibilidad/sugerencia: <em>"We could offer a 10% discount."</em><br>
+        📌 <strong>Would</strong> — condicional/cortesía: <em>"I would suggest a different approach."</em><br>
+        📌 <strong>May/Might</strong> — incertidumbre: <em>"The project might be delayed."</em>`
+    },
+    "email formal": {
+        titulo: "Formal Email Writing (Escritura de Emails Formales)",
+        body: `Estructura estándar de un email profesional en inglés:<br><br>
+        📧 <strong>Opening:</strong> <em>"I hope this email finds you well."</em><br>
+        📧 <strong>Purpose:</strong> <em>"I am writing with regard to..."</em><br>
+        📧 <strong>Body:</strong> información clara, párrafos cortos<br>
+        📧 <strong>Closing:</strong> <em>"Please do not hesitate to contact me should you have any questions."</em><br>
+        📧 <strong>Sign-off:</strong> Yours sincerely / Best regards / Kind regards<br><br>
+        💡 Usa hedging para suavizar críticas: <em>"It would appear that the timeline may need adjustment."</em>`
+    },
+    "primer condicional": {
+        titulo: "First Conditional — Real Possibilities (Primer Condicional)",
+        body: `El <strong>First Conditional</strong> (If + present simple, will + base verb) expresa situaciones reales y probables.<br><br>
+        ✅ <em>"If we <strong>reduce</strong> costs, we <strong>will increase</strong> our margins."</em><br>
+        ✅ <em>"If the client <strong>signs</strong> by Friday, we <strong>will deliver</strong> by Q3."</em><br><br>
+        💡 Muy usado en propuestas, negociaciones y planificación estratégica donde el resultado es probable y concreto.`
+    }
+};
+
+const keyMap = [
+    [["salud","saludos","greet","introduc","presentar","buenos días","good morning"], "saludos"],
+    [["artículo","articles","a/an/the","the office","oficina artículo"], "articulos"],
+    [["posesiv","my your his","possessive","perfil profesional"], "posesivos"],
+    [["presente simple","present simple","rutina","daily routine","hábitos"], "presente simple"],
+    [["hora","time","telling the time","o'clock","am pm"], "la hora"],
+    [["preposición","preposiciones","place","preposition","next to","opposite"], "preposiciones"],
+    [["describir personas","describing people","adjective professional","proactive"], "describir personas"],
+    [["gustos","likes","dislikes","enjoy","like working"], "gustos"],
+    [["networking","conexiones","family connections","introduce"], "networking"],
+    [["can","habilidades","abilities","could you"], "can"],
+    [["pasado simple","past simple","pasado regular","irregular verbo","went went"], "pasado simple"],
+    [["comparativ","comparison","product comparison","más rápido que","faster than"], "comparativos"],
+    [["presente continuo","present continuous","estar haciendo","current project"], "presente continuo"],
+    [["going to","voy a","planes futuros","future plan"], "going to"],
+    [["direcciones","directions","cómo llegar","turn left","straight"], "direcciones"],
+    [["salud y seguridad","health safety","must mustn't","seguridad laboral"], "salud y seguridad"],
+    [["cuantificadores","much many","quantifier","a lot of","a few"], "cuantificadores"],
+    [["pasado continuo","past continuous","was doing","were working"], "pasado continuo"],
+    [["will","predicciones","predictions","won't","futuro espontáneo"], "will"],
+    [["sugerencias","suggestion","shall we","let's","why don't we"], "sugerencias"],
+    [["present perfect","presente perfecto","have has done","ever never already"], "present perfect"],
+    [["causa efecto","cause effect","because therefore","due to","consequently"], "causa efecto"],
+    [["estilo indirecto","reported speech","dijo que","he said she said"], "estilo indirecto"],
+    [["segundo condicional","second conditional","if had would","hypothetical"], "segundo condicional"],
+    [["propuesta","proposal","suggest recommend propose"], "propuestas"],
+    [["voz pasiva","passive voice","was signed","is submitted"], "voz pasiva"],
+    [["present perfect continuous","has been doing","tendencia en curso"], "present perfect continuous"],
+    [["propósito","purpose","in order to","so that","with the aim"], "proposito"],
+    [["estadísticas","statistics","approximately","roughly","data presentation"], "estadisticas"],
+    [["cohesión","cohesion","linking","furthermore however therefore"], "cohesion"],
+    [["negociación","negotiation","batna","concession","framework"], "negociacion"],
+    [["tercer condicional","third conditional","if had launched","past regret"], "tercer condicional"],
+    [["hedging","diplomacy","diplomatico","would appear","arguably"], "hedging"],
+    [["escritura persuasiva","persuasive","logos ethos pathos","report proposal"], "escritura persuasiva"],
+    [["discourse marker","marcador discurso","admittedly","indeed","on balance"], "discourse markers"],
+    [["especular","speculate","must be","is likely to","drawing conclusion"], "especulacion"],
+    [["inversión","inversion","not only","never before","only after"], "inversion"],
+    [["nominalización","nominalization","decision investigation","noun from verb"], "nominalizacion"],
+    [["cultura","cross cultural","high context","low context","intercultural"], "culturas"],
+    [["cleft","énfasis","emphasis","it was that","what we need is"], "cleft sentences"],
+    [["roi","retorno inversión","return on investment"], "roi"],
+    [["kpi","key performance","indicador desempeño"], "kpi"],
+    [["ebitda","earnings before"], "ebitda"],
+    [["break even","punto equilibrio","break-even"], "break even"],
+    [["cash flow","flujo caja","flujo de caja"], "cash flow"],
+    [["batna","best alternative"], "batna"],
+    [["verbo to be","to be","soy eres es","am is are"], "verbo to be"],
+    [["modal","modales","must should could would may"], "modales"],
+    [["email formal","formal email","business email","correo formal"], "email formal"],
+    [["primer condicional","first conditional","if present will"], "primer condicional"]
+];
+
+function resolverClave(msg) {
+    const m = msg.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // quitar acentos
+    for (const [palabras, clave] of keyMap) {
+        if (palabras.some(p => m.includes(p))) return clave;
+    }
+    return null;
+}
+
+
+function getBotReply(msg) {
+    const clave = resolverClave(msg);
+    if (clave && conocimientoIA[clave]) {
+        const tema = conocimientoIA[clave];
+        return `¡Claro que sí, <strong>${nombreUsuario}</strong>! Aquí tienes una explicación de <strong>${tema.titulo}</strong>:<br><br>
+${tema.body}<br><br>
+<span style="color:#003366;font-size:11px;font-weight:700;">💡 Practica este tema en los módulos de aprendizaje. ¿Tienes alguna duda adicional?</span>`;
+    }
+
+    // Saludos
+    const m = msg.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    if (/hola|hello|hi |hey |good morning|buenas|buenos/.test(m)) {
+        return `¡Hola, <strong>${nombreUsuario}</strong>! 👋 Soy tu Tutor IA de ABS. Puedo explicarte cualquiera de los <strong>40 temas</strong> de la plataforma en español, con ejemplos en inglés.<br><br>
+Prueba preguntarme cosas como:<br>
+📚 <em>"Explícame el pasado simple"</em><br>
+📚 <em>"¿Qué es el ROI?"</em><br>
+📚 <em>"Ayúdame con la voz pasiva"</em><br>
+📚 <em>"Cómo usar will vs going to"</em>`;
+    }
+
+    // Failsafe bilingüe
+    return `¡Gracias por tu pregunta, <strong>${nombreUsuario}</strong>! 🤔 Aunque no encontré un tema exacto para eso, puedo explicarte cualquiera de estos:<br><br>
+<strong>Gramática:</strong> presente simple, pasado simple, present perfect, voz pasiva, condicionales (1ro, 2do, 3ro), modales, will, going to, present continuous, inversión, nominalización, cleft sentences, hedging...<br><br>
+<strong>Vocabulario de negocios:</strong> ROI, KPI, EBITDA, break-even, cash flow, BATNA, email formal, negociación...<br><br>
+<strong>Niveles ABS:</strong> A1, A2, B1 o B2 — escríbeme el tema que quieras profundizar. 💪`;
+}
+
+
+
+
+const STORAGE_KEY_NOMBRE='abs_nombre';
+const STORAGE_KEY_COMPLETADOS='abs_completados';
+const totalTemas=40;
+let nombreUsuario='';
+const completados=new Set();
+const sesionesTema={};
+
+function guardarProgreso(){localStorage.setItem(STORAGE_KEY_COMPLETADOS,JSON.stringify([...completados]));}
+function cargarProgreso(){const s=localStorage.getItem(STORAGE_KEY_COMPLETADOS);if(s)JSON.parse(s).forEach(id=>completados.add(id));}
+function actualizarProgreso(){const pct=Math.round((completados.size/totalTemas)*100);document.getElementById('barra-progreso').style.width=pct+'%';document.getElementById('pct').innerText=pct+'%';}
+
+function iniciarSesion(){
+    const input=document.getElementById('input-nombre');
+    const nombre=input.value.trim();
+    const errEl=document.getElementById('error-nombre');
+    if(!nombre){errEl.style.display='block';input.focus();return;}
+    errEl.style.display='none';
+    nombreUsuario=nombre;
+    localStorage.setItem(STORAGE_KEY_NOMBRE,nombre);
+    cargarProgreso();
+    actualizarProgreso();
+    aplicarNombreUI();
+    iniciarChat();
+    const overlay=document.getElementById('overlay-registro');
+    overlay.classList.add('oculto');
+    setTimeout(function(){overlay.style.display='none';},500);
+}
+function aplicarNombreUI(){
+    document.getElementById('subtitulo-header').textContent='Bienvenido/a, '+nombreUsuario+' - Technical Language Training';
+    document.getElementById('footer-usuario').textContent='Usuario: '+nombreUsuario;
+}
+function confirmarReinicio(){document.getElementById('modal-reinicio').style.display='flex';}
+function ejecutarReinicio(){localStorage.removeItem(STORAGE_KEY_NOMBRE);localStorage.removeItem(STORAGE_KEY_COMPLETADOS);location.reload();}
+
+function mostrarTab(tab,btn){
+    document.getElementById('tab-aprendizaje').classList.toggle('hidden',tab!=='aprendizaje');
+    document.getElementById('tab-chat').classList.toggle('hidden',tab!=='chat');
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+}
+
+function mostrarTemas(nivel){
+    var data=dbLecciones[nivel];if(!data)return;
+    document.getElementById('lista-titulo').textContent=data.titulo;
+    var cuerpo=document.getElementById('lista-cuerpo');
+    cuerpo.innerHTML='';
+    data.temas.forEach(function(tema,i){
+        var done=completados.has(tema.id);
+        var div=document.createElement('div');
+        div.className='topic-item bg-white rounded-xl p-4 flex items-center gap-3';
+        div.innerHTML='<div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 '+(done?'bg-green-100 text-green-700':'abs-blue text-white')+'">'+(done?'OK':i+1)+'</div>'
+            +'<div class="flex-1"><p class="font-bold text-gray-800 text-sm">'+tema.nombre+'</p>'
+            +'<p class="text-xs text-gray-400">5 ejercicios'+(done?' - Completado':'')+'</p></div>'
+            +'<span class="text-xs font-bold px-2 py-1 rounded-full '+(done?'bg-green-100 text-green-600':'bg-blue-50 text-abs-blue')+'">'+(done?'Hecho':nivel)+'</span>';
+        div.onclick=function(){abrirTema(nivel,i);};
+        cuerpo.appendChild(div);
+    });
+    document.getElementById('lista-temas').classList.remove('hidden');
+    document.getElementById('lista-temas').scrollIntoView({behavior:'smooth'});
+}
+
+function abrirTema(nivel,idx){
+    var tema=dbLecciones[nivel].temas[idx];
+    if(!sesionesTema[tema.id])sesionesTema[tema.id]={idx:0,errores:0};
+    var area=document.getElementById('clase-area');
+    area.classList.remove('hidden');
+    area.innerHTML='<div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 mb-6">'
+        +'<div class="abs-blue text-white p-4 flex justify-between items-center">'
+        +'<div><span class="text-xs font-bold opacity-70 uppercase tracking-widest">'+nivel+' - Tema '+(idx+1)+' de 10</span>'
+        +'<h3 class="font-black text-xl mt-0.5">'+tema.nombre+'</h3></div>'
+        +'<button onclick="document.getElementById(\'clase-area\').classList.add(\'hidden\')" class="hover:text-red-300 text-lg font-bold">X</button></div>'
+        +'<div class="p-6"><div class="bg-blue-50 border-l-4 border-blue-800 rounded-xl p-5 mb-6 text-sm text-gray-700 leading-relaxed">'
+        +'<p class="font-black uppercase text-xs text-abs-blue mb-2 tracking-widest">Explicacion</p>'
+        +tema.explicacion+'</div><div id="ejercicio-area"></div></div></div>';
+    area.scrollIntoView({behavior:'smooth'});
+    mostrarEjercicio(nivel,idx);
+}
+
+function mostrarEjercicio(nivel,temaIdx){
+    var tema=dbLecciones[nivel].temas[temaIdx];
+    var sesion=sesionesTema[tema.id];
+    var eIdx=sesion.idx;
+    var ej=tema.ejercicios[eIdx];
+    var area=document.getElementById('ejercicio-area');
+    var dots='';
+    for(var k=0;k<5;k++){var c='exercise-dot';if(k<eIdx)c+=' done';else if(k===eIdx)c+=' active';dots+='<div class="'+c+'"></div>';}
+    var opts='';
+    ej.opciones.forEach(function(op,oi){
+        opts+='<button class="option-btn w-full text-left border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium text-gray-700" onclick="validarRespuesta(\''+nivel+'\','+temaIdx+','+eIdx+','+oi+')">'
+            +'<span class="font-black text-abs-blue mr-2">'+String.fromCharCode(65+oi)+'.</span> '+op+'</button>';
+    });
+    area.innerHTML='<div class="mb-4">'
+        +'<div class="flex items-center gap-2 mb-3"><p class="text-xs font-bold uppercase tracking-widest text-gray-400">Ejercicio '+(eIdx+1)+' de 5</p>'
+        +'<div class="flex gap-1.5">'+dots+'</div></div>'
+        +'<p class="font-bold text-gray-800 text-base mb-4">'+ej.pregunta+'</p>'
+        +'<div class="space-y-2">'+opts+'</div>'
+        +'<div id="feedback-area" class="mt-4 hidden"></div></div>';
+}
+
+function validarRespuesta(nivel,temaIdx,eIdx,opcion){
+    var tema=dbLecciones[nivel].temas[temaIdx];
+    var ej=tema.ejercicios[eIdx];
+    var bts=document.querySelectorAll('.option-btn');
+    var fb=document.getElementById('feedback-area');
+    bts.forEach(function(b,i){b.disabled=true;if(i===ej.correcta)b.classList.add('correct');if(i===opcion&&opcion!==ej.correcta)b.classList.add('wrong');});
+    fb.classList.remove('hidden');
+    if(opcion===ej.correcta){
+        fb.innerHTML='<div class="bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-green-700 font-medium">Correcto! Bien hecho.</div>';
+        sesionesTema[tema.id].idx++;
+        if(sesionesTema[tema.id].idx>=5){
+            completados.add(tema.id);guardarProgreso();actualizarProgreso();mostrarTemas(nivel);
+            fb.innerHTML+='<div class="mt-3 bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">'
+                +'<p class="text-2xl mb-1">Tema completado!</p>'
+                +'<p class="font-black text-abs-blue text-base">Has respondido los 5 ejercicios correctamente.</p>'
+                +'<button onclick="document.getElementById(\'clase-area\').classList.add(\'hidden\')" class="mt-3 abs-blue text-white font-bold text-sm px-6 py-2 rounded-full hover:opacity-90">Volver a los temas</button></div>';
+        }else{setTimeout(function(){mostrarEjercicio(nivel,temaIdx);},1200);}
+    }else{
+        sesionesTema[tema.id]={idx:0,errores:0};
+        fb.innerHTML='<div class="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-red-700">Incorrecto. Respuesta correcta: <strong>'+String.fromCharCode(65+ej.correcta)+'. '+ej.opciones[ej.correcta]+'</strong><br><span class="text-xs mt-1 block text-gray-500">El tema se reinicia para que domines todos los ejercicios.</span></div>';
+        setTimeout(function(){mostrarEjercicio(nivel,temaIdx);},2200);
+    }
+}
+
+function iniciarChat(){
+    var box=document.getElementById('chat-box');
+    if(!box)return;
+    box.innerHTML='';
+    appendBot('Hola, <strong>'+nombreUsuario+'</strong>! Soy tu Tutor IA de ABS. Puedo explicarte cualquiera de los 40 temas en espanol con ejemplos en ingles.<br><br>Prueba preguntarme:<br>- Explicame el pasado simple<br>- Que es el ROI?<br>- Ayudame con la voz pasiva<br>- Como usar will vs going to');
+}
+function appendBot(text){
+    var box=document.getElementById('chat-box');
+    var div=document.createElement('div');
+    div.className='flex items-start gap-3';
+    div.innerHTML='<div class="w-8 h-8 rounded-full abs-blue flex items-center justify-center text-white text-xs font-black flex-shrink-0">ABS</div>'
+        +'<div class="chat-bubble-bot px-4 py-3 text-sm max-w-lg shadow-sm">'+text+'</div>';
+    box.appendChild(div);box.scrollTop=box.scrollHeight;
+}
+function appendUser(text){
+    var box=document.getElementById('chat-box');
+    var div=document.createElement('div');
+    div.className='flex items-end justify-end gap-3';
+    div.innerHTML='<div class="chat-bubble-user px-4 py-3 text-sm max-w-lg shadow-sm">'+text+'</div>';
+    box.appendChild(div);box.scrollTop=box.scrollHeight;
+}
+function mostrarTyping(){
+    var box=document.getElementById('chat-box');
+    var div=document.createElement('div');
+    div.id='typing';div.className='flex items-start gap-3';
+    div.innerHTML='<div class="w-8 h-8 rounded-full abs-blue flex items-center justify-center text-white text-xs font-black flex-shrink-0">ABS</div>'
+        +'<div class="chat-bubble-bot px-4 py-3 shadow-sm typing-indicator"><span></span><span></span><span></span></div>';
+    box.appendChild(div);box.scrollTop=box.scrollHeight;
+}
+function enviarMensaje(){
+    var input = document.getElementById('chat-input');
+    var msg = input.value.trim();
+    if(!msg) return;
+
+    appendUser(msg);
+    input.value = '';
+    mostrarTyping();
+
+    setTimeout(function(){
+        var t = document.getElementById('typing');
+        if(t) t.remove();
+        appendBot(getBotReply(msg));
+    }, 900 + Math.random() * 600);
+}
+
+/* ===== MICRÓFONO ===== */
+
+let recognition;
+
+function iniciarVoz() {
+
+  console.log("🎤 Botón mic presionado");
+
+  if (!('webkitSpeechRecognition' in window)) {
+      alert("Tu navegador no soporta reconocimiento de voz");
+      return;
+  }
+
+  recognition = new webkitSpeechRecognition();
+
+  recognition.lang = "es-ES";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  recognition.onstart = function () {
+      console.log("🎙️ Escuchando...");
+  };
+
+  recognition.onresult = function (event) {
+
+      const texto = event.results[0][0].transcript;
+
+      console.log("Texto reconocido:", texto);
+
+      const input = document.getElementById("chat-input");
+
+      if (input) {
+          input.value = texto;
+      }
+
+  };
+
+  recognition.onerror = function (event) {
+      console.log("Error reconocimiento:", event.error);
+  };
+
+  recognition.start();
+}
+
+</script>
+</body>
+</html>
+
+
+
+<!-- ================================================== -->
+<!-- ================== PRO IA SYSTEM ================== -->
+<!-- ================================================== -->
+
+<script>
+
+/* ===============================
+   VARIABLES GLOBALES PRO
+================================ */
+
+let conversationHistory = [];
+let moduloActivo = null;
+let temaActivo = null;
+
+
+/* ===============================
+   DETECTAR MODULO Y TEMA ACTIVO
+   (NO MODIFICA FUNCIONES EXISTENTES)
+================================ */
+
+const originalAbrirClase = window.abrirClase;
+
+if (originalAbrirClase) {
+  window.abrirClase = function(nivel, tema) {
+    moduloActivo = nivel;
+    temaActivo = tema?.nombre || tema;
+    return originalAbrirClase.apply(this, arguments);
+  };
+}
+
+
+/* ===============================
+   ENVIO DE MENSAJE IA REAL
+================================ */
+
+async function enviarMensaje() {
+
+    var input = document.getElementById("chat-input");
+    var msg = input.value.trim();
+    if (!msg) return;
+
+    appendUser(msg); // usamos tu función original
+    input.value = "";
+
+    conversationHistory.push({ role: "user", content: msg });
+
+    try {
+    const response = await fetch("http://localhost:3000/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            message: msg,
+            context: {
+                modulo: moduloActivo,
+                tema: temaActivo
+            },
+            history: conversationHistory
+        })
+    });
+
+    const data = await response.json();
+
+if (!data || !data.reply) {
+    appendBot("⚠️ La IA no devolvió contenido.");
+    return;
+}
+
+appendBot(data.reply);
+
+conversationHistory.push({
+   role: "assistant",
+   content: data.reply
+});
+
+hablarRespuesta(data.reply);
+
+} catch (error) {
+    appendBot("⚠️ Error conectando con el servidor IA.");
+}
+}
+
+
+/* ===============================
+   TEXT TO SPEECH
+================================ */
+
+async function hablarRespuesta(texto) {
+
+  try {
+
+    const response = await fetch("http://localhost:3000/api/voice", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        text: texto
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("Error en la respuesta del servidor");
+    }
+
+    const audioBlob = await response.blob();
+
+    const audioUrl = URL.createObjectURL(audioBlob);
+
+    const audio = new Audio(audioUrl);
+
+    audio.play();
+
+  } catch (error) {
+
+    console.error("❌ Error con la voz IA:", error);
+
+    // fallback si falla el servidor
+    const speech = new SpeechSynthesisUtterance(texto);
+    speech.lang = "es-ES";
+    speechSynthesis.speak(speech);
+
+  }
+
+}
+
+
+/* ===============================
+   EVALUACION VISUAL CEFR + IELTS
+================================ */
+
+function mostrarEvaluacion(texto) {
+  const panel = document.createElement("div");
+  panel.style.background = "#111";
+  panel.style.padding = "15px";
+  panel.style.marginTop = "10px";
+  panel.style.borderRadius = "10px";
+  panel.style.color = "#fff";
+  panel.innerText = texto;
+
+  const chat = document.getElementById("chat-box");
+  if (chat) chat.appendChild(panel);
+}
+
+function iniciarGrabacion() {
+
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Tu navegador no soporta reconocimiento de voz");
+        return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+
+    recognition.lang = "es-ES";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onresult = function(event) {
+        const texto = event.results[0][0].transcript;
+
+        const input = document.getElementById("userInput");
+        if (input) {
+            input.value = texto;
+        }
+    };
+
+    recognition.onerror = function(event) {
+        console.error("Error en reconocimiento:", event.error);
+    };
+
+    recognition.start();
+}
+
+</script>
+
+</body>
+</html>
