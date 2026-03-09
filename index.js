@@ -20,14 +20,21 @@ const openai = new OpenAI({
 app.post("/api/chat", async (req, res) => {
 
   try {
-    const userMessage = req.body.message;
+
+    const userMessage = req.body.message || req.body.text || "";
+
+    if (!userMessage) {
+      return res.json({
+        reply: "Please write a message."
+      });
+    }
 
     const completion = await openai.chat.completions.create({
       model: "llama-3.1-8b-instant",
       messages: [
-{
-role: "system",
-content: `
+        {
+          role: "system",
+          content: `
 You are an English speaking tutor for students learning English.
 
 Rules:
@@ -39,9 +46,9 @@ Rules:
 
 If the student writes in Spanish, respond in English anyway.
 `
-},
-{ role: "user", content: userMessage }
-],
+        },
+        { role: "user", content: userMessage }
+      ],
       max_tokens: 120
     });
 
@@ -121,5 +128,6 @@ app.listen(port, () => {
   console.log("Servidor activo en http://localhost:3000");
 
 });
+
 
 
