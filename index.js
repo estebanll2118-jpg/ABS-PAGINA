@@ -95,7 +95,7 @@ app.post("/api/voice", async (req, res) => {
   "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM",
       {
         text: text,
-        model_id: "eleven_multilingual_v2"
+        model_id: "eleven_turbo_v2"
       },
       {
         headers: {
@@ -130,6 +130,7 @@ app.listen(port, () => {
   console.log("Servidor activo en http://localhost:3000");
 
 });
+
 
 
 
