@@ -1479,9 +1479,19 @@ async function hablarRespuesta(texto) {
     console.error("❌ Error con la voz IA:", error);
 
     const speech = new SpeechSynthesisUtterance(texto);
-    speech.lang = "es-ES";
-    speechSynthesis.speak(speech);
 
+const voices = speechSynthesis.getVoices();
+const voice = voices.find(v => v.lang === "en-US" || v.lang === "en-GB");
+
+if (voice) {
+  speech.voice = voice;
+}
+
+speech.rate = 1;
+speech.pitch = 1;
+      
+speechSynthesis.cancel();
+speechSynthesis.speak(speech);
   }
 
 }
