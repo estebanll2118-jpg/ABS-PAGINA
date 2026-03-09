@@ -91,8 +91,8 @@ app.post("/api/voice", async (req, res) => {
 
     const text = req.body.text;
 
-    const response = await axios.post(
-      "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL",
+   const response = await axios.post(
+  "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM",
       {
         text: text,
         model_id: "eleven_multilingual_v2"
@@ -130,6 +130,7 @@ app.listen(port, () => {
   console.log("Servidor activo en http://localhost:3000");
 
 });
+
 
 
 
