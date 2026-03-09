@@ -118,7 +118,7 @@ app.post("/api/voice", async (req, res) => {
 
   } catch (error) {
 
-    console.error("Error en voz IA:", error.response?.data || error);
+    console.log("Error en voz IA:", error.response?.data?.toString());
 
     res.status(500).send("Error del servidor");
 
@@ -132,6 +132,7 @@ app.listen(port, () => {
   console.log("Servidor activo en http://localhost:3000");
 
 });
+
 
 
 
