@@ -91,33 +91,35 @@ app.post("/api/voice", async (req, res) => {
 
     const text = req.body.text;
 
-const response = await axios.post(
-  "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL",
-  {
-    text: text,
-    model_id: "eleven_multilingual_v2"
-  },
-  {
-    headers: {
-  "xi-api-key": process.env.ELEVEN_API_KEY?.trim(),
+    const response = await axios.post(
+      "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL",
+      {
+        text: text,
+        model_id: "eleven_multilingual_v2"
+      },
+      {
+        headers: {
+  "xi-api-key": process.env.ELEVEN_API_KEY,
   "Content-Type": "application/json"
 },
-    responseType: "arraybuffer"
-  }
-);
-
+        responseType: "arraybuffer"
+      }
+    );
 
     const audioBuffer = response.data;
 
-res.set({
-  "Content-Type": "audio/mpeg"
-});
+    res.set({
+      "Content-Type": "audio/mpeg"
+    });
 
-res.send(audioBuffer);
-    
+    res.send(audioBuffer);
+
   } catch (error) {
-    console.error("Error en voz IA:", error);
+
+    console.error("Error en voz IA:", error.response?.data || error);
+
     res.status(500).send("Error del servidor");
+
   }
 
 });
@@ -128,6 +130,7 @@ app.listen(port, () => {
   console.log("Servidor activo en http://localhost:3000");
 
 });
+
 
 
 
