@@ -25,17 +25,23 @@ app.post("/api/chat", async (req, res) => {
     const completion = await openai.chat.completions.create({
       model: "llama-3.1-8b-instant",
       messages: [
-        {
-          role: "system",
-          content: `
-You are ABS Assistant, the official AI tutor of American Business School Pereira.
-You help students practice English speaking.
-Keep answers short and natural.
-Always ask a follow-up question to continue the conversation.
+{
+role: "system",
+content: `
+You are an English speaking tutor for students learning English.
+
+Rules:
+- Always answer in English
+- Correct pronunciation and grammar naturally
+- Encourage the student to repeat sentences
+- Keep answers short
+- Ask a follow-up question
+
+If the student writes in Spanish, respond in English anyway.
 `
-        },
-        { role: "user", content: userMessage }
-      ],
+},
+{ role: "user", content: userMessage }
+],
       max_tokens: 120
     });
 
@@ -63,10 +69,6 @@ res.json({
 
 });
 
-app.listen(port, () => {
-  console.log("Servidor activo en http://localhost:3000");
-});
-
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index_abs_pro_version.html");
 });
@@ -83,7 +85,7 @@ app.post("/api/voice", async (req, res) => {
     const text = req.body.text;
 
     const response = await fetch(
-  "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM",
+  "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL",
   {
     method: "POST",
     headers: {
@@ -91,9 +93,9 @@ app.post("/api/voice", async (req, res) => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      text: text,
-      model_id: "eleven_turbo_v2"
-    })
+text: text,
+model_id: "eleven_multilingual_v2"
+})
   }
 );
 
@@ -124,3 +126,4 @@ app.listen(port, () => {
   console.log("Servidor activo en http://localhost:3000");
 
 });
+
