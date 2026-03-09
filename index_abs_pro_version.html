@@ -1452,7 +1452,7 @@ async function hablarRespuesta(texto) {
 
   try {
 
-    const response = await fetch("https://abs-pagina-1-2.onrender.com/api/chat", {
+    const response = await fetch("https://abs-pagina-1-2.onrender.com/api/voice", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1478,7 +1478,6 @@ async function hablarRespuesta(texto) {
 
     console.error("❌ Error con la voz IA:", error);
 
-    // fallback si falla el servidor
     const speech = new SpeechSynthesisUtterance(texto);
     speech.lang = "es-ES";
     speechSynthesis.speak(speech);
