@@ -6,6 +6,8 @@ const axios = require("axios");
 
 dotenv.config();
 
+console.log("ELEVEN KEY:", process.env.ELEVEN_API_KEY);
+
 const app = express();
 const port = 3000;
 
@@ -130,6 +132,7 @@ app.listen(port, () => {
   console.log("Servidor activo en http://localhost:3000");
 
 });
+
 
 
 
