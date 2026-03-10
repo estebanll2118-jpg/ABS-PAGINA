@@ -6,6 +6,9 @@ const axios = require("axios");
 
 dotenv.config();
 
+const app = express();
+app.use(cors());
+app.use(express.static(__dirname)); // <--- AQUÍ VA LA LÍNEA NUEVA
 
 const app = express();
 const port = 3000;
@@ -131,6 +134,7 @@ app.listen(port, () => {
   console.log("Servidor activo en http://localhost:3000");
 
 });
+
 
 
 
