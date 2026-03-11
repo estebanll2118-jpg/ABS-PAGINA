@@ -153,8 +153,15 @@
 <button id="mic-btn"
   onclick="iniciarVoz()"
   class="border-2 border-gray-300 rounded-full px-4 py-2 text-lg hover:bg-gray-100 transition"
-  title="Hablar">
+  title="Hablar por voz">
   🎤
+</button>
+<button id="voice-toggle-btn"
+  onclick="toggleVoz()"
+  class="border-2 rounded-full px-3 py-2 text-xs font-bold hover:bg-gray-100 transition"
+  style="border-color:#003366;color:#003366;background:white;"
+  title="Desactivar voz IA">
+  🔊 Voz
 </button>
 
 <button onclick="enviarMensaje()"
@@ -1296,21 +1303,7 @@ function mostrarTyping(){
         +'<div class="chat-bubble-bot px-4 py-3 shadow-sm typing-indicator"><span></span><span></span><span></span></div>';
     box.appendChild(div);box.scrollTop=box.scrollHeight;
 }
-function enviarMensaje(){
-    var input = document.getElementById('chat-input');
-    var msg = input.value.trim();
-    if(!msg) return;
-
-    appendUser(msg);
-    input.value = '';
-    mostrarTyping();
-
-    setTimeout(function(){
-        var t = document.getElementById('typing');
-        if(t) t.remove();
-        appendBot(getBotReply(msg));
-    }, 900 + Math.random() * 600);
-}
+// enviarMensaje() → ver bloque PRO IA abajo
 
 /* ===== MICRÓFONO ===== */
 
@@ -1357,9 +1350,6 @@ function iniciarVoz() {
 }
 
 </script>
-</body>
-</html>
-
 
 
 <!-- ================================================== -->
@@ -1375,6 +1365,7 @@ function iniciarVoz() {
 let conversationHistory = [];
 let moduloActivo = null;
 let temaActivo = null;
+let vozActiva = true; // Voz activa por defecto
 
 
 /* ===============================
@@ -1397,50 +1388,96 @@ if (originalAbrirClase) {
    ENVIO DE MENSAJE IA REAL
 ================================ */
 
+let audioDesbloqueado = false;
+
+async function desbloquearAudio() {
+    // Unlock browser autoplay policy with a silent audio context
+    if (audioDesbloqueado) return;
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        await ctx.resume();
+        audioDesbloqueado = true;
+    } catch(e) {}
+}
+
 async function enviarMensaje() {
 
     var input = document.getElementById("chat-input");
     var msg = input.value.trim();
     if (!msg) return;
 
-    appendUser(msg); // usamos tu función original
+    // Unlock browser autoplay on first user interaction
+    await desbloquearAudio();
+
+    appendUser(msg);
     input.value = "";
+    mostrarTyping();
+
+    // Strip HTML tags - texto limpio para historial y ElevenLabs
+    function stripHTML(html) {
+        var tmp = document.createElement("div");
+        tmp.innerHTML = html;
+        var text = tmp.textContent || tmp.innerText || "";
+        // Limpiar espacios extras y saltos de linea multiples
+        return text.replace(/\s+/g, " ").trim();
+    }
 
     conversationHistory.push({ role: "user", content: msg });
 
+    // Keep history manageable (last 10 messages)
+    if (conversationHistory.length > 10) {
+        conversationHistory = conversationHistory.slice(-10);
+    }
+
     try {
-    const response = await fetch("https://abs-pagina-1-2.onrender.com/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            message: msg,
-            context: {
-                modulo: moduloActivo,
-                tema: temaActivo
-            },
-            history: conversationHistory
-        })
-    });
+        const response = await fetch("https://abs-pagina-1-2.onrender.com/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                message: msg,
+                context: {
+                    modulo: moduloActivo,
+                    tema: temaActivo
+                },
+                history: conversationHistory
+            })
+        });
 
-    const data = await response.json();
+        // Remove typing indicator
+        var t = document.getElementById("typing");
+        if (t) t.remove();
 
-if (!data || !data.reply) {
-    appendBot("⚠️ La IA no devolvió contenido.");
-    return;
-}
+        if (!response.ok) {
+            appendBot("⚠️ Error del servidor (" + response.status + "). Intenta de nuevo.");
+            return;
+        }
 
-appendBot(data.reply);
+        const data = await response.json();
 
-conversationHistory.push({
-   role: "assistant",
-   content: data.reply
-});
+        if (!data || !data.reply) {
+            appendBot("⚠️ La IA no devolvió contenido.");
+            return;
+        }
 
-hablarRespuesta(data.reply);
+        appendBot(data.reply);
 
-} catch (error) {
-    appendBot("⚠️ Error conectando con el servidor IA.");
-}
+        // Store clean text in history (no HTML tags)
+        conversationHistory.push({
+            role: "assistant",
+            content: stripHTML(data.reply)
+        });
+
+        // Only speak if voice is enabled
+        if (vozActiva) {
+            hablarRespuesta(stripHTML(data.reply));
+        }
+
+    } catch (error) {
+        var t = document.getElementById("typing");
+        if (t) t.remove();
+        console.error("Error IA:", error);
+        appendBot("⚠️ Error conectando con el servidor IA. Verifica tu conexión.");
+    }
 }
 
 
@@ -1450,52 +1487,110 @@ hablarRespuesta(data.reply);
 
 async function hablarRespuesta(texto) {
 
-  try {
+  if (!texto || texto.trim() === "") return;
 
+  // Limpiar texto: sin HTML, sin entidades, sin emojis
+  var textoLimpio = texto
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&[a-zA-Z]+;/g, " ")
+    .replace(/&#?[0-9a-zA-Z]+;/g, " ")
+    .replace(/[^\x00-\x7F]/g, " ")   // elimina emojis y caracteres no-ASCII
+    .replace(/\s+/g, " ")
+    .trim()
+    .substring(0, 400);
+
+  if (!textoLimpio) return;
+
+  // ── Intentar ElevenLabs ───────────────────────────────────────────
+  try {
     const response = await fetch("https://abs-pagina-1-2.onrender.com/api/voice", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        text: texto
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: textoLimpio })
     });
 
     if (!response.ok) {
-      throw new Error("Error en la respuesta del servidor");
+      throw new Error("HTTP " + response.status);
     }
 
     const audioBlob = await response.blob();
 
-    const audioUrl = URL.createObjectURL(audioBlob);
+    if (!audioBlob || audioBlob.size < 100) {
+      throw new Error("Audio blob vacío o muy pequeño");
+    }
 
+    const audioUrl = URL.createObjectURL(audioBlob);
     const audio = new Audio(audioUrl);
 
-    audio.play();
+    // Importante: capturar errores de play() que lanza promesa rechazada
+    audio.onended = () => URL.revokeObjectURL(audioUrl);
+    audio.onerror = (e) => {
+      console.warn("Error reproduciendo audio ElevenLabs:", e);
+      URL.revokeObjectURL(audioUrl);
+      usarVozNavegador(textoLimpio);
+    };
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        console.warn("audio.play() bloqueado por el navegador:", err.message);
+        URL.revokeObjectURL(audioUrl);
+        usarVozNavegador(textoLimpio);
+      });
+    }
 
   } catch (error) {
-
-    console.error("❌ Error con la voz IA:", error);
-
-    const speech = new SpeechSynthesisUtterance(texto);
-
-const voices = speechSynthesis.getVoices();
-const voice = voices.find(v => v.lang === "en-US" || v.lang === "en-GB");
-
-if (voice) {
-  speech.voice = voice;
+    console.warn("ElevenLabs no disponible:", error.message);
+    usarVozNavegador(textoLimpio);
+  }
 }
 
-speech.rate = 1;
-speech.pitch = 1;
-      
-speechSynthesis.cancel();
-speechSynthesis.speak(speech);
+
+// ── Fallback: voz del navegador (Web Speech API) ──────────────────
+function usarVozNavegador(texto) {
+  if (!('speechSynthesis' in window)) return;
+
+  speechSynthesis.cancel();
+
+  function speak() {
+    const utterance = new SpeechSynthesisUtterance(texto);
+    utterance.lang = "en-US";
+    utterance.rate = 0.92;
+    utterance.pitch = 1;
+
+    const voices = speechSynthesis.getVoices();
+    const preferred = voices.find(v =>
+      v.lang === "en-US" && (v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Karen"))
+    ) || voices.find(v => v.lang === "en-US" || v.lang === "en-GB");
+
+    if (preferred) utterance.voice = preferred;
+
+    speechSynthesis.speak(utterance);
   }
 
+  // Las voces pueden no estar cargadas aún en el primer uso
+  if (speechSynthesis.getVoices().length === 0) {
+    speechSynthesis.onvoiceschanged = function() {
+      speechSynthesis.onvoiceschanged = null;
+      speak();
+    };
+  } else {
+    speak();
+  }
 }
 
+
+
+function toggleVoz() {
+    vozActiva = !vozActiva;
+    const btn = document.getElementById("voice-toggle-btn");
+    if (btn) {
+        btn.innerHTML = vozActiva ? "🔊 Voz" : "🔇 Voz";
+        btn.title = vozActiva ? "Desactivar voz IA" : "Activar voz IA";
+        btn.style.borderColor = vozActiva ? "#003366" : "#d1d5db";
+        btn.style.color = vozActiva ? "#003366" : "#9ca3af";
+    }
+}
 
 /* ===============================
    EVALUACION VISUAL CEFR + IELTS
@@ -1514,34 +1609,7 @@ function mostrarEvaluacion(texto) {
   if (chat) chat.appendChild(panel);
 }
 
-function iniciarGrabacion() {
-
-    if (!('webkitSpeechRecognition' in window)) {
-        alert("Tu navegador no soporta reconocimiento de voz");
-        return;
-    }
-
-    const recognition = new webkitSpeechRecognition();
-
-    recognition.lang = "es-ES";
-    recognition.continuous = false;
-    recognition.interimResults = false;
-
-    recognition.onresult = function(event) {
-        const texto = event.results[0][0].transcript;
-
-        const input = document.getElementById("userInput");
-        if (input) {
-            input.value = texto;
-        }
-    };
-
-    recognition.onerror = function(event) {
-        console.error("Error en reconocimiento:", event.error);
-    };
-
-    recognition.start();
-}
+// iniciarGrabacion() eliminada - usar iniciarVoz()
 
 </script>
 
