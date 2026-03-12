@@ -186,6 +186,11 @@
   title="Desactivar voz IA">
   🔊 Voz
 </button>
+<button onclick="testVozIngles()"
+  class="border-2 border-gray-300 rounded-full px-3 py-2 text-xs font-bold hover:bg-gray-100 transition text-gray-500"
+  title="Probar voz en inglés">
+  🧪 Test
+</button>
 
 <button onclick="enviarMensaje()"
   class="abs-blue text-white px-6 py-2 rounded-full font-bold text-sm hover:opacity-90 transition">
@@ -1781,22 +1786,24 @@ async function hablarRespuesta(texto) {
 function seleccionarVozIngles() {
     const voices = speechSynthesis.getVoices();
 
-    // Prioridad 1: Google US English (Chrome Windows/Android)
-    const googleUS = voices.find(v => v.name === "Google US English");
-    if (googleUS) return googleUS;
+    // Prioridad 1: Voz Google en inglés (Chrome — la más natural)
+    const googleEN = voices.find(v =>
+        v.name.includes("Google") && (v.lang === "en-US" || v.lang === "en-GB" || v.lang.startsWith("en"))
+    );
+    if (googleEN) return googleEN;
 
-    // Prioridad 2: Voces nativas de Chrome/Edge en inglés americano
+    // Prioridad 2: Voces nativas por nombre conocido en inglés
     const nativaUS = voices.find(v =>
         v.lang === "en-US" && (
-            v.name.includes("Zira") ||      // Windows
-            v.name.includes("David") ||     // Windows
-            v.name.includes("Mark") ||      // Windows
-            v.name.includes("Aria") ||      // Edge
-            v.name.includes("Jenny") ||     // Edge
-            v.name.includes("Guy") ||       // Edge
-            v.name.includes("Samantha") ||  // macOS
-            v.name.includes("Karen") ||     // macOS Australia
-            v.name.includes("Moira")        // macOS Ireland
+            v.name.includes("Zira") ||
+            v.name.includes("David") ||
+            v.name.includes("Mark") ||
+            v.name.includes("Aria") ||
+            v.name.includes("Jenny") ||
+            v.name.includes("Guy") ||
+            v.name.includes("Samantha") ||
+            v.name.includes("Karen") ||
+            v.name.includes("Moira")
         )
     );
     if (nativaUS) return nativaUS;
@@ -1809,7 +1816,6 @@ function seleccionarVozIngles() {
     const anyEN = voices.find(v => v.lang.startsWith("en"));
     if (anyEN) return anyEN;
 
-    // Sin opción — devolver null (el navegador usará su default, pero lang="en-US" ayuda)
     return null;
 }
 
@@ -1819,25 +1825,20 @@ function usarVozNavegador(texto) {
 
     function speak() {
         const utterance = new SpeechSynthesisUtterance(texto);
-        utterance.lang = "en-US";   // SIEMPRE inglés — crítico
-        utterance.rate = 0.90;
+        utterance.lang = "en-US";
+        utterance.rate = 0.92;
         utterance.pitch = 1;
-        utterance.volume = 1;
 
         const vozIngles = seleccionarVozIngles();
         if (vozIngles) {
             utterance.voice = vozIngles;
             console.log("🔊 Voz seleccionada:", vozIngles.name, vozIngles.lang);
-        } else {
-            console.warn("⚠️ No se encontró voz en inglés — usando default con lang=en-US");
         }
 
         speechSynthesis.speak(utterance);
     }
 
-    // Las voces tardan en cargar — esperar si aún no están
-    const voices = speechSynthesis.getVoices();
-    if (voices.length === 0) {
+    if (speechSynthesis.getVoices().length === 0) {
         speechSynthesis.onvoiceschanged = function() {
             speechSynthesis.onvoiceschanged = null;
             speak();
@@ -2281,6 +2282,29 @@ mostrarTab = function(tab, btn) {
     document.getElementById('tab-voz').classList.toggle('hidden', tab !== 'voz');
     _originalMostrarTab(tab, btn);
 };
+// ── Test de voz en inglés ──────────────────────────────────────────────────
+function testVozIngles() {
+    const voices = speechSynthesis.getVoices();
+    const enVoices = voices.filter(v => v.lang.startsWith('en'));
+    console.log("=== VOCES EN INGLÉS DISPONIBLES ===");
+    enVoices.forEach(v => console.log(v.name, v.lang, v.localService ? "(local)" : "(remote)"));
+    console.log("Total voces en inglés:", enVoices.length, "de", voices.length, "total");
+
+    const seleccionada = seleccionarVozIngles();
+    console.log("✅ Voz seleccionada:", seleccionada ? seleccionada.name + " (" + seleccionada.lang + ")" : "ninguna — usando lang=en-US");
+
+    // Hablar frase de prueba
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance("Hello, this is a test of the English voice. Good morning!");
+    u.lang = "en-US";
+    u.rate = 0.90;
+    if (seleccionada) u.voice = seleccionada;
+    speechSynthesis.speak(u);
+
+    alert("Voces en inglés encontradas: " + enVoices.length + "\nVoz seleccionada: " + (seleccionada ? seleccionada.name : "default (lang=en-US)") + "\n\nRevisa la consola (F12) para ver todas las voces disponibles.");
+}
+
+
 </script>
 
 </body>
