@@ -29,6 +29,11 @@
         .option-btn.correct{border-color:#16a34a!important;background:#dcfce7!important;color:#15803d!important;}
         .option-btn.wrong{border-color:#CC0000!important;background:#fee2e2!important;color:#b91c1c!important;}
         .option-btn:disabled{cursor:not-allowed;opacity:.85;}
+        .btn-traducir{transition:all .2s;border:1.5px dashed #94a3b8;color:#64748b;background:white;border-radius:8px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.04em;}
+        .btn-traducir:hover{border-color:#003366;color:#003366;background:#eef3fa;}
+        .btn-traducir.activo{border-color:#003366;color:#003366;background:#eef3fa;}
+        .traduccion-box{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:10px 14px;margin-top:10px;font-size:13px;color:#78350f;line-height:1.5;}
+        .traduccion-box strong{color:#92400e;}
         #chat-box{scroll-behavior:smooth;}
         .typing-indicator span{width:8px;height:8px;background:#003366;border-radius:50%;display:inline-block;animation:bounce 1.2s infinite;}
         .typing-indicator span:nth-child(2){animation-delay:.2s}
@@ -315,101 +320,101 @@ const dbLecciones = {
             { id:"A1-1", nombre:"Greetings & Introductions",
               explicacion:`In business English, the greeting changes by time of day:<br><br>☀️ <strong>Good morning</strong> — before 12:00<br>🌤️ <strong>Good afternoon</strong> — 12:00–18:00<br>🌙 <strong>Good evening</strong> — after 18:00<br><br>Introducing yourself: <em>"My name is [Name]. I work as [Position] at [Company]."</em><br>Introducing others: <em>"Allow me to introduce our CFO, Ms. Torres."</em><br><br>❌ Avoid: "Hey!", "Hi buddy!" — too informal for business.`,
               ejercicios:[
-                { pregunta:"Which greeting is correct at 9:00 AM?", opciones:["Good evening","Good morning","Good night"], correcta:1 },
-                { pregunta:"Complete: '___ my name is Ana Ruiz, I work at ABS.'", opciones:["Hi,","Good afternoon,","Hey,"], correcta:1 },
-                { pregunta:"How do you formally introduce a colleague?", opciones:["This is my friend Pedro.","Allow me to introduce our director, Mr. Pérez.","Meet Pedro, he's cool."], correcta:1 },
-                { pregunta:"Which phrase closes a first meeting professionally?", opciones:["See ya!","It was a pleasure meeting you.","Bye bye!"], correcta:1 },
-                { pregunta:"'Good evening' is used after:", opciones:["12:00","18:00","08:00"], correcta:1 }
+                { pregunta:"Which greeting is correct at 9:00 AM?", opciones:["Good evening","Good morning","Good night"], correcta:1, hint:"In English, greetings change by time of day. Before noon, we say 'Good morning' — not 'Good evening' or 'Good night'." },
+                { pregunta:"Complete: '___ my name is Ana Ruiz, I work at ABS.'", opciones:["Hi,","Good afternoon,","Hey,"], correcta:1, hint:"'Good afternoon' is used from 12:00 to 18:00, making it the right formal greeting here — 'Hi' and 'Hey' are too casual for business." },
+                { pregunta:"How do you formally introduce a colleague?", opciones:["This is my friend Pedro.","Allow me to introduce our director, Mr. Pérez.","Meet Pedro, he's cool."], correcta:1, hint:"Formal introductions use 'Allow me to introduce...' — 'This is my friend' is informal, and 'Meet Pedro, he's cool' is not professional." },
+                { pregunta:"Which phrase closes a first meeting professionally?", opciones:["See ya!","It was a pleasure meeting you.","Bye bye!"], correcta:1, hint:"'It was a pleasure meeting you' is the standard professional closing phrase. 'See ya' and 'Bye bye' are too informal for business." },
+                { pregunta:"'Good evening' is used after:", opciones:["12:00","18:00","08:00"], correcta:1, hint:"'Good evening' is used after 18:00 (6 PM). 12:00 is when 'Good afternoon' begins, not 'Good evening'." }
               ]
             },
             { id:"A1-2", nombre:"The Office (Articles)",
               explicacion:`Articles (<strong>a, an, the</strong>) are essential for professional communication:<br><br>📌 <strong>A</strong> — consonant sound, singular: <em>a desk, a meeting</em><br>📌 <strong>An</strong> — vowel sound: <em>an office, an email, an agenda</em><br>📌 <strong>The</strong> — specific/known: <em>the conference room, the printer</em><br>📌 <strong>No article</strong> — general/plural: <em>Offices are important.</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'Please go to ___ conference room on floor 3.'", opciones:["a","an","the"], correcta:2 },
-                { pregunta:"Choose: 'She received ___ email from the manager.'", opciones:["a","an","the"], correcta:1 },
-                { pregunta:"Choose: 'He works in ___ office downtown.'", opciones:["a","an","the"], correcta:0 },
-                { pregunta:"Choose: '___ printer is out of paper.' (specific, known)", opciones:["A","An","The"], correcta:2 },
-                { pregunta:"Which sentence is correct?", opciones:["She has a agenda for today.","She has an agenda for today.","She has the agenda (first mention)."], correcta:1 }
+                { pregunta:"Choose: 'Please go to ___ conference room on floor 3.'", opciones:["a","an","the"], correcta:2, hint:"'The conference room' uses 'the' because we're referring to a specific, known room — not just any room." },
+                { pregunta:"Choose: 'She received ___ email from the manager.'", opciones:["a","an","the"], correcta:1, hint:"'An email' uses 'an' because 'email' starts with a vowel sound (e). 'A' is used before consonant sounds." },
+                { pregunta:"Choose: 'He works in ___ office downtown.'", opciones:["a","an","the"], correcta:0, hint:"'An office' uses 'an' (vowel sound), but here the context is general/unspecific, so 'a' is correct — 'an office downtown' (first mention, unspecific)." },
+                { pregunta:"Choose: '___ printer is out of paper.' (specific, known)", opciones:["A","An","The"], correcta:2, hint:"'The printer' uses 'the' because both speakers know which printer is meant — it is a specific, shared reference." },
+                { pregunta:"Which sentence is correct?", opciones:["She has a agenda for today.","She has an agenda for today.","She has the agenda (first mention)."], correcta:1, hint:"'Agenda' starts with a vowel sound (a), so we use 'an agenda'. 'A agenda' is wrong because 'a' goes before consonant sounds." }
               ]
             },
             { id:"A1-3", nombre:"Professional Profiles (Possessives)",
               explicacion:`<strong>Possessive adjectives</strong> show ownership:<br><br><strong>my · your · his · her · its · our · their</strong><br><br><em>"<strong>My</strong> name is Carlos. <strong>My</strong> position is Sales Manager."</em><br><em>"<strong>Her</strong> office is on the third floor."</em><br><br>⚠️ <strong>its</strong> (possessive) ≠ <strong>it's</strong> (it is):<br>✅ <em>"The company updated <strong>its</strong> website."</em>`,
               ejercicios:[
-                { pregunta:"'___ name is Dr. Smith, and ___ specialty is finance.' (he)", opciones:["His / his","Her / her","My / my"], correcta:0 },
-                { pregunta:"Choose: 'The department has ___ own budget.'", opciones:["his","their","its"], correcta:2 },
-                { pregunta:"Choose: '___ team finished the report on time.' (we)", opciones:["Their","Our","My"], correcta:1 },
-                { pregunta:"Which sentence uses a possessive correctly?", opciones:["Its a good report.","It's office is large.","Her presentation was excellent."], correcta:2 },
-                { pregunta:"Choose: 'What is ___ job title?' (you)", opciones:["my","your","his"], correcta:1 }
+                { pregunta:"'___ name is Dr. Smith, and ___ specialty is finance.' (he)", opciones:["His / his","Her / her","My / my"], correcta:0, hint:"When talking about a man (he), we use 'his' for both blanks — 'his name' and 'his specialty'." },
+                { pregunta:"Choose: 'The department has ___ own budget.'", opciones:["his","their","its"], correcta:2, hint:"'Its' is the possessive for things/organizations (no apostrophe). 'Their' refers to people, and 'his' refers to a specific male person." },
+                { pregunta:"Choose: '___ team finished the report on time.' (we)", opciones:["Their","Our","My"], correcta:1, hint:"When the subject is 'we', the possessive is 'our' — 'Our team finished the report'." },
+                { pregunta:"Which sentence uses a possessive correctly?", opciones:["Its a good report.","It's office is large.","Her presentation was excellent."], correcta:2, hint:"'Her presentation' is correct. 'Its a good report' should be 'It's' (it is), and 'It's office' should be 'Its office' (possessive)." },
+                { pregunta:"Choose: 'What is ___ job title?' (you)", opciones:["my","your","his"], correcta:1, hint:"When talking to someone directly (you), we use 'your' — 'What is your job title?'" }
               ]
             },
             { id:"A1-4", nombre:"Daily Routine (Present Simple)",
               explicacion:`The <strong>Present Simple</strong> describes habits, routines and facts.<br><br>✅ I/You/We/They + base verb: <em>We open the office at 8 AM.</em><br>✅ He/She/It + verb + <strong>s/es</strong>: <em>She answers the phone.</em><br><br><strong>Negative:</strong> don't / doesn't + base verb<br><strong>Question:</strong> Do / Does + subject + base verb?`,
               ejercicios:[
-                { pregunta:"Choose: 'She ___ the monthly reports every Friday.'", opciones:["prepare","prepares","is preparing"], correcta:1 },
-                { pregunta:"Choose: 'They ___ work on weekends.'", opciones:["don't","doesn't","isn't"], correcta:0 },
-                { pregunta:"Choose: '___ he attend the weekly briefing?'", opciones:["Do","Does","Is"], correcta:1 },
-                { pregunta:"Choose: 'The CEO ___ the board every quarter.'", opciones:["meet","meets","is meeting"], correcta:1 },
-                { pregunta:"Which sentence is correct?", opciones:["I works in finance.","I work in the finance department.","I am work in finance."], correcta:1 }
+                { pregunta:"Choose: 'She ___ the monthly reports every Friday.'", opciones:["prepare","prepares","is preparing"], correcta:1, hint:"With he/she/it, we add -s or -es to the verb. 'She prepares' — not 'prepare' (missing -s) or 'is preparing' (wrong tense for a routine)." },
+                { pregunta:"Choose: 'They ___ work on weekends.'", opciones:["don't","doesn't","isn't"], correcta:0, hint:"With 'they', we use 'don't' for negatives in Present Simple — 'They don't work.' 'Doesn't' is for he/she/it. 'Isn't' is for 'to be'." },
+                { pregunta:"Choose: '___ he attend the weekly briefing?'", opciones:["Do","Does","Is"], correcta:1, hint:"Questions with he/she/it use 'Does'. 'Do' is for I/you/we/they. 'Is' is only for 'to be' questions." },
+                { pregunta:"Choose: 'The CEO ___ the board every quarter.'", opciones:["meet","meets","is meeting"], correcta:1, hint:"With he/she/it in Present Simple, add -s: 'The CEO meets'. 'Is meeting' is Present Continuous, used for actions happening right now." },
+                { pregunta:"Which sentence is correct?", opciones:["I works in finance.","I work in the finance department.","I am work in finance."], correcta:1, hint:"With 'I', we never add -s: 'I work'. 'I works' is wrong. 'I am work' mixes 'to be' with a base verb incorrectly." }
               ]
             },
             { id:"A1-5", nombre:"Telling the Time",
               explicacion:`🕐 <strong>o'clock</strong> — exactly on the hour: <em>3:00 = three o'clock</em><br>🕐 <strong>past</strong> — after the hour: <em>3:15 = quarter past three</em><br>🕐 <strong>to</strong> — before the hour: <em>3:45 = quarter to four</em><br>🕐 <strong>half past</strong>: <em>3:30 = half past three</em><br><br>Use <strong>AM/PM</strong> to avoid ambiguity.`,
               ejercicios:[
-                { pregunta:"How do you say 9:15?", opciones:["Quarter to nine","Quarter past nine","Half past nine"], correcta:1 },
-                { pregunta:"How do you say 7:30?", opciones:["Half past seven","Quarter past seven","Seven to half"], correcta:0 },
-                { pregunta:"How do you say 10:45?", opciones:["Quarter past ten","Quarter to eleven","Half past ten"], correcta:1 },
-                { pregunta:"'The call is at 14:00.' What time is that?", opciones:["2:00 AM","2:00 PM","4:00 PM"], correcta:1 },
-                { pregunta:"Which is the correct way to schedule a meeting?", opciones:["Meet me at 9 in the morning hours.","The meeting is at 9:00 AM sharp.","We meet at nine of the morning."], correcta:1 }
+                { pregunta:"How do you say 9:15?", opciones:["Quarter to nine","Quarter past nine","Half past nine"], correcta:1, hint:"9:15 means 15 minutes after 9, so we say 'quarter past nine'. 'Quarter to' means 15 minutes before the next hour." },
+                { pregunta:"How do you say 7:30?", opciones:["Half past seven","Quarter past seven","Seven to half"], correcta:0, hint:"7:30 = half past seven. 'Quarter past' = :15, 'half past' = :30. 'Seven to half' is not a valid English time expression." },
+                { pregunta:"How do you say 10:45?", opciones:["Quarter past ten","Quarter to eleven","Half past ten"], correcta:1, hint:"10:45 means 15 minutes before 11, so we say 'quarter to eleven' — not 'quarter past ten' (that would be 10:15)." },
+                { pregunta:"'The call is at 14:00.' What time is that?", opciones:["2:00 AM","2:00 PM","4:00 PM"], correcta:1, hint:"14:00 in 12-hour format is 2:00 PM. 'PM' means after noon. 2:00 AM would be at night, and 4:00 PM would be 16:00." },
+                { pregunta:"Which is the correct way to schedule a meeting?", opciones:["Meet me at 9 in the morning hours.","The meeting is at 9:00 AM sharp.","We meet at nine of the morning."], correcta:1, hint:"'The meeting is at 9:00 AM sharp' is the correct professional format. The other options use non-standard, informal structures." }
               ]
             },
             { id:"A1-6", nombre:"Prepositions of Place",
               explicacion:`📍 <strong>in</strong> — inside: <em>in the office, in the building</em><br>📍 <strong>on</strong> — surface/floor: <em>on the desk, on the third floor</em><br>📍 <strong>at</strong> — specific point: <em>at reception, at the entrance</em><br>📍 <strong>next to</strong> — beside: <em>next to the printer</em><br>📍 <strong>opposite</strong> — facing: <em>opposite the elevator</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'The documents are ___ your desk.'", opciones:["in","on","at"], correcta:1 },
-                { pregunta:"Choose: 'Please meet me ___ reception at 10 AM.'", opciones:["in","on","at"], correcta:2 },
-                { pregunta:"Choose: 'The IT department is ___ the third floor.'", opciones:["at","on","in"], correcta:1 },
-                { pregunta:"Choose: 'The printer is ___ the photocopier.'", opciones:["next to","on","in"], correcta:0 },
-                { pregunta:"'The CEO's office is ___ the elevator.' Which is correct?", opciones:["opposite","on top","at front"], correcta:0 }
+                { pregunta:"Choose: 'The documents are ___ your desk.'", opciones:["in","on","at"], correcta:1, hint:"'On' is used for surfaces — documents sit on top of a desk. 'In' means inside something. 'At' indicates a specific point or location." },
+                { pregunta:"Choose: 'Please meet me ___ reception at 10 AM.'", opciones:["in","on","at"], correcta:2, hint:"'At reception' is correct — we use 'at' for specific meeting points or locations (at the entrance, at the desk)." },
+                { pregunta:"Choose: 'The IT department is ___ the third floor.'", opciones:["at","on","in"], correcta:1, hint:"We use 'on' for floors — 'on the third floor'. 'In' means inside a room, and 'at' is for specific points." },
+                { pregunta:"Choose: 'The printer is ___ the photocopier.'", opciones:["next to","on","in"], correcta:0, hint:"'Next to' means beside something. 'On' and 'in' don't express side-by-side position." },
+                { pregunta:"'The CEO's office is ___ the elevator.' Which is correct?", opciones:["opposite","on top","at front"], correcta:0, hint:"'Opposite' means directly facing something. 'On top' means above, and 'at front' is not standard English." }
               ]
             },
             { id:"A1-7", nombre:"Describing People",
               explicacion:`In professional settings, focus on <strong>professional qualities</strong>:<br><br><strong>Key adjectives:</strong> reliable, dedicated, proactive, detail-oriented, efficient, analytical<br><br><strong>Structure:</strong> Subject + <em>to be</em> + adjective<br><em>"Our new director is very proactive and detail-oriented."</em>`,
               ejercicios:[
-                { pregunta:"Which adjective best describes someone who always meets deadlines?", opciones:["Lazy","Reliable","Careless"], correcta:1 },
-                { pregunta:"Choose: 'She is very ___ — she finds solutions before problems arise.'", opciones:["reactive","proactive","inactive"], correcta:1 },
-                { pregunta:"Which describes a colleague professionally?", opciones:["He is tall with brown hair.","He is an efficient and detail-oriented analyst.","He looks tired today."], correcta:1 },
-                { pregunta:"Choose: 'The new employee is ___ — she learns tasks very quickly.'", opciones:["slow","dedicated","fast-learning"], correcta:2 },
-                { pregunta:"Which adjective means 'organized and pays attention to details'?", opciones:["Careless","Detail-oriented","Distracted"], correcta:1 }
+                { pregunta:"Which adjective best describes someone who always meets deadlines?", opciones:["Lazy","Reliable","Careless"], correcta:1, hint:"'Reliable' means you can depend on this person — perfect for someone who always meets deadlines. 'Lazy' and 'careless' are negative." },
+                { pregunta:"Choose: 'She is very ___ — she finds solutions before problems arise.'", opciones:["reactive","proactive","inactive"], correcta:1, hint:"'Proactive' means you act before problems arise — you don't wait to react. 'Reactive' means the opposite: you only act after." },
+                { pregunta:"Which describes a colleague professionally?", opciones:["He is tall with brown hair.","He is an efficient and detail-oriented analyst.","He looks tired today."], correcta:1, hint:"Professional descriptions focus on skills and work qualities. 'Efficient and detail-oriented analyst' is a strong professional description." },
+                { pregunta:"Choose: 'The new employee is ___ — she learns tasks very quickly.'", opciones:["slow","dedicated","fast-learning"], correcta:2, hint:"'Fast-learning' best describes someone who learns quickly. 'Dedicated' means hardworking, not specifically fast at learning new tasks." },
+                { pregunta:"Which adjective means 'organized and pays attention to details'?", opciones:["Careless","Detail-oriented","Distracted"], correcta:1, hint:"'Detail-oriented' means organized and pays close attention to details. 'Careless' is the opposite, and 'distracted' means unfocused." }
               ]
             },
             { id:"A1-8", nombre:"Likes and Dislikes",
               explicacion:`✅ <strong>like / enjoy / love + verb-ing</strong>: <em>"I enjoy working in teams."</em><br>✅ <strong>don't like / dislike / hate + verb-ing</strong>: <em>"I dislike missing deadlines."</em><br>✅ <strong>prefer + noun/verb-ing</strong>: <em>"I prefer email communication."</em><br><br>Interview: <em>"I really enjoy problem-solving and collaborating with cross-functional teams."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'She enjoys ___ client presentations.'", opciones:["give","gives","giving"], correcta:2 },
-                { pregunta:"Which sentence is grammatically correct?", opciones:["He likes to working late.","He likes working late.","He like working late."], correcta:1 },
-                { pregunta:"Choose: 'I prefer ___ to making phone calls.'", opciones:["send emails","to send emails","sending emails"], correcta:2 },
-                { pregunta:"Which professionally expresses dislike?", opciones:["I hate this job.","I dislike multitasking without clear priorities.","This is terrible."], correcta:1 },
-                { pregunta:"Choose: 'Do you enjoy ___ with international clients?'", opciones:["work","works","working"], correcta:2 }
+                { pregunta:"Choose: 'She enjoys ___ client presentations.'", opciones:["give","gives","giving"], correcta:2, hint:"After 'enjoy', we always use verb+ing (gerund): 'enjoy giving', not 'enjoy give' or 'enjoy gives'." },
+                { pregunta:"Which sentence is grammatically correct?", opciones:["He likes to working late.","He likes working late.","He like working late."], correcta:1, hint:"After 'like', we use verb+ing: 'likes working'. 'Like to working' incorrectly mixes infinitive and gerund. 'Like working' is also correct." },
+                { pregunta:"Choose: 'I prefer ___ to making phone calls.'", opciones:["send emails","to send emails","sending emails"], correcta:2, hint:"After 'prefer', we use verb+ing or a noun: 'prefer sending emails'. 'Prefer to send' is also correct, but 'prefer send' is not." },
+                { pregunta:"Which professionally expresses dislike?", opciones:["I hate this job.","I dislike multitasking without clear priorities.","This is terrible."], correcta:1, hint:"'I dislike multitasking without clear priorities' is professional and specific. 'I hate this job' is too negative and unprofessional." },
+                { pregunta:"Choose: 'Do you enjoy ___ with international clients?'", opciones:["work","works","working"], correcta:2, hint:"After 'enjoy', we always use verb+ing: 'enjoy working'. 'Enjoy work' and 'enjoy works' are both incorrect." }
               ]
             },
             { id:"A1-9", nombre:"Family & Connections (Networking)",
               explicacion:`In business networking, describe connections clearly:<br><br><strong>Possessive 's:</strong> <em>"This is my CEO's assistant."</em><br><br>Describing connections:<br><em>"She is my direct manager."</em><br><em>"They are our business partners in Brazil."</em><br><br>Networking phrase: <em>"Allow me to introduce [Name], [his/her] company specializes in [field]."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'Have you met ___ colleague from marketing?' (my)", opciones:["my","mine","me"], correcta:0 },
-                { pregunta:"Which describes a professional connection correctly?", opciones:["He is my boss's boss's boss.","She is our regional director and oversees Latin America.","They work somewhere in the company."], correcta:1 },
-                { pregunta:"Choose: 'This is Mr. Kim. ___ company is based in Seoul.'", opciones:["His","Her","Their"], correcta:0 },
-                { pregunta:"Choose the correct networking phrase:", opciones:["You should meet Pedro, he does stuff.","Allow me to introduce Pedro Vargas, our Head of Operations.","Pedro, this is someone."], correcta:1 },
-                { pregunta:"'The CEO's assistant' means:", opciones:["The assistant who owns the CEO","The assistant of the CEO","The CEO who assists"], correcta:1 }
+                { pregunta:"Choose: 'Have you met ___ colleague from marketing?' (my)", opciones:["my","mine","me"], correcta:0, hint:"'My' is a possessive adjective used before a noun: 'my colleague'. 'Mine' and 'me' are not used before nouns." },
+                { pregunta:"Which describes a professional connection correctly?", opciones:["He is my boss's boss's boss.","She is our regional director and oversees Latin America.","They work somewhere in the company."], correcta:1, hint:"Professional descriptions are specific and clear: title, scope, responsibilities. Vague descriptions like 'somewhere in the company' are unprofessional." },
+                { pregunta:"Choose: 'This is Mr. Kim. ___ company is based in Seoul.'", opciones:["His","Her","Their"], correcta:0, hint:"Mr. Kim is male, so we use 'His company'. 'Her' is for females. 'Their' is for groups, not a single person." },
+                { pregunta:"Choose the correct networking phrase:", opciones:["You should meet Pedro, he does stuff.","Allow me to introduce Pedro Vargas, our Head of Operations.","Pedro, this is someone."], correcta:1, hint:"Professional introductions include full name and job title. 'Allow me to introduce Pedro Vargas, our Head of Operations' is the correct format." },
+                { pregunta:"'The CEO's assistant' means:", opciones:["The assistant who owns the CEO","The assistant of the CEO","The CEO who assists"], correcta:1, hint:"The possessive 's shows that something belongs to someone: 'the CEO's assistant' = the assistant who belongs to / works for the CEO." }
               ]
             },
             { id:"A1-10", nombre:"Abilities (Can)",
               explicacion:`✅ <strong>Ability:</strong> <em>"I can speak three languages."</em><br>✅ <strong>Possibility:</strong> <em>"We can schedule the meeting for Tuesday."</em><br>✅ <strong>Polite request:</strong> <em>"Could you send me the file?"</em><br><br><strong>Cannot / Can't</strong> = inability or prohibition:<br><em>"You cannot share confidential data externally."</em>`,
               ejercicios:[
-                { pregunta:"Choose: '___ you manage a team of 10 people?' (ability question)", opciones:["Do","Can","Are"], correcta:1 },
-                { pregunta:"Which expresses ability correctly?", opciones:["She can to manage complex projects.","She can manages complex projects.","She can manage complex projects."], correcta:2 },
-                { pregunta:"Choose: 'I ___ attend the 8 AM meeting — prior commitment.'", opciones:["can","can't","could"], correcta:1 },
-                { pregunta:"Which is the more formal/polite request?", opciones:["Can you send that?","Could you please send the report by EOD?","Send it."], correcta:1 },
-                { pregunta:"'You cannot share this document externally.' This expresses:", opciones:["Ability","Permission","Prohibition"], correcta:2 }
+                { pregunta:"Choose: '___ you manage a team of 10 people?' (ability question)", opciones:["Do","Can","Are"], correcta:1, hint:"'Can' is used for ability questions: 'Can you manage a team?' 'Do' is for habits. 'Are' is for 'to be' questions." },
+                { pregunta:"Which expresses ability correctly?", opciones:["She can to manage complex projects.","She can manages complex projects.","She can manage complex projects."], correcta:2, hint:"After 'can', we always use the base verb (infinitive without 'to'): 'can manage'. 'Can to manage' and 'can manages' are wrong." },
+                { pregunta:"Choose: 'I ___ attend the 8 AM meeting — prior commitment.'", opciones:["can","can't","could"], correcta:1, hint:"'Can't' expresses inability — you are not able to attend. 'Can' means you are able. 'Could' is more tentative or refers to the past." },
+                { pregunta:"Which is the more formal/polite request?", opciones:["Can you send that?","Could you please send the report by EOD?","Send it."], correcta:1, hint:"'Could you please...' is more formal and polite than 'Can you...'. In professional settings, 'could' shows more respect." },
+                { pregunta:"'You cannot share this document externally.' This expresses:", opciones:["Ability","Permission","Prohibition"], correcta:2, hint:"'Cannot / Can't' expresses prohibition — you are not allowed to do something. 'Ability' means you are able; 'permission' means you are allowed." }
               ]
             }
         ]
@@ -420,101 +425,101 @@ const dbLecciones = {
             { id:"A2-1", nombre:"Past Experiences (Past Simple)",
               explicacion:`The <strong>Past Simple</strong> is for completed actions: career history, past projects, reports.<br><br><strong>Regular:</strong> verb + <strong>-ed</strong>: launch→launched, manage→managed<br><strong>Key irregular:</strong> make→made, sell→sold, write→wrote, meet→met, give→gave<br><br>✅ <em>"We <strong>launched</strong> the product in Q2 and <strong>exceeded</strong> our target."</em><br>❌ Negative: <em>"We <strong>didn't meet</strong> the deadline."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'The team ___ the project two weeks ago.'", opciones:["finish","finished","has finished"], correcta:1 },
-                { pregunta:"Which is the correct Past Simple of 'make'?", opciones:["maked","made","maden"], correcta:1 },
-                { pregunta:"Choose: 'She ___ the annual report last Friday.'", opciones:["write","wrote","has written"], correcta:1 },
-                { pregunta:"Choose: 'We ___ meet the Q3 target.' (negative)", opciones:["didn't","don't","haven't"], correcta:0 },
-                { pregunta:"Which sentence is in the Past Simple?", opciones:["We are launching a new product.","We launched a new product last year.","We have launched a new product."], correcta:1 }
+                { pregunta:"Choose: 'The team ___ the project two weeks ago.'", opciones:["finish","finished","has finished"], correcta:1, hint:"Past Simple uses verb+ed for regular verbs: 'finished'. 'Finish' is present tense. 'Has finished' is Present Perfect, not Past Simple." },
+                { pregunta:"Which is the correct Past Simple of 'make'?", opciones:["maked","made","maden"], correcta:1, hint:"The irregular Past Simple of 'make' is 'made'. 'Maked' and 'maden' do not exist in English." },
+                { pregunta:"Choose: 'She ___ the annual report last Friday.'", opciones:["write","wrote","has written"], correcta:1, hint:"The irregular Past Simple of 'write' is 'wrote'. 'Write' is present tense. 'Has written' is Present Perfect." },
+                { pregunta:"Choose: 'We ___ meet the Q3 target.' (negative)", opciones:["didn't","don't","haven't"], correcta:0, hint:"Negatives in Past Simple use 'didn't + base verb': 'didn't meet'. 'Don't' is present. 'Haven't' is Present Perfect negative." },
+                { pregunta:"Which sentence is in the Past Simple?", opciones:["We are launching a new product.","We launched a new product last year.","We have launched a new product."], correcta:1, hint:"Past Simple describes a completed action at a specific past time. 'Launched last year' is Past Simple. 'Are launching' is Present Continuous." }
               ]
             },
             { id:"A2-2", nombre:"Product Comparison (Comparatives)",
               explicacion:`📌 <strong>Short adjectives:</strong> add <strong>-er + than</strong>: fast→faster than<br>📌 <strong>Long adjectives:</strong> <strong>more + adj + than</strong>: more reliable than<br>📌 <strong>Irregular:</strong> good→better, bad→worse, far→further<br><br>✅ <em>"Our software is <strong>faster</strong> and <strong>more reliable than</strong> the competition."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'Our delivery is ___ the competitor's.' (fast)", opciones:["more fast than","faster than","fastest than"], correcta:1 },
-                { pregunta:"'This solution is ___ the previous model.' (cost-effective)", opciones:["more cost-effective than","cost-effectiver than","cost-effectivest"], correcta:0 },
-                { pregunta:"'Version 2.0 is ___ version 1.0.' (good — irregular)", opciones:["gooder than","more good than","better than"], correcta:2 },
-                { pregunta:"Which comparative is correct?", opciones:["Our service is more cheap than theirs.","Our service is cheaper than theirs.","Our service is cheapest than theirs."], correcta:1 },
-                { pregunta:"'The new terms are ___ the original ones.' (favorable)", opciones:["more favorable than","favorabler than","most favorable than"], correcta:0 }
+                { pregunta:"Choose: 'Our delivery is ___ the competitor's.' (fast)", opciones:["more fast than","faster than","fastest than"], correcta:1, hint:"'Fast' is a short adjective — we add '-er + than': 'faster than'. 'More fast' is wrong; that structure is for long adjectives." },
+                { pregunta:"'This solution is ___ the previous model.' (cost-effective)", opciones:["more cost-effective than","cost-effectiver than","cost-effectivest"], correcta:0, hint:"'Cost-effective' is a long adjective — we use 'more + adjective + than': 'more cost-effective than'." },
+                { pregunta:"'Version 2.0 is ___ version 1.0.' (good — irregular)", opciones:["gooder than","more good than","better than"], correcta:2, hint:"'Good' is irregular — its comparative is 'better than'. 'Gooder' and 'more good' are both incorrect." },
+                { pregunta:"Which comparative is correct?", opciones:["Our service is more cheap than theirs.","Our service is cheaper than theirs.","Our service is cheapest than theirs."], correcta:1, hint:"'Cheap' is a short adjective, so the comparative is 'cheaper than'. 'More cheap' is wrong, and 'cheapest' is a superlative, not a comparative." },
+                { pregunta:"'The new terms are ___ the original ones.' (favorable)", opciones:["more favorable than","favorabler than","most favorable than"], correcta:0, hint:"'Favorable' is a long adjective — use 'more favorable than'. 'Favorabler' doesn't exist, and 'most favorable' is a superlative." }
               ]
             },
             { id:"A2-3", nombre:"Current Projects (Present Continuous)",
               explicacion:`<strong>Present Continuous</strong> (am/is/are + verb-ing) = actions happening now or ongoing projects.<br><br>✅ <em>"We <strong>are currently developing</strong> a new product line."</em><br>✅ Also used for arranged future: <em>"I <strong>am meeting</strong> the client on Thursday."</em><br><br>⚠️ No continuous for: know, understand, believe, prefer, own.`,
               ejercicios:[
-                { pregunta:"Choose: 'The marketing team ___ a new campaign right now.'", opciones:["develops","is developing","develop"], correcta:1 },
-                { pregunta:"Choose: 'I ___ the client proposal this afternoon.' (arranged)", opciones:["present","am presenting","presents"], correcta:1 },
-                { pregunta:"Which uses Present Continuous correctly?", opciones:["She is knowing the answer.","She is reviewing the contract now.","She is understand the issue."], correcta:1 },
-                { pregunta:"Choose: '___ you working on the annual report this week?'", opciones:["Do","Are","Is"], correcta:1 },
-                { pregunta:"Choose: 'The CEO ___ a keynote at the conference tomorrow.'", opciones:["is giving","gives","give"], correcta:0 }
+                { pregunta:"Choose: 'The marketing team ___ a new campaign right now.'", opciones:["develops","is developing","develop"], correcta:1, hint:"Present Continuous uses is/are + verb-ing for actions happening right now: 'is developing'. 'Develops' is Present Simple (routine)." },
+                { pregunta:"Choose: 'I ___ the client proposal this afternoon.' (arranged)", opciones:["present","am presenting","presents"], correcta:1, hint:"'Am presenting' shows an arranged future event — something planned for this afternoon. Present Continuous can express fixed future plans." },
+                { pregunta:"Which uses Present Continuous correctly?", opciones:["She is knowing the answer.","She is reviewing the contract now.","She is understand the issue."], correcta:1, hint:"Present Continuous cannot be used with stative verbs like 'know', 'understand', or 'believe'. 'Is reviewing' is correct for an active ongoing action." },
+                { pregunta:"Choose: '___ you working on the annual report this week?'", opciones:["Do","Are","Is"], correcta:1, hint:"Questions in Present Continuous use 'Are/Is' before the subject: 'Are you working...?' 'Do' is for Present Simple questions." },
+                { pregunta:"Choose: 'The CEO ___ a keynote at the conference tomorrow.'", opciones:["is giving","gives","give"], correcta:0, hint:"'Is giving' is the correct Present Continuous for an arranged future event — the CEO's keynote is already planned for tomorrow." }
               ]
             },
             { id:"A2-4", nombre:"Future Plans (Going to)",
               explicacion:`<strong>Going to</strong> (am/is/are + going to + base verb) = planned decisions and intentions.<br><br>✅ <em>"We <strong>are going to</strong> launch the product in Q4."</em><br>✅ Also: predictions based on evidence: <em>"Look at those numbers — we <strong>are going to</strong> exceed the target!"</em><br><br>⚠️ Going to = planned · Will = spontaneous`,
               ejercicios:[
-                { pregunta:"Choose: 'The board ___ approve the new budget next week.'", opciones:["is going to","goes to","go to"], correcta:0 },
-                { pregunta:"Which expresses a pre-planned decision?", opciones:["We will maybe expand.","We are going to open a new branch in Q3.","We expand next year."], correcta:1 },
-                { pregunta:"Choose: '___ the company ___ hire new staff this year?'", opciones:["Does / going to","Is / going to","Are / going to"], correcta:1 },
-                { pregunta:"'Look at those clouds — it ___ rain.' (evidence-based)", opciones:["will","is going to","goes to"], correcta:1 },
-                { pregunta:"Which is correct?", opciones:["She is go to present the results.","She is going to present the results.","She going to present the results."], correcta:1 }
+                { pregunta:"Choose: 'The board ___ approve the new budget next week.'", opciones:["is going to","goes to","go to"], correcta:0, hint:"'Is going to' is the correct structure for a planned future action. 'Goes to' and 'go to' are not used for future plans." },
+                { pregunta:"Which expresses a pre-planned decision?", opciones:["We will maybe expand.","We are going to open a new branch in Q3.","We expand next year."], correcta:1, hint:"'Are going to open' clearly expresses a pre-planned decision with a specific timeframe (Q3). 'Will maybe expand' is vague and informal." },
+                { pregunta:"Choose: '___ the company ___ hire new staff this year?'", opciones:["Does / going to","Is / going to","Are / going to"], correcta:1, hint:"For questions with 'going to' about a company (singular), we use 'Is the company going to...?' 'Are' is for plural subjects." },
+                { pregunta:"'Look at those clouds — it ___ rain.' (evidence-based)", opciones:["will","is going to","goes to"], correcta:1, hint:"When there is visible evidence of a future event, we use 'going to'. Looking at clouds is evidence, so 'is going to rain' is correct." },
+                { pregunta:"Which is correct?", opciones:["She is go to present the results.","She is going to present the results.","She going to present the results."], correcta:1, hint:"The correct structure is 'subject + is/are + going to + base verb'. 'Is go to' and 'going to' without 'is' are both wrong." }
               ]
             },
             { id:"A2-5", nombre:"Giving Directions",
               explicacion:`➡️ <em>Go straight / Turn left / Turn right</em><br>➡️ <em>Take the elevator to the 4th floor</em><br>➡️ <em>It's on your left / right</em><br>➡️ <em>Go past the reception, then turn left</em><br><br>Formal: <em>"Please proceed straight down the corridor, take the elevator to the third floor, and the boardroom will be on your right."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'Go ___ the corridor and turn right at the end.'", opciones:["past","straight down","across of"], correcta:1 },
-                { pregunta:"Which is the correct directions phrase?", opciones:["Go the elevator up.","Take the elevator to the second floor.","Up the elevator to floor two."], correcta:1 },
-                { pregunta:"Choose: 'The boardroom is ___ the elevator, on the left.'", opciones:["past","opposite","next of"], correcta:1 },
-                { pregunta:"Which correctly tells someone where to go?", opciones:["Is straight and right.","Please proceed to the end of the corridor and turn left.","Go to there."], correcta:1 },
-                { pregunta:"Choose: 'The exit ___ on your right after the security desk.'", opciones:["am","are","is"], correcta:2 }
+                { pregunta:"Choose: 'Go ___ the corridor and turn right at the end.'", opciones:["past","straight down","across of"], correcta:1, hint:"'Straight down' means to continue forward along the corridor. 'Past' means beyond a point. 'Across of' is not correct English." },
+                { pregunta:"Which is the correct directions phrase?", opciones:["Go the elevator up.","Take the elevator to the second floor.","Up the elevator to floor two."], correcta:1, hint:"'Take the elevator to the second floor' is the standard professional phrasing. The other options have incorrect word order." },
+                { pregunta:"Choose: 'The boardroom is ___ the elevator, on the left.'", opciones:["past","opposite","next of"], correcta:1, hint:"'Opposite the elevator' means directly facing it. 'Past' means beyond. 'Next of' is not correct — use 'next to'." },
+                { pregunta:"Which correctly tells someone where to go?", opciones:["Is straight and right.","Please proceed to the end of the corridor and turn left.","Go to there."], correcta:1, hint:"'Please proceed to the end of the corridor and turn left' is formal, clear and professional. The others are incomplete or grammatically wrong." },
+                { pregunta:"Choose: 'The exit ___ on your right after the security desk.'", opciones:["am","are","is"], correcta:2, hint:"The exit is a singular thing, so we use 'is'. 'Am' is only used with 'I'. 'Are' is for plural subjects." }
               ]
             },
             { id:"A2-6", nombre:"Health & Safety at Work",
               explicacion:`✅ <strong>Must</strong> (obligation): <em>"All employees must wear a hard hat."</em><br>✅ <strong>Mustn't</strong> (prohibition): <em>"You mustn't use your phone while operating machinery."</em><br>✅ <strong>Should</strong> (recommendation): <em>"You should report any hazard immediately."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'Employees ___ wear safety goggles in the lab.' (obligation)", opciones:["should","must","can"], correcta:1 },
-                { pregunta:"Choose: 'You ___ leave emergency exits blocked.' (prohibition)", opciones:["mustn't","shouldn't always","don't need to"], correcta:0 },
-                { pregunta:"Which sentence gives a safety recommendation?", opciones:["You must take a break every hour.","You should take regular breaks to avoid fatigue.","You can rest whenever."], correcta:1 },
-                { pregunta:"Choose: '___ you report accidents to HR?' (recommendation question)", opciones:["Must","Should","Can"], correcta:1 },
-                { pregunta:"'Employees ___ use equipment without training.' Which is correct?", opciones:["must","should","mustn't"], correcta:2 }
+                { pregunta:"Choose: 'Employees ___ wear safety goggles in the lab.' (obligation)", opciones:["should","must","can"], correcta:1, hint:"'Must' expresses strong obligation — it is required, not optional. 'Should' is a recommendation. 'Can' expresses ability or permission." },
+                { pregunta:"Choose: 'You ___ leave emergency exits blocked.' (prohibition)", opciones:["mustn't","shouldn't always","don't need to"], correcta:0, hint:"'Mustn't' expresses prohibition — you are not allowed to do this. 'Shouldn't always' is vague, and 'don't need to' means it's not necessary." },
+                { pregunta:"Which sentence gives a safety recommendation?", opciones:["You must take a break every hour.","You should take regular breaks to avoid fatigue.","You can rest whenever."], correcta:1, hint:"'Should' expresses a recommendation — it is advisable but not a strict rule. 'Must' is an obligation. 'Can' is permission." },
+                { pregunta:"Choose: '___ you report accidents to HR?' (recommendation question)", opciones:["Must","Should","Can"], correcta:1, hint:"'Should' is used for recommendations in question form: 'Should you report...?' 'Must' is for obligations. 'Can' is for permission or ability." },
+                { pregunta:"'Employees ___ use equipment without training.' Which is correct?", opciones:["must","should","mustn't"], correcta:2, hint:"'Mustn't' expresses prohibition — using equipment without training is not allowed. 'Must' would mean they are required to use it untrained." }
               ]
             },
             { id:"A2-7", nombre:"Quantifiers (Much / Many / A lot of)",
               explicacion:`📊 <strong>Much</strong> + uncountable: <em>much time, much money</em><br>📊 <strong>Many</strong> + countable: <em>many clients, many meetings</em><br>📊 <strong>A lot of</strong> = both: <em>a lot of work, a lot of reports</em><br>📊 <strong>A few</strong> (small number, positive): <em>"We have a few openings."</em><br>📊 <strong>A little</strong> (small amount, positive): <em>"We have a little time left."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'We don't have ___ time before the deadline.' (uncountable)", opciones:["many","much","a few"], correcta:1 },
-                { pregunta:"Choose: 'There are ___ errors in this report.' (countable)", opciones:["much","many","a little"], correcta:1 },
-                { pregunta:"Choose: 'We received ___ applications for the position.' (large amount)", opciones:["a lot of","much of","many a"], correcta:0 },
-                { pregunta:"Choose: 'We still have ___ budget remaining.' (small amount, positive)", opciones:["a few","a little","many"], correcta:1 },
-                { pregunta:"Which sentence is correct?", opciones:["There are much departments in this company.","There are many departments in this company.","There is many departments in this company."], correcta:1 }
+                { pregunta:"Choose: 'We don't have ___ time before the deadline.' (uncountable)", opciones:["many","much","a few"], correcta:1, hint:"'Time' is uncountable, so we use 'much time'. 'Many' is for countable nouns. 'A few' is positive (we have some) — but 'much' fits 'not...much time'." },
+                { pregunta:"Choose: 'There are ___ errors in this report.' (countable)", opciones:["much","many","a little"], correcta:1, hint:"'Errors' is countable (you can count individual errors), so we use 'many errors'. 'Much' is for uncountable nouns. 'A little' is for uncountable." },
+                { pregunta:"Choose: 'We received ___ applications for the position.' (large amount)", opciones:["a lot of","much of","many a"], correcta:0, hint:"'A lot of' works with both countable and uncountable nouns and is natural here. 'Much of' sounds unnatural. 'Many a' is very literary." },
+                { pregunta:"Choose: 'We still have ___ budget remaining.' (small amount, positive)", opciones:["a few","a little","many"], correcta:1, hint:"'A little budget' means a small but positive amount of uncountable money remaining. 'A few' is for countable nouns. 'Many' is for large amounts." },
+                { pregunta:"Which sentence is correct?", opciones:["There are much departments in this company.","There are many departments in this company.","There is many departments in this company."], correcta:1, hint:"'Departments' is countable and plural, so we use 'many departments' with plural 'are'. 'Much' is for uncountable nouns." }
               ]
             },
             { id:"A2-8", nombre:"Past Continuous",
               explicacion:`<strong>Past Continuous</strong> (was/were + verb-ing) = action in progress at a past moment.<br><br>✅ <em>"At 3 PM, the team <strong>was reviewing</strong> the contract."</em><br>✅ Interrupted action: <em>"We <strong>were negotiating</strong> when the market <strong>crashed</strong>."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'At 10 AM, the board ___ the quarterly results.'", opciones:["reviewed","was reviewing","reviews"], correcta:1 },
-                { pregunta:"Choose: 'While the CEO ___ his speech, the fire alarm went off.'", opciones:["gave","was giving","gives"], correcta:1 },
-                { pregunta:"Which uses Past Continuous correctly?", opciones:["She was present the report when he called.","She was presenting the report when he called.","She presented the report when he was calling."], correcta:1 },
-                { pregunta:"Choose: '___ the team working on the prototype last Tuesday?'", opciones:["Did","Were","Was"], correcta:1 },
-                { pregunta:"Choose: 'The analysts ___ the data when the system crashed.'", opciones:["processed","were processing","are processing"], correcta:1 }
+                { pregunta:"Choose: 'At 10 AM, the board ___ the quarterly results.'", opciones:["reviewed","was reviewing","reviews"], correcta:1, hint:"Past Continuous (was/were + verb-ing) describes an action in progress at a specific past time: 'was reviewing at 10 AM'." },
+                { pregunta:"Choose: 'While the CEO ___ his speech, the fire alarm went off.'", opciones:["gave","was giving","gives"], correcta:1, hint:"Past Continuous interrupted by a sudden past action: 'was giving' (in progress) when the fire alarm 'went off' (sudden event)." },
+                { pregunta:"Which uses Past Continuous correctly?", opciones:["She was present the report when he called.","She was presenting the report when he called.","She presented the report when he was calling."], correcta:1, hint:"'Was presenting' is correct — ongoing action interrupted. 'Was present' is wrong grammar. The third option puts the wrong verb in continuous." },
+                { pregunta:"Choose: '___ the team working on the prototype last Tuesday?'", opciones:["Did","Were","Was"], correcta:1, hint:"With 'the team' (plural), we use 'Were' in questions: 'Were the team working...?' 'Was' is for singular subjects. 'Did' is for Past Simple." },
+                { pregunta:"Choose: 'The analysts ___ the data when the system crashed.'", opciones:["processed","were processing","are processing"], correcta:1, hint:"'Were processing' = ongoing action that was interrupted by the crash. 'Processed' is Past Simple (completed). 'Are processing' is present." }
               ]
             },
             { id:"A2-9", nombre:"Predictions (Will)",
               explicacion:`✅ <strong>Predictions:</strong> <em>"Revenue <strong>will grow</strong> by 15% this year."</em><br>✅ <strong>Promises:</strong> <em>"I <strong>will send</strong> the report by EOD."</em><br>✅ <strong>Spontaneous decisions:</strong> <em>"The printer is broken? I<strong>'ll call</strong> IT right now."</em><br><br><strong>Won't</strong> = will not: <em>"The CEO <strong>won't attend</strong> the meeting."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'Analysts predict that revenue ___ increase by 20% in Q4.'", opciones:["is going to","will","would"], correcta:1 },
-                { pregunta:"Choose: 'Don't worry — I ___ handle this complaint personally.'", opciones:["am going to","will","go to"], correcta:1 },
-                { pregunta:"Which is a spontaneous decision using Will?", opciones:["I am going to call IT later.","I'll call IT right now — the system is down.","I called IT yesterday."], correcta:1 },
-                { pregunta:"Choose: 'The merger ___ be finalized by end of year.'", opciones:["won't","will","going to"], correcta:1 },
-                { pregunta:"Which uses Won't correctly?", opciones:["He won't to attend the conference.","The system won't process the request.","They won't going to the summit."], correcta:1 }
+                { pregunta:"Choose: 'Analysts predict that revenue ___ increase by 20% in Q4.'", opciones:["is going to","will","would"], correcta:1, hint:"'Will' is used for predictions based on analysis or data — perfect for analyst forecasts. 'Going to' is for plans with visible evidence." },
+                { pregunta:"Choose: 'Don't worry — I ___ handle this complaint personally.'", opciones:["am going to","will","go to"], correcta:1, hint:"'Will' expresses a spontaneous promise or commitment: 'I will handle this.' 'Going to' would suggest it was pre-planned. 'Go to' is wrong." },
+                { pregunta:"Which is a spontaneous decision using Will?", opciones:["I am going to call IT later.","I'll call IT right now — the system is down.","I called IT yesterday."], correcta:1, hint:"A spontaneous decision is made at the moment of speaking. 'I'll call IT right now' is spontaneous. The others are planned or past." },
+                { pregunta:"Choose: 'The merger ___ be finalized by end of year.'", opciones:["won't","will","going to"], correcta:1, hint:"'Will be finalized' is a straightforward future prediction or plan. 'Won't' means it will not happen. 'Going to' needs is/are/am." },
+                { pregunta:"Which uses Won't correctly?", opciones:["He won't to attend the conference.","The system won't process the request.","They won't going to the summit."], correcta:1, hint:"'Won't + base verb' is the correct negative: 'won't process'. 'Won't to attend' incorrectly adds 'to'. 'Won't going to' is double future." }
               ]
             },
             { id:"A2-10", nombre:"Suggestions (Shall / Let's)",
               explicacion:`✅ <strong>Shall we...?</strong> — formal: <em>"Shall we move on to the next agenda item?"</em><br>✅ <strong>Let's...</strong> — inclusive: <em>"Let's schedule a follow-up for next week."</em><br>✅ <strong>Why don't we...?</strong>: <em>"Why don't we try a different approach?"</em><br>✅ <strong>How about + verb-ing?</strong>: <em>"How about presenting the results on Friday?"</em>`,
               ejercicios:[
-                { pregunta:"Choose: '___ we begin the debrief?' (formal)", opciones:["Will","Shall","Would"], correcta:1 },
-                { pregunta:"Choose: '___ review the action items before we close.'", opciones:["Let we","Let's","Shall we to"], correcta:1 },
-                { pregunta:"Which is a correct professional suggestion?", opciones:["You should maybe do this.","Why don't we pilot the program in one department first?","Do the pilot program."], correcta:1 },
-                { pregunta:"Choose: 'How about ___ the vendor for a discount?'", opciones:["to ask","ask","asking"], correcta:2 },
-                { pregunta:"Which correctly makes a suggestion using Shall?", opciones:["Shall we to discuss the budget?","Shall we discuss the budget?","Shall we discussing the budget?"], correcta:1 }
+                { pregunta:"Choose: '___ we begin the debrief?' (formal)", opciones:["Will","Shall","Would"], correcta:1, hint:"'Shall we' is used for formal suggestions and offers: 'Shall we begin?' 'Will' is for promises/predictions. 'Would' is more conditional." },
+                { pregunta:"Choose: '___ review the action items before we close.'", opciones:["Let we","Let's","Shall we to"], correcta:1, hint:"'Let's' (= let us) is the standard form for inclusive suggestions. 'Let we' is wrong. 'Shall we to' incorrectly adds 'to'." },
+                { pregunta:"Which is a correct professional suggestion?", opciones:["You should maybe do this.","Why don't we pilot the program in one department first?","Do the pilot program."], correcta:1, hint:"'Why don't we pilot...' is a natural, professional suggestion. 'You should maybe' is hesitant and informal. 'Do the pilot' is too direct." },
+                { pregunta:"Choose: 'How about ___ the vendor for a discount?'", opciones:["to ask","ask","asking"], correcta:2, hint:"After 'How about', we use verb+ing: 'How about asking...?' 'To ask' and 'ask' are not correct after 'How about'." },
+                { pregunta:"Which correctly makes a suggestion using Shall?", opciones:["Shall we to discuss the budget?","Shall we discuss the budget?","Shall we discussing the budget?"], correcta:1, hint:"After 'Shall we', we use the base verb (infinitive without 'to'): 'Shall we discuss?' 'To discuss' and 'discussing' are both wrong." }
               ]
             }
         ]
@@ -525,101 +530,101 @@ const dbLecciones = {
             { id:"B1-1", nombre:"Life Experiences (Present Perfect)",
               explicacion:`The <strong>Present Perfect</strong> (have/has + past participle) connects past experiences to the present — essential for CVs, interviews and business profiles.<br><br>✅ <em>"She <strong>has managed</strong> international teams for five years."</em><br>✅ <em>"We <strong>have worked</strong> with Fortune 500 companies."</em><br><br><strong>Signal words:</strong> ever, never, already, yet, just, since, for, recently<br><br>⚠️ Do NOT use with specific past times — use Past Simple instead.`,
               ejercicios:[
-                { pregunta:"Choose: 'The company ___ three international offices since 2020.'", opciones:["opened","has opened","opens"], correcta:1 },
-                { pregunta:"Choose: 'Have you ever ___ a cross-functional team?'", opciones:["lead","led","leaded"], correcta:1 },
-                { pregunta:"Which sentence is correct?", opciones:["We have signed the contract last Monday.","We signed the contract last Monday.","We have sign the contract last Monday."], correcta:1 },
-                { pregunta:"Choose: 'The CEO ___ just announced the merger.'", opciones:["has","have","had"], correcta:0 },
-                { pregunta:"Which signal word is typically used with Present Perfect?", opciones:["Yesterday","Last year","Recently"], correcta:2 }
+                { pregunta:"Choose: 'The company ___ three international offices since 2020.'", opciones:["opened","has opened","opens"], correcta:1, hint:"Present Perfect (have/has + past participle) is used for past actions with current relevance. 'Since 2020' signals Present Perfect, not Past Simple." },
+                { pregunta:"Choose: 'Have you ever ___ a cross-functional team?'", opciones:["lead","led","leaded"], correcta:1, hint:"The past participle of 'lead' is 'led'. 'Lead' is the base verb/present. 'Leaded' does not exist in standard English." },
+                { pregunta:"Which sentence is correct?", opciones:["We have signed the contract last Monday.","We signed the contract last Monday.","We have sign the contract last Monday."], correcta:1, hint:"With 'last Monday' (specific past time), we use Past Simple: 'signed'. Present Perfect cannot be used with specific past time expressions." },
+                { pregunta:"Choose: 'The CEO ___ just announced the merger.'", opciones:["has","have","had"], correcta:0, hint:"'Just' is a signal word for Present Perfect: 'has just announced'. 'Have' is for I/you/we/they. 'Had' is Past Perfect." },
+                { pregunta:"Which signal word is typically used with Present Perfect?", opciones:["Yesterday","Last year","Recently"], correcta:2, hint:"'Recently' signals Present Perfect — an unspecified recent time. 'Yesterday' and 'last year' are specific times, requiring Past Simple." }
               ]
             },
             { id:"B1-2", nombre:"Cause & Effect (Because / Therefore / Due to)",
               explicacion:`📌 <strong>Because</strong> + clause: <em>"Sales declined <strong>because</strong> the market became saturated."</em><br>📌 <strong>Due to</strong> + noun phrase: <em>"Sales declined <strong>due to</strong> market saturation."</em><br>📌 <strong>Therefore / As a result / Consequently</strong>: <em>"Costs increased; <strong>therefore</strong>, we revised our pricing."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'Revenue dropped ___ a global supply chain disruption.'", opciones:["because","due to","therefore"], correcta:1 },
-                { pregunta:"Choose: 'The system failed; ___, all meetings were cancelled.'", opciones:["due to","because","as a result"], correcta:2 },
-                { pregunta:"Choose: 'Sales increased ___ we launched an aggressive marketing campaign.'", opciones:["due to","because","consequently"], correcta:1 },
-                { pregunta:"Which sentence correctly expresses cause and effect?", opciones:["We lost the client. Because bad service.","Poor customer service led to the loss of our biggest client.","Therefore we lost a client bad service."], correcta:1 },
-                { pregunta:"Choose: 'The budget was cut; ___, the project had to be scaled back.'", opciones:["because","due to","consequently"], correcta:2 }
+                { pregunta:"Choose: 'Revenue dropped ___ a global supply chain disruption.'", opciones:["because","due to","therefore"], correcta:1, hint:"'Due to' is followed by a noun phrase: 'due to a disruption'. 'Because' needs a full clause. 'Therefore' introduces a result, not a cause." },
+                { pregunta:"Choose: 'The system failed; ___, all meetings were cancelled.'", opciones:["due to","because","as a result"], correcta:2, hint:"'As a result' introduces the consequence of a previous action. 'Due to' introduces a cause (noun phrase). 'Because' introduces a clause." },
+                { pregunta:"Choose: 'Sales increased ___ we launched an aggressive marketing campaign.'", opciones:["due to","because","consequently"], correcta:1, hint:"'Because' introduces a full cause clause: 'because we launched...'. 'Due to' needs a noun phrase. 'Consequently' introduces a result." },
+                { pregunta:"Which sentence correctly expresses cause and effect?", opciones:["We lost the client. Because bad service.","Poor customer service led to the loss of our biggest client.","Therefore we lost a client bad service."], correcta:1, hint:"A cause-effect sentence needs a complete structure. 'Because bad service' is a fragment. 'Therefore we lost...' is wrong word order." },
+                { pregunta:"Choose: 'The budget was cut; ___, the project had to be scaled back.'", opciones:["because","due to","consequently"], correcta:2, hint:"'Consequently' introduces a logical result: 'the budget was cut; consequently, the project was scaled back'. 'Because' and 'due to' introduce causes." }
               ]
             },
             { id:"B1-3", nombre:"Reported Speech",
               explicacion:`<strong>Reported speech</strong> shifts tenses back — essential for meeting minutes and summaries.<br><br>Present Simple → Past Simple: <em>"We need data." → He said they <strong>needed</strong> data.</em><br>Will → Would: <em>"We will expand." → She said they <strong>would</strong> expand.</em><br>Present Perfect → Past Perfect: <em>"We have completed it." → He said they <strong>had completed</strong> it.</em>`,
               ejercicios:[
-                { pregunta:"Convert: The manager said, 'We are launching next quarter.'", opciones:["He said they are launching next quarter.","He said they were launching next quarter.","He said they will launch next quarter."], correcta:1 },
-                { pregunta:"Convert: The CEO said, 'We have exceeded our targets.'", opciones:["She said they exceeded their targets.","She said they had exceeded their targets.","She said they have exceeded their targets."], correcta:1 },
-                { pregunta:"Convert: The analyst said, 'The market will recover.'", opciones:["He said the market would recover.","He said the market will recover.","He said the market recovers."], correcta:0 },
-                { pregunta:"Which reporting verb means the speaker gave a formal recommendation?", opciones:["Denied","Proposed","Refused"], correcta:1 },
-                { pregunta:"Choose: 'The director ___ that the new policy had been approved.'", opciones:["told","said","spoke"], correcta:1 }
+                { pregunta:"Convert: The manager said, 'We are launching next quarter.'", opciones:["He said they are launching next quarter.","He said they were launching next quarter.","He said they will launch next quarter."], correcta:1, hint:"In Reported Speech, Present Continuous → Past Continuous: 'are launching' → 'were launching'. Present Simple would become Past Simple." },
+                { pregunta:"Convert: The CEO said, 'We have exceeded our targets.'", opciones:["She said they exceeded their targets.","She said they had exceeded their targets.","She said they have exceeded their targets."], correcta:1, hint:"Present Perfect → Past Perfect in Reported Speech: 'have exceeded' → 'had exceeded'. Past Simple would lose the perfect meaning." },
+                { pregunta:"Convert: The analyst said, 'The market will recover.'", opciones:["He said the market would recover.","He said the market will recover.","He said the market recovers."], correcta:0, hint:"Will → Would in Reported Speech: 'will recover' → 'would recover'. Keeping 'will' or using present tense is incorrect in reported speech." },
+                { pregunta:"Which reporting verb means the speaker gave a formal recommendation?", opciones:["Denied","Proposed","Refused"], correcta:1, hint:"'Proposed' means the speaker made a formal recommendation. 'Denied' means they said no. 'Refused' means they declined to do something." },
+                { pregunta:"Choose: 'The director ___ that the new policy had been approved.'", opciones:["told","said","spoke"], correcta:1, hint:"'Said' is used without a person object: 'said that...'. 'Told' requires a person: 'told them that...'. 'Spoke' is intransitive." }
               ]
             },
             { id:"B1-4", nombre:"Hypothetical Situations (Second Conditional)",
               explicacion:`The <strong>Second Conditional</strong> (If + past simple, would + base verb) describes hypothetical or unlikely situations — widely used in planning and negotiations.<br><br>✅ <em>"If we <strong>had</strong> more capital, we <strong>would expand</strong> into three new markets."</em><br><br>⚠️ Use <strong>were</strong> instead of <strong>was</strong> in formal contexts:<br><em>"If I <strong>were</strong> the CEO, I <strong>would</strong> restructure the sales team."</em>`,
               ejercicios:[
-                { pregunta:"Which uses the Second Conditional correctly?", opciones:["If we had more funding, we expand.","If we had more funding, we would expand into new markets.","If we will have funding, we would expand."], correcta:1 },
-                { pregunta:"Choose: 'If the client ___ the contract, we ___ hire 20 new staff.'", opciones:["signs / will","signed / would","has signed / would"], correcta:1 },
-                { pregunta:"Which is the formal alternative to 'If I was the CEO...'?", opciones:["If I am the CEO...","If I were the CEO...","If I will be the CEO..."], correcta:1 },
-                { pregunta:"Choose: 'If we ___ our prices, we ___ attract more budget-conscious clients.'", opciones:["reduce / will","reduced / would","reducing / would"], correcta:1 },
-                { pregunta:"In what business context is the Second Conditional most useful?", opciones:["Describing past events","Exploring hypothetical plans and negotiation scenarios","Making factual reports"], correcta:1 }
+                { pregunta:"Which uses the Second Conditional correctly?", opciones:["If we had more funding, we expand.","If we had more funding, we would expand into new markets.","If we will have funding, we would expand."], correcta:1, hint:"Second Conditional: If + past simple + would + base verb. 'If we had..., we would expand.' 'We expand' and 'will have' are both wrong." },
+                { pregunta:"Choose: 'If the client ___ the contract, we ___ hire 20 new staff.'", opciones:["signs / will","signed / would","has signed / would"], correcta:1, hint:"Second Conditional: If + past simple (signed), + would + base verb. 'Signs/will' is First Conditional (real possibility)." },
+                { pregunta:"Which is the formal alternative to 'If I was the CEO...'?", opciones:["If I am the CEO...","If I were the CEO...","If I will be the CEO..."], correcta:1, hint:"In formal English, we use 'were' instead of 'was' in Second Conditional: 'If I were the CEO...' This is grammatically more correct." },
+                { pregunta:"Choose: 'If we ___ our prices, we ___ attract more budget-conscious clients.'", opciones:["reduce / will","reduced / would","reducing / would"], correcta:1, hint:"Second Conditional: If + past simple (reduced), + would + base verb. 'Will' is for real future. 'Reducing' is a gerund, not a past verb." },
+                { pregunta:"In what business context is the Second Conditional most useful?", opciones:["Describing past events","Exploring hypothetical plans and negotiation scenarios","Making factual reports"], correcta:1, hint:"Second Conditional is used for hypothetical, imaginary scenarios — plans that depend on unlikely or unreal conditions. Not for facts or history." }
               ]
             },
             { id:"B1-5", nombre:"Making Proposals (I suggest / recommend / propose)",
               explicacion:`✅ <strong>I suggest + verb-ing:</strong> <em>"I suggest reviewing the Q3 data before deciding."</em><br>✅ <strong>I recommend + verb-ing:</strong> <em>"I recommend delaying the launch."</em><br>✅ <strong>I propose + that + clause:</strong> <em>"I propose that we allocate 20% more to R&D."</em><br>✅ <strong>My recommendation is to:</strong> <em>"My recommendation is to consolidate the two divisions."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'I suggest ___ an external consultant before proceeding.'", opciones:["to hire","hire","hiring"], correcta:2 },
-                { pregunta:"Which is the correct formal proposal?", opciones:["We should maybe try something.","I propose that we allocate additional resources to the R&D department.","Let's just do it."], correcta:1 },
-                { pregunta:"Choose: 'I recommend ___ the pricing strategy for the Asian market.'", opciones:["to revise","revise","revising"], correcta:2 },
-                { pregunta:"Which verb is most formal for making a proposal in a board meeting?", opciones:["I suggest","I propose","I think"], correcta:1 },
-                { pregunta:"Choose: 'My recommendation ___ to postpone the product launch until Q2.'", opciones:["are","is","be"], correcta:1 }
+                { pregunta:"Choose: 'I suggest ___ an external consultant before proceeding.'", opciones:["to hire","hire","hiring"], correcta:2, hint:"'Suggest' is followed by verb+ing (gerund): 'suggest hiring'. 'Suggest to hire' and 'suggest hire' are both incorrect structures." },
+                { pregunta:"Which is the correct formal proposal?", opciones:["We should maybe try something.","I propose that we allocate additional resources to the R&D department.","Let's just do it."], correcta:1, hint:"'I propose that we allocate...' is the most formal and complete proposal structure. The other options are too vague or informal." },
+                { pregunta:"Choose: 'I recommend ___ the pricing strategy for the Asian market.'", opciones:["to revise","revise","revising"], correcta:2, hint:"'Recommend' is followed by verb+ing: 'recommend revising'. 'Recommend to revise' is informal American English but less formal." },
+                { pregunta:"Which verb is most formal for making a proposal in a board meeting?", opciones:["I suggest","I propose","I think"], correcta:1, hint:"'I propose' is the most formal verb for board-level recommendations. 'I suggest' is slightly less formal. 'I think' is conversational." },
+                { pregunta:"Choose: 'My recommendation ___ to postpone the product launch until Q2.'", opciones:["are","is","be"], correcta:1, hint:"'My recommendation is...' is a singular noun phrase, so we use 'is'. 'Are' is plural. 'Be' is the base verb, not used here." }
               ]
             },
             { id:"B1-6", nombre:"Describing Processes (Passive Voice)",
               explicacion:`The <strong>Passive Voice</strong> (be + past participle) is standard in business reports and process descriptions — it focuses on the action, not the person.<br><br>✅ <em>"The report <strong>is submitted</strong> every Friday."</em><br>✅ <em>"The contract <strong>was signed</strong> by both parties."</em><br>✅ <em>"The proposal <strong>will be reviewed</strong> by the board."</em>`,
               ejercicios:[
-                { pregunta:"Convert to passive: 'The team submits the report every Friday.'", opciones:["The report submits every Friday.","The report is submitted every Friday.","The report was submitted every Friday."], correcta:1 },
-                { pregunta:"Choose: 'The new software ___ installed on all workstations last week.'", opciones:["is","was","were"], correcta:1 },
-                { pregunta:"Why is passive voice preferred in business reports?", opciones:["It sounds casual","It focuses on the action and sounds more objective","It makes sentences shorter"], correcta:1 },
-                { pregunta:"Choose: 'The merger ___ finalized by the end of the fiscal year.' (future)", opciones:["is","was","will be"], correcta:2 },
-                { pregunta:"Which sentence is correctly in the passive voice?", opciones:["The client was satisfied the team.","The contract was signed by both parties.","The board approved was the budget."], correcta:1 }
+                { pregunta:"Convert to passive: 'The team submits the report every Friday.'", opciones:["The report submits every Friday.","The report is submitted every Friday.","The report was submitted every Friday."], correcta:1, hint:"Passive Voice = to be + past participle. Present Simple passive: 'is submitted'. 'Submits' is active. 'Was submitted' is past passive." },
+                { pregunta:"Choose: 'The new software ___ installed on all workstations last week.'", opciones:["is","was","were"], correcta:1, hint:"Last week signals Past Simple passive: 'was installed'. 'Is installed' is present. 'Were installed' would need a plural subject." },
+                { pregunta:"Why is passive voice preferred in business reports?", opciones:["It sounds casual","It focuses on the action and sounds more objective","It makes sentences shorter"], correcta:1, hint:"Passive voice focuses on the action and result, making it more objective and formal — ideal for business reports." },
+                { pregunta:"Choose: 'The merger ___ finalized by the end of the fiscal year.' (future)", opciones:["is","was","will be"], correcta:2, hint:"'Will be reviewed' is future passive: will + be + past participle. 'Is' is present. 'Was' is past." },
+                { pregunta:"Which sentence is correctly in the passive voice?", opciones:["The client was satisfied the team.","The contract was signed by both parties.","The board approved was the budget."], correcta:1, hint:"'Was signed by both parties' is the correct passive structure. The other options have incorrect word order or verb forms." }
               ]
             },
             { id:"B1-7", nombre:"Discussing Trends (Present Perfect Continuous)",
               explicacion:`<strong>Present Perfect Continuous</strong> (have/has + been + verb-ing) emphasizes an ongoing action still continuing — ideal for discussing business trends.<br><br>✅ <em>"Revenue <strong>has been growing</strong> steadily since Q1."</em><br><br>Simple = completed result: <em>"We <strong>have launched</strong> the product."</em><br>Continuous = ongoing process: <em>"We <strong>have been developing</strong> the product."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'The company ___ its market share steadily since 2023.'", opciones:["has grown","has been growing","grew"], correcta:1 },
-                { pregunta:"Choose: 'Our engineers ___ on this solution for the past eight months.'", opciones:["worked","have worked","have been working"], correcta:2 },
-                { pregunta:"Which sentence emphasizes an ongoing process?", opciones:["We launched a new campaign.","We have launched a new campaign.","We have been developing a new campaign for three months."], correcta:2 },
-                { pregunta:"Choose: 'Customer complaints ___ since we updated the software.'", opciones:["declined","have been declining","decline"], correcta:1 },
-                { pregunta:"What is the key difference between Present Perfect Simple and Continuous?", opciones:["There is no difference","Simple focuses on the result; Continuous focuses on the ongoing process","Continuous is only used informally"], correcta:1 }
+                { pregunta:"Choose: 'The company ___ its market share steadily since 2023.'", opciones:["has grown","has been growing","grew"], correcta:1, hint:"Present Perfect Continuous (has/have + been + verb-ing) shows an ongoing trend: 'has been growing steadily'. 'Has grown' shows a completed result." },
+                { pregunta:"Choose: 'Our engineers ___ on this solution for the past eight months.'", opciones:["worked","have worked","have been working"], correcta:2, hint:"'Have been working' emphasizes the ongoing process over eight months. 'Worked' is Past Simple (finished). 'Have worked' shows a completed result." },
+                { pregunta:"Which sentence emphasizes an ongoing process?", opciones:["We launched a new campaign.","We have launched a new campaign.","We have been developing a new campaign for three months."], correcta:2, hint:"Present Perfect Continuous emphasizes the ongoing process: 'have been developing for three months'. Simple versions don't show the duration." },
+                { pregunta:"Choose: 'Customer complaints ___ since we updated the software.'", opciones:["declined","have been declining","decline"], correcta:1, hint:"'Have been declining' shows a gradual ongoing trend. 'Declined' is Past Simple. 'Decline' is present simple." },
+                { pregunta:"What is the key difference between Present Perfect Simple and Continuous?", opciones:["There is no difference","Simple focuses on the result; Continuous focuses on the ongoing process","Continuous is only used informally"], correcta:1, hint:"Simple focuses on the completed result ('we have launched'). Continuous focuses on the ongoing process ('we have been developing')." }
               ]
             },
             { id:"B1-8", nombre:"Expressing Purpose (In order to / So that)",
               explicacion:`📌 <strong>To + base verb</strong> (simple): <em>"We hired more staff <strong>to</strong> handle demand."</em><br>📌 <strong>In order to</strong> (formal): <em>"We restructured <strong>in order to</strong> reduce costs."</em><br>📌 <strong>So that + clause</strong>: <em>"We invested in training <strong>so that</strong> employees could develop new skills."</em><br>📌 <strong>With the aim of + verb-ing</strong>: <em>"We expanded <strong>with the aim of</strong> entering new markets."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'We redesigned the process ___ reduce production time.'", opciones:["so that","in order to","with the aim"], correcta:1 },
-                { pregunta:"Choose: 'We introduced flexible hours ___ employees could improve work-life balance.'", opciones:["in order to","to","so that"], correcta:2 },
-                { pregunta:"Which is the most formal way to express purpose?", opciones:["To cut costs...","In order to reduce operational expenditure...","Because of costs..."], correcta:1 },
-                { pregunta:"Choose: 'The firm expanded into Asia ___ increasing its global market share.'", opciones:["with the aim of","in order to","so that"], correcta:0 },
-                { pregunta:"Which sentence expresses purpose correctly?", opciones:["We hired consultants for reduce costs.","We hired consultants to reduce costs.","We hired consultants so reduce costs."], correcta:1 }
+                { pregunta:"Choose: 'We redesigned the process ___ reduce production time.'", opciones:["so that","in order to","with the aim"], correcta:1, hint:"'In order to' is followed by a base verb and is more formal: 'in order to reduce'. 'So that' needs a clause. 'With the aim' is incomplete." },
+                { pregunta:"Choose: 'We introduced flexible hours ___ employees could improve work-life balance.'", opciones:["in order to","to","so that"], correcta:2, hint:"'So that' introduces a purpose clause with a subject and verb: 'so that employees could improve'. 'In order to' and 'to' need a base verb directly." },
+                { pregunta:"Which is the most formal way to express purpose?", opciones:["To cut costs...","In order to reduce operational expenditure...","Because of costs..."], correcta:1, hint:"'In order to reduce operational expenditure' is the most formal option. 'To cut costs' is correct but less formal. 'Because of' shows reason, not purpose." },
+                { pregunta:"Choose: 'The firm expanded into Asia ___ increasing its global market share.'", opciones:["with the aim of","in order to","so that"], correcta:0, hint:"'With the aim of' is followed by verb+ing: 'with the aim of increasing'. 'In order to' and 'to' need a base verb (infinitive without 'to')." },
+                { pregunta:"Which sentence expresses purpose correctly?", opciones:["We hired consultants for reduce costs.","We hired consultants to reduce costs.","We hired consultants so reduce costs."], correcta:1, hint:"'To reduce costs' is the correct structure: to + base verb. 'For reduce' is wrong — 'for' is followed by a noun or verb+ing." }
               ]
             },
             { id:"B1-9", nombre:"Numbers & Statistics in Presentations",
               explicacion:`📊 <strong>Approximations:</strong> approximately, roughly, around, nearly, just over, just under<br>📊 <strong>Trends:</strong> a sharp increase, a gradual decline, a significant rise, a slight drop<br>📊 <strong>Comparisons:</strong> twice as much, three times higher, 50% more than<br><br>Example: <em>"Revenue grew by <strong>approximately</strong> 18%, reaching <strong>just over</strong> $2 million."</em>`,
               ejercicios:[
-                { pregunta:"Choose: 'Sales increased by ___ 15% — the final figure was 14.8%.'", opciones:["exactly","approximately","precisely"], correcta:1 },
-                { pregunta:"Choose: 'Our market share is now ___ as large as our nearest competitor.'", opciones:["double","twice","two times more"], correcta:1 },
-                { pregunta:"Which phrase describes a small decrease?", opciones:["A sharp decline","A slight drop","A massive fall"], correcta:1 },
-                { pregunta:"Choose: '___ three-quarters of our revenue now comes from digital channels.'", opciones:["Almost","Roughly","Nearly"], correcta:2 },
-                { pregunta:"Which sentence presents statistics most professionally?", opciones:["We made like a lot more money.","Revenue increased by approximately 22%, reaching just over $5 million in Q3.","Sales went way up this quarter."], correcta:1 }
+                { pregunta:"Choose: 'Sales increased by ___ 15% — the final figure was 14.8%.'", opciones:["exactly","approximately","precisely"], correcta:1, hint:"'Approximately' is used when a number is close but not exact — perfect for 14.8% described as 'approximately 15%'." },
+                { pregunta:"Choose: 'Our market share is now ___ as large as our nearest competitor.'", opciones:["double","twice","two times more"], correcta:1, hint:"'Twice as large' is the correct comparative structure. 'Double' is a verb or noun. 'Two times more' is informal and potentially confusing." },
+                { pregunta:"Which phrase describes a small decrease?", opciones:["A sharp decline","A slight drop","A massive fall"], correcta:1, hint:"'A slight drop' describes a small decrease. 'A sharp decline' is large and sudden. 'A massive fall' is extreme." },
+                { pregunta:"Choose: '___ three-quarters of our revenue now comes from digital channels.'", opciones:["Almost","Roughly","Nearly"], correcta:2, hint:"'Nearly three-quarters' means almost 75% — close but not quite. 'Almost' is similar but 'nearly' collocates better with fractions in formal writing." },
+                { pregunta:"Which sentence presents statistics most professionally?", opciones:["We made like a lot more money.","Revenue increased by approximately 22%, reaching just over $5 million in Q3.","Sales went way up this quarter."], correcta:1, hint:"Professional statistical language uses precise, formal vocabulary: 'approximately', 'just over', specific percentages and clear figures." }
               ]
             },
             { id:"B1-10", nombre:"Linking Ideas (Cohesion in Business Writing)",
               explicacion:`➕ <strong>Adding:</strong> Furthermore, Moreover, In addition, Additionally<br>🔄 <strong>Contrasting:</strong> However, Nevertheless, On the other hand, Despite<br>✅ <strong>Concluding:</strong> Therefore, Consequently, As a result, In conclusion<br>📝 <strong>Exemplifying:</strong> For instance, For example, Such as, Namely`,
               ejercicios:[
-                { pregunta:"Choose: 'The project was delayed. ___, the client remained satisfied.'", opciones:["Furthermore","Nevertheless","Therefore"], correcta:1 },
-                { pregunta:"Choose: 'We reduced costs by 10%. ___, we increased productivity.'", opciones:["However","In addition","Despite"], correcta:1 },
-                { pregunta:"Choose: '___ the high cost, the board approved the new software.'", opciones:["Despite","However","Furthermore"], correcta:0 },
-                { pregunta:"Choose: 'The campaign was successful; ___, we will increase the Q4 budget.'", opciones:["nevertheless","therefore","despite"], correcta:1 },
-                { pregunta:"Which word introduces an example in a report?", opciones:["Nevertheless","For instance","Therefore"], correcta:1 }
+                { pregunta:"Choose: 'The project was delayed. ___, the client remained satisfied.'", opciones:["Furthermore","Nevertheless","Therefore"], correcta:1, hint:"'Nevertheless' introduces a contrast — despite the delay, the client was satisfied. 'Furthermore' adds information. 'Therefore' shows a result." },
+                { pregunta:"Choose: 'We reduced costs by 10%. ___, we increased productivity.'", opciones:["However","In addition","Despite"], correcta:1, hint:"'In addition' adds a second positive result to the first. 'However' contrasts. 'Despite' is followed by a noun phrase, not a clause." },
+                { pregunta:"Choose: '___ the high cost, the board approved the new software.'", opciones:["Despite","However","Furthermore"], correcta:0, hint:"'Despite' is followed by a noun phrase: 'despite the high cost'. 'However' introduces a contrasting clause. 'Furthermore' adds information." },
+                { pregunta:"Choose: 'The campaign was successful; ___, we will increase the Q4 budget.'", opciones:["nevertheless","therefore","despite"], correcta:1, hint:"'Therefore' shows a logical consequence: the campaign succeeded, therefore we will increase the budget. 'Nevertheless' contrasts. 'Despite' needs a noun." },
+                { pregunta:"Which word introduces an example in a report?", opciones:["Nevertheless","For instance","Therefore"], correcta:1, hint:"'For instance' introduces a specific example in formal writing. 'Nevertheless' contrasts. 'Therefore' shows a result." }
               ]
             }
         ]
@@ -630,101 +635,101 @@ const dbLecciones = {
             { id:"B2-1", nombre:"Complex Negotiations (Advanced Language)",
               explicacion:`🔵 <strong>Opening:</strong> <em>"We'd like to propose an initial framework for discussion."</em><br>🔵 <strong>Concessions:</strong> <em>"We're willing to be flexible on the timeline if you can accommodate our pricing."</em><br>🔵 <strong>Countering:</strong> <em>"We appreciate your position; however, those terms require further discussion."</em><br>🔵 <strong>Closing:</strong> <em>"I believe we've reached a mutually beneficial agreement."</em><br><br>Key concept: <strong>BATNA</strong> = Best Alternative To a Negotiated Agreement.`,
               ejercicios:[
-                { pregunta:"Which phrase professionally opens a negotiation?", opciones:["Here's what we want.","We'd like to propose an initial framework for discussion.","Take it or leave it."], correcta:1 },
-                { pregunta:"Which phrase makes a conditional concession?", opciones:["Fine, we'll lower the price.","We're willing to adjust the timeline if you can meet our pricing requirements.","We can't do that."], correcta:1 },
-                { pregunta:"What does BATNA stand for?", opciones:["Business Approach To Negotiating Assets","Best Alternative To a Negotiated Agreement","Best Action Towards New Agreements"], correcta:1 },
-                { pregunta:"Which phrase professionally counters a proposal?", opciones:["That's wrong.","We appreciate your position; however, those terms require further discussion.","No way."], correcta:1 },
-                { pregunta:"Why is knowing your BATNA critical before entering a negotiation?", opciones:["It helps you seem more powerful","It defines your walk-away point and strengthens your position","It is not important"], correcta:1 }
+                { pregunta:"Which phrase professionally opens a negotiation?", opciones:["Here's what we want.","We'd like to propose an initial framework for discussion.","Take it or leave it."], correcta:1, hint:"'We'd like to propose an initial framework' opens a negotiation professionally and collaboratively. The others are aggressive or informal." },
+                { pregunta:"Which phrase makes a conditional concession?", opciones:["Fine, we'll lower the price.","We're willing to adjust the timeline if you can meet our pricing requirements.","We can't do that."], correcta:1, hint:"'We're willing to adjust the timeline if...' is a conditional concession — offering flexibility on one point to gain on another." },
+                { pregunta:"What does BATNA stand for?", opciones:["Business Approach To Negotiating Assets","Best Alternative To a Negotiated Agreement","Best Action Towards New Agreements"], correcta:1, hint:"BATNA = Best Alternative To a Negotiated Agreement. It's your backup plan if the negotiation fails." },
+                { pregunta:"Which phrase professionally counters a proposal?", opciones:["That's wrong.","We appreciate your position; however, those terms require further discussion.","No way."], correcta:1, hint:"'We appreciate your position; however...' acknowledges the other party while professionally pushing back. The others are aggressive." },
+                { pregunta:"Why is knowing your BATNA critical before entering a negotiation?", opciones:["It helps you seem more powerful","It defines your walk-away point and strengthens your position","It is not important"], correcta:1, hint:"Knowing your BATNA defines your minimum acceptable outcome and your walk-away point — this gives you real negotiating power." }
               ]
             },
             { id:"B2-2", nombre:"Third Conditional (Past Regrets & Analysis)",
               explicacion:`The <strong>Third Conditional</strong> (If + past perfect, would have + past participle) analyzes past decisions — essential for post-mortems and strategy reviews.<br><br>✅ <em>"If we <strong>had launched</strong> earlier, we <strong>would have captured</strong> a larger share."</em><br><br><strong>Mixed conditional:</strong> past cause → present result<br><em>"If we <strong>had invested</strong> in R&D, we <strong>would be</strong> the market leader now."</em>`,
               ejercicios:[
-                { pregunta:"Which is a correct Third Conditional sentence?", opciones:["If we launched earlier, we would capture more share.","If we had launched earlier, we would have captured more market share.","If we would launch earlier, we would have captured more share."], correcta:1 },
-                { pregunta:"Choose: 'If the team ___ the issue earlier, the project ___ been cancelled.'", opciones:["identified / wouldn't have","had identified / wouldn't have","would identify / hadn't"], correcta:1 },
-                { pregunta:"What is a 'mixed conditional'?", opciones:["A mix of formal and informal language","A past condition with a present result","A question with a conditional answer"], correcta:1 },
-                { pregunta:"Choose: 'If we ___ more in training, our retention rate ___ higher now.' (mixed)", opciones:["had invested / would be","invested / will be","have invested / would be"], correcta:0 },
-                { pregunta:"In which business context is the Third Conditional most useful?", opciones:["Making future plans","Analyzing past decisions and what could have been done differently","Describing current projects"], correcta:1 }
+                { pregunta:"Which is a correct Third Conditional sentence?", opciones:["If we launched earlier, we would capture more share.","If we had launched earlier, we would have captured more market share.","If we would launch earlier, we would have captured more share."], correcta:1, hint:"Third Conditional: If + past perfect + would have + past participle. 'If we had launched...we would have captured.' The other options mix wrong tenses." },
+                { pregunta:"Choose: 'If the team ___ the issue earlier, the project ___ been cancelled.'", opciones:["identified / wouldn't have","had identified / wouldn't have","would identify / hadn't"], correcta:1, hint:"Third Conditional: If + had + past participle (had identified) + wouldn't have + past participle. The other combinations are incorrect." },
+                { pregunta:"What is a 'mixed conditional'?", opciones:["A mix of formal and informal language","A past condition with a present result","A question with a conditional answer"], correcta:1, hint:"A mixed conditional uses a past condition (Third) with a present result (Second): 'If we had invested (past)...we would be (now)'." },
+                { pregunta:"Choose: 'If we ___ more in training, our retention rate ___ higher now.' (mixed)", opciones:["had invested / would be","invested / will be","have invested / would be"], correcta:0, hint:"Mixed conditional: If + past perfect (had invested) + would + base verb (would be) — past action with present consequence." },
+                { pregunta:"In which business context is the Third Conditional most useful?", opciones:["Making future plans","Analyzing past decisions and what could have been done differently","Describing current projects"], correcta:1, hint:"Third Conditional is used to analyze past decisions: what could have been done differently and what the outcome would have been." }
               ]
             },
             { id:"B2-3", nombre:"Advanced Hedging & Diplomacy",
               explicacion:`<strong>Hedging language</strong> softens statements and signals openness to discussion — critical in senior-level communication.<br><br>📌 <strong>Tentative verbs:</strong> tend to, seem to, appear to, would suggest<br>📌 <strong>Adverbs:</strong> possibly, arguably, apparently, seemingly<br>📌 <strong>Modal hedges:</strong> might, may, could, would<br><br>✅ <em>"It <strong>would appear that</strong> our strategy <strong>may</strong> need revision."</em>`,
               ejercicios:[
-                { pregunta:"Which sentence uses hedging language correctly?", opciones:["The strategy is wrong.","It would appear that the current strategy may require significant revision.","Change the strategy now."], correcta:1 },
-                { pregunta:"Which adverb is a hedging device?", opciones:["Certainly","Absolutely","Arguably"], correcta:2 },
-                { pregunta:"Choose: 'The results ___ suggest that consumer confidence is recovering.'", opciones:["definitely","would tend to","clearly"], correcta:1 },
-                { pregunta:"Why is hedging important in senior-level business communication?", opciones:["It avoids responsibility","It signals openness to discussion and reduces the risk of conflict","It makes you sound unsure"], correcta:1 },
-                { pregunta:"Choose: 'It ___ that the merger ___ face regulatory challenges.'", opciones:["seems / might","is / will certainly","looks / must"], correcta:0 }
+                { pregunta:"Which sentence uses hedging language correctly?", opciones:["The strategy is wrong.","It would appear that the current strategy may require significant revision.","Change the strategy now."], correcta:1, hint:"'It would appear that the current strategy may require revision' uses multiple hedging devices to soften a potentially critical statement." },
+                { pregunta:"Which adverb is a hedging device?", opciones:["Certainly","Absolutely","Arguably"], correcta:2, hint:"'Arguably' is a hedging adverb — it introduces a claim as debatable. 'Certainly' and 'absolutely' are strong and direct, the opposite of hedging." },
+                { pregunta:"Choose: 'The results ___ suggest that consumer confidence is recovering.'", opciones:["definitely","would tend to","clearly"], correcta:1, hint:"'Would tend to suggest' is a hedging verbal phrase. 'Definitely' and 'clearly' are assertive — they remove the hedging." },
+                { pregunta:"Why is hedging important in senior-level business communication?", opciones:["It avoids responsibility","It signals openness to discussion and reduces the risk of conflict","It makes you sound unsure"], correcta:1, hint:"Hedging reduces the risk of conflict and shows openness to other viewpoints — important when challenging strategies at senior level." },
+                { pregunta:"Choose: 'It ___ that the merger ___ face regulatory challenges.'", opciones:["seems / might","is / will certainly","looks / must"], correcta:0, hint:"'Seems / might' combines two hedging devices: a tentative verb and a modal. 'Is / will certainly' and 'looks / must' are too assertive." }
               ]
             },
             { id:"B2-4", nombre:"Persuasive Writing (Reports & Proposals)",
               explicacion:`📝 <strong>Structure:</strong> Context → Problem → Evidence → Solution → Call to Action<br><br>✅ <strong>Logos</strong> (data): <em>"A 40% reduction in costs has been achieved by comparable firms."</em><br>✅ <strong>Ethos</strong> (credibility): <em>"With 15 years of industry expertise, our team is uniquely positioned..."</em><br>✅ <strong>Pathos</strong> (emotion): <em>"This initiative will directly benefit 500 employees and their families."</em>`,
               ejercicios:[
-                { pregunta:"'A 40% cost reduction has been achieved by comparable firms.' — This uses:", opciones:["Pathos","Ethos","Logos"], correcta:2 },
-                { pregunta:"'With 15 years of industry expertise, our team is uniquely positioned.' — This uses:", opciones:["Logos","Ethos","Pathos"], correcta:1 },
-                { pregunta:"'This initiative will directly benefit 500 employees and their families.' — This uses:", opciones:["Ethos","Logos","Pathos"], correcta:2 },
-                { pregunta:"What is the correct structure for a persuasive business proposal?", opciones:["Conclusion, Evidence, Problem, Context","Context, Problem, Evidence, Solution, Call to Action","Solution, Pathos, Logos, Ethos"], correcta:1 },
-                { pregunta:"Why is combining Logos, Ethos and Pathos effective in business writing?", opciones:["It confuses the reader","It appeals to logic, credibility and emotion simultaneously for maximum persuasion","It is required by corporate law"], correcta:1 }
+                { pregunta:"'A 40% cost reduction has been achieved by comparable firms.' — This uses:", opciones:["Pathos","Ethos","Logos"], correcta:2, hint:"Logos uses data and statistics to persuade rationally: 'A 40% cost reduction has been achieved by comparable firms' is factual evidence." },
+                { pregunta:"'With 15 years of industry expertise, our team is uniquely positioned.' — This uses:", opciones:["Logos","Ethos","Pathos"], correcta:1, hint:"Ethos establishes the writer's credibility and authority: '15 years of industry expertise' builds trust with the audience." },
+                { pregunta:"'This initiative will directly benefit 500 employees and their families.' — This uses:", opciones:["Ethos","Logos","Pathos"], correcta:2, hint:"Pathos appeals to emotion and human impact: '500 employees and their families' creates an emotional connection." },
+                { pregunta:"What is the correct structure for a persuasive business proposal?", opciones:["Conclusion, Evidence, Problem, Context","Context, Problem, Evidence, Solution, Call to Action","Solution, Pathos, Logos, Ethos"], correcta:1, hint:"The correct persuasive structure is: Context → Problem → Evidence → Solution → Call to Action. This guides the reader logically." },
+                { pregunta:"Why is combining Logos, Ethos and Pathos effective in business writing?", opciones:["It confuses the reader","It appeals to logic, credibility and emotion simultaneously for maximum persuasion","It is required by corporate law"], correcta:1, hint:"Combining all three — Logos (data), Ethos (credibility), Pathos (emotion) — creates a multi-layered, highly persuasive argument." }
               ]
             },
             { id:"B2-5", nombre:"Formal Discourse Markers",
               explicacion:`🔷 <strong>Conceding:</strong> Admittedly, Granted, While it is true that...<br>🔷 <strong>Reinforcing:</strong> Indeed, In fact, As a matter of fact<br>🔷 <strong>Reformulating:</strong> In other words, That is to say, To put it another way<br>🔷 <strong>Summarizing:</strong> On balance, All things considered, To summarize<br><br>Example: <em>"<strong>Admittedly</strong>, costs are high. <strong>In fact</strong>, comparable firms report a 35% return."</em>`,
               ejercicios:[
-                { pregunta:"Choose: '___, the initial investment is significant; however, the ROI justifies it.'", opciones:["Therefore","Admittedly","Consequently"], correcta:1 },
-                { pregunta:"Choose: 'The strategy has risks. ___, it offers the highest potential return.'", opciones:["Admittedly","In fact","In other words"], correcta:1 },
-                { pregunta:"Which discourse marker reformulates an idea more simply?", opciones:["In fact","To put it another way","On balance"], correcta:1 },
-                { pregunta:"'___, the data confirms our hypothesis — this market is underserved.'", opciones:["Admittedly","Indeed","Nevertheless"], correcta:1 },
-                { pregunta:"Choose: '___ all factors, the proposed merger represents the strongest growth option.'", opciones:["On balance, considering","Considering all","All things considered,"], correcta:2 }
+                { pregunta:"Choose: '___, the initial investment is significant; however, the ROI justifies it.'", opciones:["Therefore","Admittedly","Consequently"], correcta:1, hint:"'Admittedly' concedes a point (acknowledges a weakness) before arguing past it. 'Therefore' shows a result. 'Consequently' is also a result marker." },
+                { pregunta:"Choose: 'The strategy has risks. ___, it offers the highest potential return.'", opciones:["Admittedly","In fact","In other words"], correcta:1, hint:"'In fact' reinforces and strengthens the previous statement. 'Admittedly' concedes. 'In other words' reformulates in simpler terms." },
+                { pregunta:"Which discourse marker reformulates an idea more simply?", opciones:["In fact","To put it another way","On balance"], correcta:1, hint:"'To put it another way' reformulates an idea in simpler or different terms. 'In fact' reinforces. 'On balance' summarizes." },
+                { pregunta:"'___, the data confirms our hypothesis — this market is underserved.'", opciones:["Admittedly","Indeed","Nevertheless"], correcta:1, hint:"'Indeed' strongly affirms and reinforces the point. 'Admittedly' concedes. 'Nevertheless' contrasts." },
+                { pregunta:"Choose: '___ all factors, the proposed merger represents the strongest growth option.'", opciones:["On balance, considering","Considering all","All things considered,"], correcta:2, hint:"'All things considered' summarizes by weighing all factors. 'On balance, considering' is redundant. 'Considering all' is not standard formal English." }
               ]
             },
             { id:"B2-6", nombre:"Speculating & Drawing Conclusions",
               explicacion:`🔵 <strong>High certainty:</strong> must, is certain to, is bound to<br><em>"The competitor <strong>must</strong> be aware of our strategy."</em><br><br>🔵 <strong>Moderate certainty:</strong> should, ought to, is likely to<br><em>"The project <strong>should</strong> be completed by Q3."</em><br><br>🔵 <strong>Low certainty:</strong> might, may, could, possibly<br><em>"The regulation changes <strong>could</strong> impact our expansion plans."</em>`,
               ejercicios:[
-                { pregunta:"Which expresses HIGH certainty about a present situation?", opciones:["They might know about this.","They must be aware of the new pricing strategy.","They could possibly know."], correcta:1 },
-                { pregunta:"Choose: 'The new regulation ___ significantly impact our supply chain.' (moderate)", opciones:["must","should","might"], correcta:1 },
-                { pregunta:"Choose: 'Given the data, the market ___ recover by Q4.' (likely)", opciones:["might possibly","is likely to","must surely"], correcta:1 },
-                { pregunta:"Which expresses LOW certainty?", opciones:["This will definitely succeed.","This is bound to succeed.","This could potentially succeed."], correcta:2 },
-                { pregunta:"Choose: 'The competitor ___ launching a similar product — our intelligence suggests so.'", opciones:["might be","must be","is certainly"], correcta:1 }
+                { pregunta:"Which expresses HIGH certainty about a present situation?", opciones:["They might know about this.","They must be aware of the new pricing strategy.","They could possibly know."], correcta:1, hint:"'Must be aware' expresses logical deduction with high certainty — we are almost certain based on the evidence." },
+                { pregunta:"Choose: 'The new regulation ___ significantly impact our supply chain.' (moderate)", opciones:["must","should","might"], correcta:1, hint:"'Should' expresses moderate certainty — we expect it to happen based on what we know. 'Must' is too certain. 'Might' is too uncertain." },
+                { pregunta:"Choose: 'Given the data, the market ___ recover by Q4.' (likely)", opciones:["might possibly","is likely to","must surely"], correcta:1, hint:"'Is likely to' expresses moderate-to-high probability. 'Might possibly' is redundant (both are low certainty). 'Must surely' is too assertive." },
+                { pregunta:"Which expresses LOW certainty?", opciones:["This will definitely succeed.","This is bound to succeed.","This could potentially succeed."], correcta:2, hint:"'Could potentially succeed' expresses low certainty — it is possible but not certain. The other options express high or absolute certainty." },
+                { pregunta:"Choose: 'The competitor ___ launching a similar product — our intelligence suggests so.'", opciones:["might be","must be","is certainly"], correcta:1, hint:"'Must be launching' expresses near-certain deduction based on evidence (intelligence reports). 'Might be' is too uncertain here." }
               ]
             },
             { id:"B2-7", nombre:"Inversion for Emphasis (Advanced Grammar)",
               explicacion:`<strong>Inversion</strong> (auxiliary before subject) is used in formal writing and speeches for emphasis.<br><br>📌 <strong>Not only... but also:</strong> <em>"<strong>Not only did</strong> we exceed the target, <strong>but</strong> we also reduced costs."</em><br>📌 <strong>Never / Rarely / Seldom:</strong> <em>"<strong>Never before has</strong> the company seen such growth."</em><br>📌 <strong>Only after:</strong> <em>"<strong>Only after</strong> due diligence <strong>did</strong> the board approve the merger."</em>`,
               ejercicios:[
-                { pregunta:"Choose: '___ did we exceed the target, but we also reduced costs by 15%.'", opciones:["Not only","Only","Never"], correcta:0 },
-                { pregunta:"Which uses inversion correctly?", opciones:["Never before the company has seen such growth.","Never before has the company seen such growth.","Never the company has seen such growth before."], correcta:1 },
-                { pregunta:"Choose: '___ had we signed the contract than the market conditions changed.'", opciones:["No sooner","Rarely","Only after"], correcta:0 },
-                { pregunta:"Why is inversion used in formal business communication?", opciones:["To confuse the reader","To add emphasis and formal tone to key statements","It is mandatory in English"], correcta:1 },
-                { pregunta:"Choose: '___ after a full audit ___ the board approve the acquisition.'", opciones:["Only / will","Only / did","Never / has"], correcta:1 }
+                { pregunta:"Choose: '___ did we exceed the target, but we also reduced costs by 15%.'", opciones:["Not only","Only","Never"], correcta:0, hint:"'Not only' triggers inversion: 'Not only did we exceed...' — the auxiliary 'did' comes before the subject 'we'." },
+                { pregunta:"Which uses inversion correctly?", opciones:["Never before the company has seen such growth.","Never before has the company seen such growth.","Never the company has seen such growth before."], correcta:1, hint:"After 'Never before', inversion is required: 'Never before has the company seen...' — auxiliary before subject." },
+                { pregunta:"Choose: '___ had we signed the contract than the market conditions changed.'", opciones:["No sooner","Rarely","Only after"], correcta:0, hint:"'No sooner...than' triggers inversion: 'No sooner had we signed...than the conditions changed.' 'Rarely' and 'Only after' don't fit this structure." },
+                { pregunta:"Why is inversion used in formal business communication?", opciones:["To confuse the reader","To add emphasis and formal tone to key statements","It is mandatory in English"], correcta:1, hint:"Inversion adds emphasis and formal register to key achievements or announcements — it signals importance and rhetorical power." },
+                { pregunta:"Choose: '___ after a full audit ___ the board approve the acquisition.'", opciones:["Only / will","Only / did","Never / has"], correcta:1, hint:"'Only after + noun/phrase' triggers inversion: 'Only after a full audit did the board approve...' — past tense auxiliary 'did' inverts." }
               ]
             },
             { id:"B2-8", nombre:"Nominalization in Business Writing",
               explicacion:`<strong>Nominalization</strong> converts verbs/adjectives into nouns — it makes business writing more formal, concise and objective.<br><br>📌 decide → <strong>decision</strong> · analyse → <strong>analysis</strong> · improve → <strong>improvement</strong><br><br>✅ Informal: <em>"We decided to expand."</em><br>✅ Formal: <em>"The <strong>decision to expand</strong> was reached after extensive consultation."</em>`,
               ejercicios:[
-                { pregunta:"Nominalize: 'We decided to merge the two divisions.'", opciones:["The deciding to merge was made.","The decision to merge the two divisions was approved.","We made deciding about the merger."], correcta:1 },
-                { pregunta:"What is the nominalized form of 'investigate'?", opciones:["Investigating","Investigation","Investigated"], correcta:1 },
-                { pregunta:"Why is nominalization used in formal business writing?", opciones:["It makes writing more casual","It makes writing more formal, objective and concise","It is easier to read"], correcta:1 },
-                { pregunta:"Nominalize: 'The team performed well.'", opciones:["The team's performing was well.","The team's performance exceeded expectations.","The team did good performance."], correcta:1 },
-                { pregunta:"Choose the nominalized version: 'We failed to deliver on time.'", opciones:["Our failing was on time.","The failure to deliver on schedule resulted in financial penalties.","We did a fail of delivery."], correcta:1 }
+                { pregunta:"Nominalize: 'We decided to merge the two divisions.'", opciones:["The deciding to merge was made.","The decision to merge the two divisions was approved.","We made deciding about the merger."], correcta:1, hint:"Nominalization converts 'decided to merge' into 'the decision to merge'. 'The deciding' and 'deciding' are incorrect nominal forms." },
+                { pregunta:"What is the nominalized form of 'investigate'?", opciones:["Investigating","Investigation","Investigated"], correcta:1, hint:"The nominalized form of 'investigate' is 'investigation'. 'Investigating' is a gerund (verb-ing). 'Investigated' is a past participle." },
+                { pregunta:"Why is nominalization used in formal business writing?", opciones:["It makes writing more casual","It makes writing more formal, objective and concise","It is easier to read"], correcta:1, hint:"Nominalization makes writing more formal, objective and impersonal — standard in professional reports and academic business writing." },
+                { pregunta:"Nominalize: 'The team performed well.'", opciones:["The team's performing was well.","The team's performance exceeded expectations.","The team did good performance."], correcta:1, hint:"'The team's performance exceeded expectations' nominalizes 'performed well' into 'performance'. 'Performing' and 'did good' are incorrect." },
+                { pregunta:"Choose the nominalized version: 'We failed to deliver on time.'", opciones:["Our failing was on time.","The failure to deliver on schedule resulted in financial penalties.","We did a fail of delivery."], correcta:1, hint:"'The failure to deliver on schedule' nominalizes 'failed to deliver' — formal and objective. The other options are informal or grammatically wrong." }
               ]
             },
             { id:"B2-9", nombre:"Cross-Cultural Business Communication",
               explicacion:`🌏 <strong>High-context cultures</strong> (Japan, Middle East, Latin America): implicit communication, relationships matter. A direct "no" is often avoided.<br><br>🌍 <strong>Low-context cultures</strong> (USA, Germany, Scandinavia): direct, explicit communication is expected and valued. Ambiguity is seen as unprofessional.<br><br>💡 Adapt your style to build trust and avoid offense.`,
               ejercicios:[
-                { pregunta:"What is a key feature of high-context cultures in business?", opciones:["They prefer direct and explicit communication","They rely on implicit messages, relationships and context","They avoid all written communication"], correcta:1 },
-                { pregunta:"Which country is typically considered a low-context culture?", opciones:["Japan","Brazil","Germany"], correcta:2 },
-                { pregunta:"What might direct communication from a US executive seem like to a Japanese colleague?", opciones:["Polite and professional","Rude or inappropriately blunt","A sign of deep respect"], correcta:1 },
-                { pregunta:"In a high-context culture, a 'no' is often:", opciones:["Stated loudly and clearly","Communicated indirectly through tone, silence or context","Sent via formal letter"], correcta:1 },
-                { pregunta:"Why is adapting your communication style important in global business?", opciones:["It is not important in modern business","It builds trust and avoids costly misunderstandings in international partnerships","It only matters in social situations"], correcta:1 }
+                { pregunta:"What is a key feature of high-context cultures in business?", opciones:["They prefer direct and explicit communication","They rely on implicit messages, relationships and context","They avoid all written communication"], correcta:1, hint:"High-context cultures rely on implicit messages, relationships, body language and context — direct statements are less common." },
+                { pregunta:"Which country is typically considered a low-context culture?", opciones:["Japan","Brazil","Germany"], correcta:2, hint:"Germany is a low-context culture — direct, explicit, fact-based communication is valued and expected in business." },
+                { pregunta:"What might direct communication from a US executive seem like to a Japanese colleague?", opciones:["Polite and professional","Rude or inappropriately blunt","A sign of deep respect"], correcta:1, hint:"In high-context cultures (like Japan), direct communication from a low-context culture (like USA) can seem rude or overly blunt." },
+                { pregunta:"In a high-context culture, a 'no' is often:", opciones:["Stated loudly and clearly","Communicated indirectly through tone, silence or context","Sent via formal letter"], correcta:1, hint:"In high-context cultures, 'no' is often communicated indirectly through silence, hesitation, or changing the subject." },
+                { pregunta:"Why is adapting your communication style important in global business?", opciones:["It is not important in modern business","It builds trust and avoids costly misunderstandings in international partnerships","It only matters in social situations"], correcta:1, hint:"Adapting your communication style in global business builds trust, prevents offense, and leads to more successful partnerships." }
               ]
             },
             { id:"B2-10", nombre:"Emphasis & Cleft Sentences",
               explicacion:`<strong>Cleft sentences</strong> add rhetorical power in presentations and formal writing.<br><br>📌 <strong>It is/was... that/who:</strong> <em>"<strong>It was</strong> the new pricing model <strong>that</strong> drove the 30% growth."</em><br>📌 <strong>What... is/was:</strong> <em>"<strong>What</strong> the client needs <strong>is</strong> a reliable, scalable solution."</em><br>📌 <strong>Do/Did for emphasis:</strong> <em>"We <strong>did</strong> meet the deadline — against all odds."</em>`,
               ejercicios:[
-                { pregunta:"Choose: '___ the leadership team ___ turned the company around.'", opciones:["It was / that","What / is","The reason / is that"], correcta:0 },
-                { pregunta:"Choose: '___ our clients need is a cost-effective and scalable solution.'", opciones:["It is","What","The reason"], correcta:1 },
-                { pregunta:"Which uses a cleft sentence correctly?", opciones:["It was the new strategy drove growth.","It was the new strategy that drove the 30% revenue growth.","It the new strategy was that drove growth."], correcta:1 },
-                { pregunta:"Choose: 'We ___ deliver the project on time, despite the budget cuts.' (emphatic do)", opciones:["do","did","done"], correcta:1 },
-                { pregunta:"Why are cleft sentences used in formal presentations?", opciones:["To make sentences shorter","To add emphasis and direct the audience's attention to key information","They are grammatically required"], correcta:1 }
+                { pregunta:"Choose: '___ the leadership team ___ turned the company around.'", opciones:["It was / that","What / is","The reason / is that"], correcta:0, hint:"Cleft sentence with 'It was...that': 'It was the leadership team that turned the company around' — emphasis on who did it." },
+                { pregunta:"Choose: '___ our clients need is a cost-effective and scalable solution.'", opciones:["It is","What","The reason"], correcta:1, hint:"'What...is' cleft sentence: 'What our clients need is a solution' — emphasis on the need. 'It is' would need 'that' not 'is'." },
+                { pregunta:"Which uses a cleft sentence correctly?", opciones:["It was the new strategy drove growth.","It was the new strategy that drove the 30% revenue growth.","It the new strategy was that drove growth."], correcta:1, hint:"'It was the new strategy that drove the 30% revenue growth' is the correct cleft structure. 'It was...drove' misses 'that'. The third has wrong word order." },
+                { pregunta:"Choose: 'We ___ deliver the project on time, despite the budget cuts.' (emphatic do)", opciones:["do","did","done"], correcta:1, hint:"Emphatic 'did' is used in Past Simple for emphasis: 'We did deliver' — stressing that we really did it despite difficulties." },
+                { pregunta:"Why are cleft sentences used in formal presentations?", opciones:["To make sentences shorter","To add emphasis and direct the audience's attention to key information","They are grammatically required"], correcta:1, hint:"Cleft sentences direct the audience's attention to the most important piece of information — essential in formal presentations and proposals." }
               ]
             }
         ]
@@ -1292,6 +1297,19 @@ function entrarAlPortal() {
     setTimeout(function() { overlay.style.display = 'none'; }, 500);
 }
 
+async function fetchConTimeout(url, opciones, ms) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    try {
+        const res = await fetch(url, { ...opciones, signal: controller.signal });
+        clearTimeout(timer);
+        return res;
+    } catch (err) {
+        clearTimeout(timer);
+        throw err;
+    }
+}
+
 async function iniciarSesion() {
     const nombre = document.getElementById('input-nombre').value.trim();
     const password = document.getElementById('input-password').value.trim();
@@ -1311,16 +1329,28 @@ async function iniciarSesion() {
 
     const nombreCapitalizado = palabras.map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');
 
-    btn.textContent = 'Cargando...';
     btn.disabled = true;
+    btn.textContent = '\u23f3 Conectando...';
+
+    // Si tarda más de 5s, avisar que el servidor está despertando
+    const avisoTimer = setTimeout(() => {
+        btn.textContent = '\u2615 Despertando servidor... espera ~30s';
+        mostrarError('El servidor está iniciando — esto ocurre cuando lleva tiempo sin uso. Por favor espera unos segundos y vuelve a intentarlo.');
+    }, 5000);
 
     try {
-        const res = await fetch('https://abs-pagina-1-2.onrender.com/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre: nombreCapitalizado, password: password })
-        });
+        const res = await fetchConTimeout(
+            'https://abs-pagina-1-2.onrender.com/api/login',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre: nombreCapitalizado, password: password })
+            },
+            60000
+        );
 
+        clearTimeout(avisoTimer);
+        ocultarError();
         const data = await res.json();
 
         if (!res.ok) {
@@ -1331,22 +1361,25 @@ async function iniciarSesion() {
         }
 
         // Login exitoso
+        btn.textContent = '\u2705 \u00a1Bienvenido/a!';
         nombreUsuario = data.nombre;
         sessionToken = data.token;
 
-        // Guardar sesión localmente para auto-login
         localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify({ nombre: nombreUsuario, token: sessionToken }));
 
-        // Cargar progreso desde el servidor
         if (data.completados && Array.isArray(data.completados)) {
             data.completados.forEach(id => completados.add(id));
         }
 
         actualizarProgreso();
-        entrarAlPortal();
+        setTimeout(() => entrarAlPortal(), 600);
 
     } catch (err) {
-        mostrarError('No se pudo conectar al servidor. Intenta de nuevo.');
+        clearTimeout(avisoTimer);
+        const esTimeout = err.name === 'AbortError';
+        mostrarError(esTimeout
+            ? 'El servidor tardó demasiado en responder. Espera unos segundos y vuelve a intentarlo.'
+            : 'No se pudo conectar al servidor. Verifica tu conexión a internet.');
         btn.textContent = 'Ingresar al Portal';
         btn.disabled = false;
     }
@@ -1397,11 +1430,15 @@ async function ejecutarReinicio() {
         const { nombre, token } = JSON.parse(saved);
         if (!nombre || !token) return;
 
-        const res = await fetch('https://abs-pagina-1-2.onrender.com/api/session', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token })
-        });
+        const res = await fetchConTimeout(
+            'https://abs-pagina-1-2.onrender.com/api/session',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token })
+            },
+            15000
+        );
 
         if (!res.ok) {
             localStorage.removeItem(STORAGE_KEY_SESSION);
@@ -1466,48 +1503,148 @@ function abrirTema(nivel,idx){
     mostrarEjercicio(nivel,idx);
 }
 
-function mostrarEjercicio(nivel,temaIdx){
-    var tema=dbLecciones[nivel].temas[temaIdx];
-    var sesion=sesionesTema[tema.id];
-    var eIdx=sesion.idx;
-    var ej=tema.ejercicios[eIdx];
-    var area=document.getElementById('ejercicio-area');
-    var dots='';
-    for(var k=0;k<5;k++){var c='exercise-dot';if(k<eIdx)c+=' done';else if(k===eIdx)c+=' active';dots+='<div class="'+c+'"></div>';}
-    var opts='';
-    ej.opciones.forEach(function(op,oi){
-        opts+='<button class="option-btn w-full text-left border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium text-gray-700" onclick="validarRespuesta(\''+nivel+'\','+temaIdx+','+eIdx+','+oi+')">'
-            +'<span class="font-black text-abs-blue mr-2">'+String.fromCharCode(65+oi)+'.</span> '+op+'</button>';
-    });
-    area.innerHTML='<div class="mb-4">'
-        +'<div class="flex items-center gap-2 mb-3"><p class="text-xs font-bold uppercase tracking-widest text-gray-400">Ejercicio '+(eIdx+1)+' de 5</p>'
-        +'<div class="flex gap-1.5">'+dots+'</div></div>'
-        +'<p class="font-bold text-gray-800 text-base mb-4">'+ej.pregunta+'</p>'
-        +'<div class="space-y-2">'+opts+'</div>'
-        +'<div id="feedback-area" class="mt-4 hidden"></div></div>';
+// ── Traducciones al español de las 200 preguntas ────────────────────────────
+const TRADUCCIONES_ES = [{"p": "¿Qué saludo es correcto a las 9:00 AM?", "o": ["Buenas noches", "Buenos días", "Buenas noches"]}, {"p": "Completa: '___ me llamo Ana Ruiz, trabajo en ABS.'", "o": ["Hola,", "Buenas tardes,", "Ey,"]}, {"p": "¿Cómo presentas formalmente a un colega?", "o": ["Este es mi amigo Pedro.", "Permítame presentar a nuestro director, Sr. Pérez.", "Te presento a Pedro, es genial."]}, {"p": "¿Qué frase cierra una primera reunión de forma profesional?", "o": ["¡Hasta luego!", "Fue un placer conocerle.", "¡Adiós adiós!"]}, {"p": "'Good evening' se usa después de:", "o": ["12:00", "18:00", "08:00"]}, {"p": "Elige: 'Por favor ve a ___ sala de conferencias del piso 3.'", "o": ["una", "un", "la"]}, {"p": "Elige: 'Ella recibió ___ correo del gerente.'", "o": ["un", "un", "el"]}, {"p": "Elige: 'Él trabaja en ___ oficina del centro.'", "o": ["una", "una", "la"]}, {"p": "Elige: '___ impresora no tiene papel.' (específica, conocida)", "o": ["Una", "Un", "La"]}, {"p": "¿Cuál oración es correcta?", "o": ["Ella tiene un agenda para hoy.", "Ella tiene una agenda para hoy.", "Ella tiene la agenda (primera mención)."]}, {"p": "'___ nombre es el Dr. Smith, y ___ especialidad es finanzas.' (él)", "o": ["Su / su", "Su / su", "Mi / mi"]}, {"p": "Elige: 'El departamento tiene ___ propio presupuesto.'", "o": ["su (de él)", "su (de ellos)", "su (de ello/empresa)"]}, {"p": "Elige: '___ equipo terminó el informe a tiempo.' (nosotros)", "o": ["Su", "Nuestro", "Mi"]}, {"p": "¿Qué oración usa correctamente un posesivo?", "o": ["Su un buen informe.", "Su oficina es grande.", "Su presentación fue excelente."]}, {"p": "Elige: '¿Cuál es ___ cargo?' (tú)", "o": ["mi", "tu", "su (de él)"]}, {"p": "Elige: 'Ella ___ los informes mensuales cada viernes.'", "o": ["prepara", "prepara", "está preparando"]}, {"p": "Elige: 'Ellos ___ trabajan los fines de semana.'", "o": ["no", "no (3ª persona)", "no está"]}, {"p": "Elige: '___ él asiste a la reunión semanal?'", "o": ["¿Asiste", "¿Asiste", "¿Está"]}, {"p": "Elige: 'El CEO ___ la junta cada trimestre.'", "o": ["reúne", "reúne", "está reuniendo"]}, {"p": "¿Qué oración es correcta?", "o": ["Yo trabaja en finanzas.", "Yo trabajo en el departamento de finanzas.", "Yo estoy trabajo en finanzas."]}, {"p": "¿Cómo se dice 9:15?", "o": ["Cuarto para las nueve", "Cuarto pasadas las nueve", "Las nueve y media"]}, {"p": "¿Cómo se dice 7:30?", "o": ["Las siete y media", "Cuarto pasadas las siete", "Siete a la mitad"]}, {"p": "¿Cómo se dice 10:45?", "o": ["Cuarto pasadas las diez", "Cuarto para las once", "Las diez y media"]}, {"p": "'La llamada es a las 14:00.' ¿Qué hora es esa?", "o": ["2:00 AM", "2:00 PM", "4:00 PM"]}, {"p": "¿Cuál es la forma correcta de programar una reunión?", "o": ["Encuéntrame a las 9 en las horas de la mañana.", "La reunión es a las 9:00 AM en punto.", "Nos reunimos a las nueve de la mañana."]}, {"p": "Elige: 'Los documentos están ___ tu escritorio.'", "o": ["en (dentro)", "sobre", "en (punto específico)"]}, {"p": "Elige: 'Por favor encuéntrame ___ recepción a las 10 AM.'", "o": ["en (dentro)", "en (superficie)", "en (punto específico)"]}, {"p": "Elige: 'El departamento de TI está ___ el tercer piso.'", "o": ["en (punto)", "en (superficie/piso)", "en (dentro)"]}, {"p": "Elige: 'La impresora está ___ la fotocopiadora.'", "o": ["al lado de", "sobre", "dentro de"]}, {"p": "'La oficina del CEO está ___ el ascensor.' ¿Cuál es correcta?", "o": ["frente al", "encima del", "al frente del"]}, {"p": "¿Qué adjetivo describe mejor a alguien que siempre cumple los plazos?", "o": ["Perezoso", "Confiable", "Descuidado"]}, {"p": "Elige: 'Ella es muy ___ — encuentra soluciones antes de que surjan problemas.'", "o": ["reactiva", "proactiva", "inactiva"]}, {"p": "¿Cuál describe a un colega de forma profesional?", "o": ["Es alto con cabello castaño.", "Es un analista eficiente y orientado al detalle.", "Se ve cansado hoy."]}, {"p": "Elige: 'La nueva empleada es ___ — aprende tareas muy rápidamente.'", "o": ["lenta", "dedicada", "de aprendizaje rápido"]}, {"p": "¿Qué adjetivo significa 'organizado y presta atención a los detalles'?", "o": ["Descuidado", "Orientado al detalle", "Distraído"]}, {"p": "Elige: 'Ella disfruta ___ presentaciones a clientes.'", "o": ["dar", "da", "dando"]}, {"p": "¿Qué oración es gramaticalmente correcta?", "o": ["Le gusta trabajar hasta tarde (mal).", "Le gusta trabajar hasta tarde (bien).", "Le gusta trabajar hasta tarde (sin 's')."]}, {"p": "Elige: 'Prefiero ___ a hacer llamadas telefónicas.'", "o": ["enviar correos", "enviar correos (infinitivo)", "enviar correos (gerundio)"]}, {"p": "¿Cuál expresa disgusto de forma profesional?", "o": ["Odio este trabajo.", "No me gusta trabajar en multitareas sin prioridades claras.", "Esto es terrible."]}, {"p": "Elige: '¿Disfrutas ___ con clientes internacionales?'", "o": ["trabajar (base)", "trabajar (3ª p.)", "trabajar (gerundio)"]}, {"p": "Elige: '¿Has conocido a ___ colega de marketing?' (mío)", "o": ["mi", "el mío", "me"]}, {"p": "¿Cuál describe una conexión profesional correctamente?", "o": ["Él es el jefe de mi jefe de mi jefe.", "Ella es nuestra directora regional y supervisa América Latina.", "Trabajan en algún lugar de la empresa."]}, {"p": "Elige: 'Este es el Sr. Kim. ___ empresa está en Seúl.'", "o": ["Su (de él)", "Su (de ella)", "Su (de ellos)"]}, {"p": "Elige la frase de networking correcta:", "o": ["Deberías conocer a Pedro, hace cosas.", "Permítame presentar a Pedro Vargas, nuestro Jefe de Operaciones.", "Pedro, este es alguien."]}, {"p": "'El asistente del CEO' significa:", "o": ["El asistente que es dueño del CEO", "El asistente del CEO", "El CEO que asiste"]}, {"p": "Elige: '___ manejar un equipo de 10 personas?' (pregunta de habilidad)", "o": ["¿Manejas", "¿Puedes", "¿Estás"]}, {"p": "¿Cuál expresa habilidad correctamente?", "o": ["Ella puede a manejar proyectos complejos.", "Ella puede maneja proyectos complejos.", "Ella puede manejar proyectos complejos."]}, {"p": "Elige: 'Yo ___ asistir a la reunión de 8 AM — compromiso previo.'", "o": ["puedo", "no puedo", "podría"]}, {"p": "¿Cuál es la solicitud más formal y cortés?", "o": ["¿Puedes enviar eso?", "¿Podría enviar el informe antes del cierre del día?", "Envíalo."]}, {"p": "'No puede compartir este documento externamente.' Esto expresa:", "o": ["Habilidad", "Permiso", "Prohibición"]}, {"p": "Elige: 'El equipo ___ el proyecto hace dos semanas.'", "o": ["termina", "terminó", "ha terminado"]}, {"p": "¿Cuál es el Pasado Simple correcto de 'make' (hacer)?", "o": ["maked", "made", "maden"]}, {"p": "Elige: 'Ella ___ el informe anual el viernes pasado.'", "o": ["escribe", "escribió", "ha escrito"]}, {"p": "Elige: 'No ___ alcanzar la meta del T3.' (negativo)", "o": ["logramos", "logramos (presente)", "hemos logrado"]}, {"p": "¿Qué oración está en Pasado Simple?", "o": ["Estamos lanzando un nuevo producto.", "Lanzamos un nuevo producto el año pasado.", "Hemos lanzado un nuevo producto."]}, {"p": "Elige: 'Nuestra entrega es ___ la del competidor.' (rápida)", "o": ["más rápido que (mal)", "más rápida que", "la más rápida que"]}, {"p": "'Esta solución es ___ el modelo anterior.' (rentable)", "o": ["más rentable que", "más rentabler que", "la más rentable"]}, {"p": "'La versión 2.0 es ___ la 1.0.' (buena — irregular)", "o": ["más buena que", "más mejor que", "mejor que"]}, {"p": "¿Qué comparativo es correcto?", "o": ["Nuestro servicio es más barato que el de ellos. (mal)", "Nuestro servicio es más barato que el de ellos. (bien)", "Nuestro servicio es el más barato que el de ellos."]}, {"p": "'Los nuevos términos son ___ los originales.' (favorables)", "o": ["más favorables que", "más favorabler que", "los más favorables que"]}, {"p": "Elige: 'El equipo de marketing ___ una nueva campaña ahora mismo.'", "o": ["desarrolla", "está desarrollando", "desarrollan"]}, {"p": "Elige: 'Yo ___ la propuesta al cliente esta tarde.' (planificado)", "o": ["presento", "estoy presentando", "presenta"]}, {"p": "¿Cuál usa el Presente Continuo correctamente?", "o": ["Ella está sabiendo la respuesta.", "Ella está revisando el contrato ahora.", "Ella está entendiendo el problema."]}, {"p": "Elige: '___ trabajando en el informe anual esta semana?'", "o": ["¿Trabajas", "¿Estás", "¿Está (él)"]}, {"p": "Elige: 'El CEO ___ una conferencia magistral mañana.'", "o": ["está dando", "da", "dan"]}, {"p": "Elige: 'La junta ___ aprobar el nuevo presupuesto la próxima semana.'", "o": ["va a", "va a (incorrecto)", "van a"]}, {"p": "¿Cuál expresa una decisión preplaneada?", "o": ["Quizás expandiremos.", "Vamos a abrir una nueva sucursal en el T3.", "Expandimos el próximo año."]}, {"p": "Elige: '___ la empresa ___ contratar nuevo personal este año?'", "o": ["¿Contrata / va a", "¿Va / a", "¿Van / a"]}, {"p": "'Mira esas nubes — ___ llover.' (basado en evidencia)", "o": ["lloverá", "va a llover", "va a"]}, {"p": "¿Cuál es correcta?", "o": ["Ella va presentar los resultados.", "Ella va a presentar los resultados.", "Ella va a presentar los resultados (sin 'a')."]}, {"p": "Elige: 'Siga ___ el corredor y gire a la derecha al final.'", "o": ["más allá de", "recto por", "al cruzar"]}, {"p": "¿Cuál es la frase correcta para dar instrucciones?", "o": ["Suba el ascensor.", "Tome el ascensor al segundo piso.", "Arriba el ascensor al piso dos."]}, {"p": "Elige: 'La sala de juntas está ___ el ascensor, a la izquierda.'", "o": ["más allá de", "frente al", "al lado del (mal)"]}, {"p": "¿Cuál le dice correctamente a alguien adónde ir?", "o": ["Es recto y derecha.", "Por favor avance hasta el final del corredor y gire a la izquierda.", "Ve para allá."]}, {"p": "Elige: 'La salida ___ a su derecha después del puesto de seguridad.'", "o": ["estoy", "están", "está"]}, {"p": "Elige: 'Los empleados ___ usar gafas de seguridad en el laboratorio.' (obligación)", "o": ["deben (recomendación)", "deben (obligación)", "pueden"]}, {"p": "Elige: 'No ___ bloquear las salidas de emergencia.' (prohibición)", "o": ["se debe", "no siempre se debe", "no es necesario"]}, {"p": "¿Qué oración da una recomendación de seguridad?", "o": ["Debes tomar un descanso cada hora.", "Deberías tomar descansos regulares para evitar el cansancio.", "Puedes descansar cuando quieras."]}, {"p": "Elige: '___ reportar accidentes a RR.HH.?' (recomendación)", "o": ["¿Se debe (obligación)", "¿Se debería", "¿Se puede"]}, {"p": "'Los empleados ___ usar equipos sin capacitación.' ¿Cuál es correcta?", "o": ["deben", "deberían", "no deben"]}, {"p": "Elige: 'No tenemos ___ tiempo antes del plazo.' (incontable)", "o": ["muchos", "mucho", "pocos"]}, {"p": "Elige: 'Hay ___ errores en este informe.' (contable)", "o": ["mucho", "muchos", "poco"]}, {"p": "Elige: 'Recibimos ___ solicitudes para el puesto.' (gran cantidad)", "o": ["muchas", "mucho de", "muchas (forma incorrecta)"]}, {"p": "Elige: 'Aún tenemos ___ presupuesto restante.' (pequeña cantidad, positivo)", "o": ["pocos", "poco", "muchos"]}, {"p": "¿Qué oración es correcta?", "o": ["Hay mucho departamentos en esta empresa.", "Hay muchos departamentos en esta empresa.", "Hay muchos departamentos en esta empresa (sin concordancia)."]}, {"p": "Elige: 'A las 10 AM, la junta ___ los resultados trimestrales.'", "o": ["revisó", "estaba revisando", "revisa"]}, {"p": "Elige: 'Mientras el CEO ___ su discurso, sonó la alarma de incendio.'", "o": ["dio", "estaba dando", "da"]}, {"p": "¿Cuál usa el Pasado Continuo correctamente?", "o": ["Ella estaba presentar el informe cuando él llamó.", "Ella estaba presentando el informe cuando él llamó.", "Ella presentó el informe cuando él estaba llamando."]}, {"p": "Elige: '___ el equipo trabajando en el prototipo el martes pasado?'", "o": ["¿Trabajó", "¿Estaban", "¿Estaba"]}, {"p": "Elige: 'Los analistas ___ los datos cuando el sistema falló.'", "o": ["procesaron", "estaban procesando", "están procesando"]}, {"p": "Elige: 'Los analistas predicen que los ingresos ___ aumentar un 20% en el T4.'", "o": ["van a", "van a (otro)", "van a (pasado)"]}, {"p": "Elige: 'No te preocupes — yo ___ manejar esta queja personalmente.'", "o": ["voy a", "voy a (espontáneo)", "voy a (incorrecto)"]}, {"p": "¿Cuál es una decisión espontánea usando 'Will'?", "o": ["Voy a llamar a TI más tarde.", "Llamo a TI ahora mismo — el sistema está caído.", "Llamé a TI ayer."]}, {"p": "Elige: 'La fusión ___ finalizar antes de fin de año.'", "o": ["no va a", "va a", "va a (incorrecto)"]}, {"p": "¿Cuál usa 'Won't' correctamente?", "o": ["Él no va a asistir a la conferencia (mal).", "El sistema no va a procesar la solicitud.", "Ellos no van a ir a la cumbre (mal)."]}, {"p": "Elige: '___ comenzar el resumen?' (formal)", "o": ["¿Va a", "¿Empezamos", "¿Podría"]}, {"p": "Elige: '___ revisar los puntos de acción antes de cerrar.'", "o": ["Dejemos que", "Vamos a", "¿Deberíamos a"]}, {"p": "¿Cuál es una sugerencia profesional correcta?", "o": ["Quizás deberías hacer esto.", "¿Por qué no implementamos el programa primero en un departamento?", "Haz el programa piloto."]}, {"p": "Elige: '¿Qué tal ___ al proveedor un descuento?'", "o": ["pedir (infinitivo)", "pedir (base)", "pedir (gerundio)"]}, {"p": "¿Cuál hace correctamente una sugerencia con 'Shall'?", "o": ["¿Deberíamos a discutir el presupuesto?", "¿Discutimos el presupuesto?", "¿Estamos discutiendo el presupuesto?"]}, {"p": "Elige: 'La empresa ___ tres oficinas internacionales desde 2020.'", "o": ["abrió", "ha abierto", "abre"]}, {"p": "Elige: '¿Alguna vez has ___ un equipo multifuncional?'", "o": ["liderado (base)", "liderado (correcto)", "liderado (incorrecto)"]}, {"p": "¿Qué oración es correcta?", "o": ["Hemos firmado el contrato el lunes pasado.", "Firmamos el contrato el lunes pasado.", "Hemos firmar el contrato el lunes pasado."]}, {"p": "Elige: 'El CEO ___ acaba de anunciar la fusión.'", "o": ["ha", "han", "había"]}, {"p": "¿Qué palabra señal se usa típicamente con el Presente Perfecto?", "o": ["Ayer", "El año pasado", "Recientemente"]}, {"p": "Elige: 'Los ingresos cayeron ___ una interrupción global en la cadena de suministro.'", "o": ["porque", "debido a", "por lo tanto"]}, {"p": "Elige: 'El sistema falló; ___, todas las reuniones fueron canceladas.'", "o": ["debido a", "porque", "como resultado"]}, {"p": "Elige: 'Las ventas aumentaron ___ lanzamos una campaña de marketing agresiva.'", "o": ["debido a", "porque", "consecuentemente"]}, {"p": "¿Qué oración expresa correctamente causa y efecto?", "o": ["Perdimos al cliente. Porque mal servicio.", "El mal servicio al cliente llevó a la pérdida de nuestro mayor cliente.", "Por lo tanto perdimos a un cliente mal servicio."]}, {"p": "Elige: 'El presupuesto fue recortado; ___, el proyecto tuvo que reducirse.'", "o": ["porque", "debido a", "consecuentemente"]}, {"p": "Convierte: El gerente dijo: 'Estamos lanzando el próximo trimestre.'", "o": ["Dijo que están lanzando el próximo trimestre.", "Dijo que estaban lanzando el próximo trimestre.", "Dijo que lanzarán el próximo trimestre."]}, {"p": "Convierte: El CEO dijo: 'Hemos superado nuestras metas.'", "o": ["Dijo que superaron sus metas.", "Dijo que habían superado sus metas.", "Dijo que han superado sus metas."]}, {"p": "Convierte: El analista dijo: 'El mercado se recuperará.'", "o": ["Dijo que el mercado se recuperaría.", "Dijo que el mercado se recuperará.", "Dijo que el mercado se recupera."]}, {"p": "¿Qué verbo de reporte significa que el hablante dio una recomendación formal?", "o": ["Negó", "Propuso", "Rechazó"]}, {"p": "Elige: 'El director ___ que la nueva política había sido aprobada.'", "o": ["dijo a", "dijo", "habló"]}, {"p": "¿Cuál usa correctamente el Segundo Condicional?", "o": ["Si tuviéramos más fondos, expandimos.", "Si tuviéramos más fondos, expandiríamos a nuevos mercados.", "Si tendremos fondos, expandiríamos."]}, {"p": "Elige: 'Si el cliente ___ el contrato, ___ contratar 20 nuevos empleados.'", "o": ["firma / va a", "firmara / contratariamos", "ha firmado / contratariamos"]}, {"p": "¿Cuál es la alternativa formal de 'Si yo fuera el CEO...'?", "o": ["Si soy el CEO...", "Si yo fuera el CEO...", "Si yo seré el CEO..."]}, {"p": "Elige: 'Si ___ nuestros precios, ___ atraer más clientes con presupuesto limitado.'", "o": ["reducimos / vamos a", "redujéramos / atraeriamos", "reduciendo / atraeriamos"]}, {"p": "¿En qué contexto empresarial es más útil el Segundo Condicional?", "o": ["Describir eventos pasados", "Explorar planes hipotéticos y escenarios de negociación", "Hacer informes de hechos"]}, {"p": "Elige: 'Sugiero ___ a un consultor externo antes de proceder.'", "o": ["contratar (infinitivo)", "contratar (base)", "contratar (gerundio)"]}, {"p": "¿Cuál es la propuesta formal correcta?", "o": ["Quizás deberíamos intentar algo.", "Propongo que asignemos recursos adicionales al departamento de I+D.", "Hagámoslo."]}, {"p": "Elige: 'Recomiendo ___ la estrategia de precios para el mercado asiático.'", "o": ["revisar (infinitivo)", "revisar (base)", "revisar (gerundio)"]}, {"p": "¿Qué verbo es más formal para hacer una propuesta en una reunión de junta?", "o": ["Sugiero", "Propongo", "Creo"]}, {"p": "Elige: 'Mi recomendación ___ posponer el lanzamiento del producto hasta el T2.'", "o": ["son", "es", "sea"]}, {"p": "Convierte a pasiva: 'El equipo envía el informe cada viernes.'", "o": ["El informe se envía cada viernes. (activo)", "El informe es enviado cada viernes.", "El informe fue enviado cada viernes."]}, {"p": "Elige: 'El nuevo software ___ instalado en todas las estaciones de trabajo la semana pasada.'", "o": ["es", "fue", "fueron"]}, {"p": "¿Por qué se prefiere la voz pasiva en los informes empresariales?", "o": ["Suena informal", "Se enfoca en la acción y suena más objetivo", "Hace las oraciones más cortas"]}, {"p": "Elige: 'La fusión ___ finalizada antes del fin del año fiscal.' (futuro)", "o": ["es", "fue", "será"]}, {"p": "¿Qué oración está correctamente en voz pasiva?", "o": ["El cliente fue satisfecho el equipo.", "El contrato fue firmado por ambas partes.", "La junta aprobó fue el presupuesto."]}, {"p": "Elige: 'La empresa ___ su participación de mercado constantemente desde 2023.'", "o": ["ha crecido (resultado)", "ha estado creciendo (proceso)", "creció"]}, {"p": "Elige: 'Nuestros ingenieros ___ en esta solución durante los últimos ocho meses.'", "o": ["trabajaron", "han trabajado", "han estado trabajando"]}, {"p": "¿Qué oración enfatiza un proceso en curso?", "o": ["Lanzamos una nueva campaña.", "Hemos lanzado una nueva campaña.", "Hemos estado desarrollando una nueva campaña durante tres meses."]}, {"p": "Elige: 'Las quejas de los clientes ___ desde que actualizamos el software.'", "o": ["disminuyeron", "han estado disminuyendo", "disminuyen"]}, {"p": "¿Cuál es la diferencia clave entre el Presente Perfecto Simple y Continuo?", "o": ["No hay diferencia", "Simple se enfoca en el resultado; Continuo en el proceso en curso", "El Continuo solo se usa informalmente"]}, {"p": "Elige: 'Rediseñamos el proceso ___ reducir el tiempo de producción.'", "o": ["para que", "para (formal)", "con el objetivo"]}, {"p": "Elige: 'Introdujimos horarios flexibles ___ los empleados pudieran mejorar su equilibrio laboral.'", "o": ["para", "para (base)", "para que"]}, {"p": "¿Cuál es la forma más formal de expresar propósito?", "o": ["Para reducir costos...", "Con el fin de reducir los gastos operativos...", "A causa de los costos..."]}, {"p": "Elige: 'La empresa se expandió a Asia ___ aumentar su cuota de mercado global.'", "o": ["con el objetivo de", "para", "para que"]}, {"p": "¿Qué oración expresa propósito correctamente?", "o": ["Contratamos consultores para reducir costos. (mal)", "Contratamos consultores para reducir costos. (bien)", "Contratamos consultores para reducir costos. (sin 'para')"]}, {"p": "Elige: 'Las ventas aumentaron ___ un 15% — la cifra final fue 14,8%.'", "o": ["exactamente", "aproximadamente", "con precisión"]}, {"p": "Elige: 'Nuestra cuota de mercado es ahora ___ grande como la de nuestro competidor más cercano.'", "o": ["doble", "el doble de", "dos veces más"]}, {"p": "¿Qué frase describe una pequeña disminución?", "o": ["Una caída brusca", "Una leve bajada", "Una caída masiva"]}, {"p": "Elige: '___ tres cuartas partes de nuestros ingresos provienen ahora de canales digitales.'", "o": ["Casi", "Aproximadamente", "Casi (más cercano)"]}, {"p": "¿Qué oración presenta estadísticas de forma más profesional?", "o": ["Ganamos como mucho más dinero.", "Los ingresos aumentaron aproximadamente un 22%, alcanzando poco más de $5 millones en el T3.", "Las ventas subieron mucho este trimestre."]}, {"p": "Elige: 'El proyecto se retrasó. ___, el cliente quedó satisfecho.'", "o": ["Además", "Sin embargo", "Por lo tanto"]}, {"p": "Elige: 'Redujimos costos un 10%. ___, aumentamos la productividad.'", "o": ["Sin embargo", "Además", "A pesar de"]}, {"p": "Elige: '___ el alto costo, la junta aprobó el nuevo software.'", "o": ["A pesar de", "Sin embargo", "Además"]}, {"p": "Elige: 'La campaña fue exitosa; ___, aumentaremos el presupuesto del T4.'", "o": ["sin embargo", "por lo tanto", "a pesar de"]}, {"p": "¿Qué palabra introduce un ejemplo en un informe?", "o": ["Sin embargo", "Por ejemplo", "Por lo tanto"]}, {"p": "¿Qué frase abre una negociación de forma profesional?", "o": ["Esto es lo que queremos.", "Nos gustaría proponer un marco inicial para la discusión.", "Tómalo o déjalo."]}, {"p": "¿Qué frase hace una concesión condicional?", "o": ["Está bien, bajaremos el precio.", "Estamos dispuestos a ajustar el cronograma si cumplen con nuestros requisitos de precio.", "No podemos hacer eso."]}, {"p": "¿Qué significa BATNA?", "o": ["Enfoque Empresarial para Negociar Activos", "Mejor Alternativa a un Acuerdo Negociado", "Mejor Acción hacia Nuevos Acuerdos"]}, {"p": "¿Qué frase responde profesionalmente a una propuesta?", "o": ["Eso está mal.", "Apreciamos su posición; sin embargo, esos términos requieren mayor discusión.", "De ninguna manera."]}, {"p": "¿Por qué es crítico conocer tu BATNA antes de negociar?", "o": ["Ayuda a parecer más poderoso", "Define tu punto de salida y fortalece tu posición", "No es importante"]}, {"p": "¿Cuál es una oración correcta del Tercer Condicional?", "o": ["Si lanzamos antes, capturamos más mercado.", "Si hubiéramos lanzado antes, habríamos capturado más cuota de mercado.", "Si hubiéramos lanzado antes, capturaríamos más mercado."]}, {"p": "Elige: 'Si el equipo ___ el problema antes, el proyecto no ___ cancelado.'", "o": ["identificara / no habría sido", "hubiera identificado / no habría sido", "habría identificado / no hubiera"]}, {"p": "¿Qué es un 'condicional mixto'?", "o": ["Una mezcla de lenguaje formal e informal", "Una condición pasada con resultado presente", "Una pregunta con respuesta condicional"]}, {"p": "Elige: 'Si ___ más en capacitación, nuestra tasa de retención ___ más alta ahora.' (mixto)", "o": ["hubiéramos invertido / sería", "invertimos / será", "hemos invertido / sería"]}, {"p": "¿En qué contexto empresarial es más útil el Tercer Condicional?", "o": ["Hacer planes futuros", "Analizar decisiones pasadas y qué se pudo haber hecho diferente", "Describir proyectos actuales"]}, {"p": "¿Qué oración usa lenguaje de cobertura correctamente?", "o": ["La estrategia está mal.", "Parecería que la estrategia actual puede requerir una revisión significativa.", "Cambia la estrategia ahora."]}, {"p": "¿Qué adverbio es un recurso de cobertura?", "o": ["Ciertamente", "Absolutamente", "Posiblemente"]}, {"p": "Elige: 'Los resultados ___ sugerir que la confianza del consumidor se está recuperando.'", "o": ["definitivamente", "tendería a", "claramente"]}, {"p": "¿Por qué es importante la cobertura en la comunicación empresarial de alto nivel?", "o": ["Evita responsabilidades", "Indica apertura al diálogo y reduce el riesgo de conflictos", "Te hace parecer inseguro"]}, {"p": "Elige: '___ que la fusión ___ enfrentar desafíos regulatorios.'", "o": ["Parece / podría", "Es / definitivamente va a", "Parece / debe"]}, {"p": "'Una reducción del 40% en costos ha sido lograda por empresas comparables.' — Esto usa:", "o": ["Pathos", "Ethos", "Logos"]}, {"p": "'Con 15 años de experiencia en la industria, nuestro equipo está en posición única.' — Esto usa:", "o": ["Logos", "Ethos", "Pathos"]}, {"p": "'Esta iniciativa beneficiará directamente a 500 empleados y sus familias.' — Esto usa:", "o": ["Ethos", "Logos", "Pathos"]}, {"p": "¿Cuál es la estructura correcta de una propuesta empresarial persuasiva?", "o": ["Conclusión, Evidencia, Problema, Contexto", "Contexto, Problema, Evidencia, Solución, Llamada a la acción", "Solución, Pathos, Logos, Ethos"]}, {"p": "¿Por qué es efectivo combinar Logos, Ethos y Pathos en la escritura empresarial?", "o": ["Confunde al lector", "Apela a la lógica, credibilidad y emoción simultáneamente para máxima persuasión", "Lo requiere la ley corporativa"]}, {"p": "Elige: '___, la inversión inicial es significativa; sin embargo, el ROI lo justifica.'", "o": ["Por lo tanto", "Hay que admitir que", "Consecuentemente"]}, {"p": "Elige: 'La estrategia tiene riesgos. ___, ofrece el mayor rendimiento potencial.'", "o": ["Hay que admitir", "De hecho", "En otras palabras"]}, {"p": "¿Qué marcador reformula una idea de forma más simple?", "o": ["De hecho", "En otras palabras", "En balance"]}, {"p": "'___, los datos confirman nuestra hipótesis — este mercado está desatendido.'", "o": ["Hay que admitir", "Efectivamente", "Sin embargo"]}, {"p": "Elige: '___ todos los factores, la fusión propuesta representa la opción de crecimiento más sólida.'", "o": ["En balance, considerando", "Considerando todo", "Considerando todos los factores,"]}, {"p": "¿Cuál expresa ALTA certeza sobre una situación presente?", "o": ["Puede que lo sepan.", "Deben estar al tanto de la nueva estrategia de precios.", "Podrían posiblemente saberlo."]}, {"p": "Elige: 'La nueva regulación ___ impactar significativamente nuestra cadena de suministro.' (moderado)", "o": ["debe", "debería", "podría"]}, {"p": "Elige: 'Dado los datos, es probable que el mercado ___ recuperarse en el T4.'", "o": ["posiblemente", "es probable que", "definitivamente debe"]}, {"p": "¿Cuál expresa BAJA certeza?", "o": ["Esto definitivamente tendrá éxito.", "Esto seguramente tendrá éxito.", "Esto podría potencialmente tener éxito."]}, {"p": "Elige: 'El competidor ___ lanzando un producto similar — nuestra inteligencia lo sugiere.'", "o": ["podría estar", "debe estar", "ciertamente está"]}, {"p": "Elige: '___ superamos la meta, sino que también redujimos los costos un 15%.'", "o": ["No solo", "Solo", "Nunca"]}, {"p": "¿Cuál usa la inversión correctamente?", "o": ["Nunca antes la empresa ha visto tal crecimiento.", "Nunca antes había visto la empresa tal crecimiento.", "Nunca la empresa ha visto tal crecimiento antes."]}, {"p": "Elige: '___ habíamos firmado el contrato cuando las condiciones del mercado cambiaron.'", "o": ["Apenas", "Raramente", "Solo después"]}, {"p": "¿Por qué se usa la inversión en la comunicación empresarial formal?", "o": ["Para confundir al lector", "Para añadir énfasis y tono formal a declaraciones clave", "Es obligatoria en inglés"]}, {"p": "Elige: '___ después de una auditoría completa ___ la junta aprobar la adquisición.'", "o": ["Solo / va a", "Solo / aprobó", "Nunca / ha"]}, {"p": "Nominaliza: 'Decidimos fusionar las dos divisiones.'", "o": ["El decidir de fusionar fue hecho.", "La decisión de fusionar las dos divisiones fue aprobada.", "Hicimos decidir sobre la fusión."]}, {"p": "¿Cuál es la forma nominalizada de 'investigate' (investigar)?", "o": ["Investigando", "Investigación", "Investigado"]}, {"p": "¿Por qué se usa la nominalización en la escritura empresarial formal?", "o": ["Hace la escritura más informal", "Hace la escritura más formal, objetiva y concisa", "Es más fácil de leer"]}, {"p": "Nominaliza: 'El equipo tuvo un buen desempeño.'", "o": ["El desempeñar del equipo fue bien.", "El desempeño del equipo superó las expectativas.", "El equipo hizo buen desempeño."]}, {"p": "Elige la versión nominalizada: 'No entregamos a tiempo.'", "o": ["Nuestro fallar fue a tiempo.", "El incumplimiento en la entrega resultó en sanciones económicas.", "Hicimos un fallo de entrega."]}, {"p": "¿Cuál es una característica clave de las culturas de alto contexto en los negocios?", "o": ["Prefieren la comunicación directa y explícita", "Confían en mensajes implícitos, relaciones y contexto", "Evitan toda comunicación escrita"]}, {"p": "¿Qué país se considera típicamente una cultura de bajo contexto?", "o": ["Japón", "Brasil", "Alemania"]}, {"p": "¿Qué podría parecerle a un colega japonés la comunicación directa de un ejecutivo estadounidense?", "o": ["Educada y profesional", "Grosera o inapropiadamente directa", "Una señal de gran respeto"]}, {"p": "En una cultura de alto contexto, un 'no' a menudo se comunica:", "o": ["De forma clara y directa", "Indirectamente a través del tono, silencio o contexto", "Por carta formal"]}, {"p": "¿Por qué es importante adaptar tu estilo de comunicación en los negocios globales?", "o": ["No es importante en los negocios modernos", "Genera confianza y evita malentendidos costosos en asociaciones internacionales", "Solo importa en situaciones sociales"]}, {"p": "Elige: '___ el equipo directivo ___ el que dio la vuelta a la empresa.'", "o": ["Fue / el que", "Lo que / es", "La razón / es que"]}, {"p": "Elige: '___ nuestros clientes necesitan es una solución rentable y escalable.'", "o": ["Es", "Lo que", "La razón"]}, {"p": "¿Cuál usa correctamente una oración escindida?", "o": ["Fue la nueva estrategia impulsó el crecimiento.", "Fue la nueva estrategia la que impulsó el 30% de crecimiento en ingresos.", "Fue la nueva estrategia que impulsó el crecimiento."]}, {"p": "Elige: 'Sí ___ entregar el proyecto a tiempo, a pesar de los recortes presupuestarios.' (énfasis)", "o": ["lo hicimos (presente)", "lo hicimos (pasado)", "lo hemos hecho"]}, {"p": "¿Por qué se usan las oraciones escindidas en presentaciones formales?", "o": ["Para hacer las oraciones más cortas", "Para añadir énfasis y dirigir la atención del público a información clave", "Son gramaticalmente obligatorias"]}];
+
+// Índice global para saber qué traducción mostrar
+function obtenerIdxGlobal(nivel, temaIdx, eIdx) {
+    var orden = ['A1','A2','B1','B2'];
+    var nivelIdx = orden.indexOf(nivel);
+    return nivelIdx * 50 + temaIdx * 5 + eIdx;
 }
 
-function validarRespuesta(nivel,temaIdx,eIdx,opcion){
-    var tema=dbLecciones[nivel].temas[temaIdx];
-    var ej=tema.ejercicios[eIdx];
-    var bts=document.querySelectorAll('.option-btn');
-    var fb=document.getElementById('feedback-area');
-    bts.forEach(function(b,i){b.disabled=true;if(i===ej.correcta)b.classList.add('correct');if(i===opcion&&opcion!==ej.correcta)b.classList.add('wrong');});
+function toggleTraduccion(nivel, temaIdx, eIdx) {
+    var idx = obtenerIdxGlobal(nivel, temaIdx, eIdx);
+    var t   = TRADUCCIONES_ES[idx];
+    if (!t) return;
+
+    var box = document.getElementById('traduccion-box');
+    var btn = document.getElementById('btn-traducir');
+    if (!box || !btn) return;
+
+    if (box.style.display === 'none' || box.style.display === '') {
+        // Mostrar traducción
+        var opcsHTML = t.o.map(function(op, i) {
+            return '<span style="display:inline-block;margin-right:12px;"><strong>' + String.fromCharCode(65+i) + '.</strong> ' + op + '</span>';
+        }).join('');
+        box.innerHTML = '<strong>📝 Pregunta:</strong> ' + t.p
+            + '<br><strong style="margin-top:6px;display:inline-block;">Opciones:</strong> ' + opcsHTML;
+        box.style.display = 'block';
+        btn.textContent = '🌐 Ocultar traducción';
+        btn.classList.add('activo');
+    } else {
+        box.style.display = 'none';
+        btn.textContent = '🌐 Ver en español';
+        btn.classList.remove('activo');
+    }
+}
+
+function mostrarEjercicio(nivel, temaIdx) {
+    var tema  = dbLecciones[nivel].temas[temaIdx];
+    var sesion = sesionesTema[tema.id];
+    var eIdx  = sesion.idx;
+    var ej    = tema.ejercicios[eIdx];
+    var area  = document.getElementById('ejercicio-area');
+
+    // Dots de progreso: verde = completado, azul = actual, gris = pendiente
+    var dots = '';
+    for (var k = 0; k < 5; k++) {
+        var c = 'exercise-dot';
+        if (k < eIdx)        c += ' done';
+        else if (k === eIdx) c += ' active';
+        dots += '<div class="' + c + '"></div>';
+    }
+
+    // Opciones de respuesta
+    var opts = '';
+    ej.opciones.forEach(function(op, oi) {
+        opts += '<button class="option-btn w-full text-left border-2 border-gray-200 rounded-xl px-4 py-3 text-sm font-medium text-gray-700"'
+              + ' onclick="validarRespuesta(\'' + nivel + '\',' + temaIdx + ',' + eIdx + ',' + oi + ')">'
+              + '<span class="font-black text-abs-blue mr-2">' + String.fromCharCode(65 + oi) + '.</span> '
+              + op + '</button>';
+    });
+
+    area.innerHTML = '<div class="mb-4">'
+        + '<div class="flex items-center gap-2 mb-3">'
+        +   '<p class="text-xs font-bold uppercase tracking-widest text-gray-400">Pregunta ' + (eIdx + 1) + ' de 5</p>'
+        +   '<div class="flex gap-1.5">' + dots + '</div>'
+        + '</div>'
+        + '<p class="font-bold text-gray-800 text-base mb-2">' + ej.pregunta + '</p>'
+        + '<button id="btn-traducir" class="btn-traducir mb-3" onclick="toggleTraduccion(\\'' + nivel + '\\',' + temaIdx + ',' + eIdx + ')">🌐 Ver en español</button>'
+        + '<div id="traduccion-box" class="traduccion-box" style="display:none;"></div>'
+        + '<div class="space-y-2 mt-2">' + opts + '</div>'
+        + '<div id="feedback-area" class="mt-4 hidden"></div>'
+        + '</div>';
+}
+
+function validarRespuesta(nivel, temaIdx, eIdx, opcion) {
+    var tema     = dbLecciones[nivel].temas[temaIdx];
+    var ej       = tema.ejercicios[eIdx];
+    var bts      = document.querySelectorAll('.option-btn');
+    var fb       = document.getElementById('feedback-area');
+    var letraOk  = String.fromCharCode(65 + ej.correcta);
+    var textoOk  = ej.opciones[ej.correcta];
+
+    // Marcar visualmente correcta / incorrecta y deshabilitar botones
+    bts.forEach(function(b, i) {
+        b.disabled = true;
+        if (i === ej.correcta)                     b.classList.add('correct');
+        if (i === opcion && opcion !== ej.correcta) b.classList.add('wrong');
+    });
+
     fb.classList.remove('hidden');
-    if(opcion===ej.correcta){
-        fb.innerHTML='<div class="bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-green-700 font-medium">Correcto! Bien hecho.</div>';
+
+    if (opcion === ej.correcta) {
+        // ── CORRECTO: avanzar a la siguiente pregunta ──────────────────
+        fb.innerHTML = '<div class="bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-green-700 font-bold">'
+            + '✅ ¡Correcto! Bien hecho.</div>';
+
         sesionesTema[tema.id].idx++;
-        if(sesionesTema[tema.id].idx>=5){
-            completados.add(tema.id);guardarProgreso();actualizarProgreso();mostrarTemas(nivel);
-            fb.innerHTML+='<div class="mt-3 bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">'
-                +'<p class="text-2xl mb-1">Tema completado!</p>'
-                +'<p class="font-black text-abs-blue text-base">Has respondido los 5 ejercicios correctamente.</p>'
-                +'<button onclick="document.getElementById(\'clase-area\').classList.add(\'hidden\')" class="mt-3 abs-blue text-white font-bold text-sm px-6 py-2 rounded-full hover:opacity-90">Volver a los temas</button></div>';
-        }else{setTimeout(function(){mostrarEjercicio(nivel,temaIdx);},1200);}
-    }else{
-        sesionesTema[tema.id]={idx:0,errores:0};
-        fb.innerHTML='<div class="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-red-700">Incorrecto. Respuesta correcta: <strong>'+String.fromCharCode(65+ej.correcta)+'. '+ej.opciones[ej.correcta]+'</strong><br><span class="text-xs mt-1 block text-gray-500">El tema se reinicia para que domines todos los ejercicios.</span></div>';
-        setTimeout(function(){mostrarEjercicio(nivel,temaIdx);},2200);
+
+        if (sesionesTema[tema.id].idx >= 5) {
+            // Todas respondidas correctamente → completar tema
+            completados.add(tema.id);
+            guardarProgreso();
+            actualizarProgreso();
+            mostrarTemas(nivel);
+            fb.innerHTML += '<div class="mt-3 bg-blue-50 border border-blue-200 rounded-xl p-5 text-center">'
+                + '<p class="text-3xl mb-2">🎉</p>'
+                + '<p class="font-black text-abs-blue text-base">¡Tema completado!</p>'
+                + '<p class="text-sm text-gray-500 mt-1">Respondiste las 5 preguntas correctamente.</p>'
+                + '<button onclick="document.getElementById(\'clase-area\').classList.add(\'hidden\')"'
+                +   ' class="mt-4 abs-blue text-white font-bold text-sm px-6 py-2 rounded-full hover:opacity-90">'
+                +   'Volver a los temas</button>'
+                + '</div>';
+        } else {
+            // Siguiente pregunta
+            setTimeout(function() { mostrarEjercicio(nivel, temaIdx); }, 1200);
+        }
+
+    } else {
+        // ── INCORRECTO: explicar el error y permitir reintentar ────────
+        // Usar el hint específico del ejercicio
+        var explicacion = (ej.hint && ej.hint.trim())
+            ? ej.hint
+            : 'Review the topic content and try again. '
+            + 'Remember: <strong>' + letraOk + '. ' + textoOk + '</strong> is the correct answer.';
+
+        fb.innerHTML = '<div class="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-red-700">'
+            +   '<p class="font-bold mb-1">❌ Incorrecto.</p>'
+            +   '<p>La respuesta correcta es: <strong>' + letraOk + '. ' + textoOk + '</strong></p>'
+            + '</div>'
+            + '<div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mt-2 text-sm text-yellow-800">'
+            +   '<p class="font-bold mb-1">💡 Explicación:</p>'
+            +   '<p>' + explicacion + '</p>'
+            + '</div>'
+            + '<button id="btn-reintentar"'
+            +   ' class="mt-3 w-full border-2 border-abs-blue text-abs-blue font-bold text-sm px-4 py-3 rounded-xl hover:bg-blue-50 transition">'
+            +   '🔄 Intentar de nuevo'
+            + '</button>';
+
+        // Botón reintentar — recarga la MISMA pregunta, sin cambiar el idx
+        document.getElementById('btn-reintentar').addEventListener('click', function() {
+            mostrarEjercicio(nivel, temaIdx);
+        });
     }
 }
 
