@@ -1782,69 +1782,173 @@ async function hablarRespuesta(texto) {
 
 
 // ── Fallback: voz del navegador (Web Speech API) ──────────────────
-// ── Seleccionar la mejor voz en inglés disponible ──────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// SISTEMA DE VOZ — Compatible Chrome, Edge, Firefox, Safari,
+//                  Android Chrome, iOS Safari, Brave, Opera
+// ═══════════════════════════════════════════════════════════════
+
+// Cache de la voz seleccionada para no buscarla en cada llamada
+let _vozEnInglesCache = null;
+let _vocesYaCargadas = false;
+
+// Lista de voces preferidas por navegador (orden de prioridad)
+const VOCES_PREFERIDAS = [
+    // Chrome / Android Chrome
+    "Google US English",
+    "Google UK English Female",
+    "Google UK English Male",
+    // Microsoft Edge (Chromium)
+    "Microsoft Aria Online (Natural) - English (United States)",
+    "Microsoft Jenny Online (Natural) - English (United States)",
+    "Microsoft Guy Online (Natural) - English (United States)",
+    "Microsoft Aria - English (United States)",
+    "Microsoft Jenny - English (United States)",
+    "Microsoft Zira - English (United States)",
+    "Microsoft David - English (United States)",
+    "Microsoft Mark - English (United States)",
+    // macOS / iOS Safari
+    "Samantha",
+    "Karen",
+    "Moira",
+    "Tessa",
+    "Veena",
+    // Firefox (usa voces del sistema operativo)
+    "English United States",
+    "English (United States)",
+];
+
 function seleccionarVozIngles() {
     const voices = speechSynthesis.getVoices();
+    if (!voices || voices.length === 0) return null;
 
-    // Prioridad 1: Voz Google en inglés (Chrome — la más natural)
+    // 1. Buscar por nombre exacto en lista de preferidas
+    for (const nombrePreferido of VOCES_PREFERIDAS) {
+        const v = voices.find(v => v.name === nombrePreferido);
+        if (v) return v;
+    }
+
+    // 2. Buscar voz Google en inglés (cualquier variante)
     const googleEN = voices.find(v =>
-        v.name.includes("Google") && (v.lang === "en-US" || v.lang === "en-GB" || v.lang.startsWith("en"))
+        v.name.toLowerCase().includes("google") &&
+        v.lang.toLowerCase().startsWith("en")
     );
     if (googleEN) return googleEN;
 
-    // Prioridad 2: Voces nativas por nombre conocido en inglés
-    const nativaUS = voices.find(v =>
-        v.lang === "en-US" && (
-            v.name.includes("Zira") ||
-            v.name.includes("David") ||
-            v.name.includes("Mark") ||
-            v.name.includes("Aria") ||
-            v.name.includes("Jenny") ||
-            v.name.includes("Guy") ||
-            v.name.includes("Samantha") ||
-            v.name.includes("Karen") ||
-            v.name.includes("Moira")
-        )
+    // 3. Buscar Microsoft en inglés (cualquier variante - Edge)
+    const msEN = voices.find(v =>
+        v.name.toLowerCase().includes("microsoft") &&
+        v.lang.toLowerCase().startsWith("en")
     );
-    if (nativaUS) return nativaUS;
+    if (msEN) return msEN;
 
-    // Prioridad 3: Cualquier voz en-US
-    const anyUS = voices.find(v => v.lang === "en-US");
-    if (anyUS) return anyUS;
+    // 4. Cualquier voz en en-US
+    const enUS = voices.find(v => v.lang === "en-US");
+    if (enUS) return enUS;
 
-    // Prioridad 4: Cualquier voz en inglés
-    const anyEN = voices.find(v => v.lang.startsWith("en"));
-    if (anyEN) return anyEN;
+    // 5. Cualquier voz en inglés (en-GB, en-AU, etc.)
+    const enAny = voices.find(v => v.lang.toLowerCase().startsWith("en"));
+    if (enAny) return enAny;
 
+    // 6. Última opción: devolver null (el navegador usará su default + lang="en-US")
     return null;
 }
 
-function usarVozNavegador(texto) {
-    if (!('speechSynthesis' in window)) return;
+// Precargar voces al inicio — resuelve el problema de Firefox y Safari
+// donde las voces no están disponibles inmediatamente
+function precargarVoces(callback) {
+    if (_vocesYaCargadas) {
+        if (callback) callback();
+        return;
+    }
+
+    const voices = speechSynthesis.getVoices();
+    if (voices.length > 0) {
+        _vocesYaCargadas = true;
+        _vozEnInglesCache = seleccionarVozIngles();
+        console.log("🔊 Voces cargadas:", voices.length, "| Seleccionada:", _vozEnInglesCache?.name || "default");
+        if (callback) callback();
+        return;
+    }
+
+    // Voces aún no cargadas — esperar el evento
+    speechSynthesis.onvoiceschanged = function() {
+        speechSynthesis.onvoiceschanged = null;
+        _vocesYaCargadas = true;
+        _vozEnInglesCache = seleccionarVozIngles();
+        console.log("🔊 Voces cargadas (async):", speechSynthesis.getVoices().length, "| Seleccionada:", _vozEnInglesCache?.name || "default");
+        if (callback) callback();
+    };
+
+    // Timeout de seguridad — si las voces nunca cargan, hablar igual
+    setTimeout(function() {
+        if (!_vocesYaCargadas) {
+            _vocesYaCargadas = true;
+            _vozEnInglesCache = seleccionarVozIngles();
+            if (callback) callback();
+        }
+    }, 3000);
+}
+
+// Llamar precargarVoces al cargar la página para que las voces
+// estén listas antes del primer uso
+if ('speechSynthesis' in window) {
+    precargarVoces(null);
+}
+
+function usarVozNavegador(texto, onFinish) {
+    if (!('speechSynthesis' in window)) {
+        if (onFinish) onFinish();
+        return;
+    }
+
     speechSynthesis.cancel();
 
     function speak() {
         const utterance = new SpeechSynthesisUtterance(texto);
+
+        // CRÍTICO: siempre forzar inglés — esto hace que el navegador
+        // pronuncie en inglés incluso si no encuentra la voz exacta
         utterance.lang = "en-US";
         utterance.rate = 0.92;
         utterance.pitch = 1;
+        utterance.volume = 1;
 
-        const vozIngles = seleccionarVozIngles();
-        if (vozIngles) {
-            utterance.voice = vozIngles;
-            console.log("🔊 Voz seleccionada:", vozIngles.name, vozIngles.lang);
+        // Usar voz cacheada o buscar una nueva
+        const voz = _vozEnInglesCache || seleccionarVozIngles();
+        if (voz) {
+            utterance.voice = voz;
+            console.log("🔊 Usando voz:", voz.name, "|", voz.lang);
+        } else {
+            console.warn("⚠️ Sin voz en inglés encontrada — usando lang=en-US");
         }
+
+        if (onFinish) utterance.onend = onFinish;
+        utterance.onerror = function(e) {
+            console.warn("TTS error:", e.error);
+            if (onFinish) onFinish();
+        };
+
+        // Workaround para bug de Chrome que corta el audio en textos largos
+        // Chrome a veces pausa speechSynthesis si el tab pierde foco
+        utterance.onstart = function() {
+            // Keep-alive cada 10s para Chrome
+            window._ttsKeepAlive = setInterval(function() {
+                if (!speechSynthesis.speaking) clearInterval(window._ttsKeepAlive);
+            }, 10000);
+        };
+        utterance.onend = function() {
+            clearInterval(window._ttsKeepAlive);
+            if (onFinish) onFinish();
+        };
 
         speechSynthesis.speak(utterance);
     }
 
-    if (speechSynthesis.getVoices().length === 0) {
-        speechSynthesis.onvoiceschanged = function() {
-            speechSynthesis.onvoiceschanged = null;
-            speak();
-        };
-    } else {
+    // Si las voces ya están cargadas, hablar de inmediato
+    if (_vocesYaCargadas) {
         speak();
+    } else {
+        precargarVoces(speak);
     }
 }
 
@@ -2193,44 +2297,11 @@ async function vozHablar(texto, onFinish) {
 }
 
 function vozFallbackTTS(texto, onFinish) {
-    speechSynthesis.cancel();
-
-    function speak() {
-        const utterance = new SpeechSynthesisUtterance(texto);
-        utterance.lang = "en-US";   // SIEMPRE inglés
-        utterance.rate = 0.90;
-        utterance.pitch = 1;
-        utterance.volume = 1;
-
-        const vozIngles = seleccionarVozIngles();
-        if (vozIngles) {
-            utterance.voice = vozIngles;
-            console.log("🔊 Modo voz — voz seleccionada:", vozIngles.name, vozIngles.lang);
-        } else {
-            console.warn("⚠️ Modo voz — sin voz inglés, usando lang=en-US");
-        }
-
-        utterance.onend = function() {
-            vozHablando = false;
-            if (onFinish) onFinish();
-        };
-        utterance.onerror = function() {
-            vozHablando = false;
-            if (onFinish) onFinish();
-        };
-
-        speechSynthesis.speak(utterance);
-    }
-
-    const voices = speechSynthesis.getVoices();
-    if (voices.length === 0) {
-        speechSynthesis.onvoiceschanged = function() {
-            speechSynthesis.onvoiceschanged = null;
-            speak();
-        };
-    } else {
-        speak();
-    }
+    // Reutiliza el mismo sistema robusto de usarVozNavegador
+    usarVozNavegador(texto, function() {
+        vozHablando = false;
+        if (onFinish) onFinish();
+    });
 }
 
 // ── Historial UI ────────────────────────────────────────────────────────────
