@@ -1297,19 +1297,6 @@ function entrarAlPortal() {
     setTimeout(function() { overlay.style.display = 'none'; }, 500);
 }
 
-async function fetchConTimeout(url, opciones, ms) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), ms);
-    try {
-        const res = await fetch(url, { ...opciones, signal: controller.signal });
-        clearTimeout(timer);
-        return res;
-    } catch (err) {
-        clearTimeout(timer);
-        throw err;
-    }
-}
-
 async function iniciarSesion() {
     const nombre = document.getElementById('input-nombre').value.trim();
     const password = document.getElementById('input-password').value.trim();
@@ -1329,28 +1316,16 @@ async function iniciarSesion() {
 
     const nombreCapitalizado = palabras.map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');
 
+    btn.textContent = 'Cargando...';
     btn.disabled = true;
-    btn.textContent = '\u23f3 Conectando...';
-
-    // Si tarda más de 5s, avisar que el servidor está despertando
-    const avisoTimer = setTimeout(() => {
-        btn.textContent = '\u2615 Despertando servidor... espera ~30s';
-        mostrarError('El servidor está iniciando — esto ocurre cuando lleva tiempo sin uso. Por favor espera unos segundos y vuelve a intentarlo.');
-    }, 5000);
 
     try {
-        const res = await fetchConTimeout(
-            'https://abs-pagina-1-2.onrender.com/api/login',
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nombre: nombreCapitalizado, password: password })
-            },
-            60000
-        );
+        const res = await fetch('https://abs-pagina-1-2.onrender.com/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre: nombreCapitalizado, password: password })
+        });
 
-        clearTimeout(avisoTimer);
-        ocultarError();
         const data = await res.json();
 
         if (!res.ok) {
@@ -1361,25 +1336,22 @@ async function iniciarSesion() {
         }
 
         // Login exitoso
-        btn.textContent = '\u2705 \u00a1Bienvenido/a!';
         nombreUsuario = data.nombre;
         sessionToken = data.token;
 
+        // Guardar sesión localmente para auto-login
         localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify({ nombre: nombreUsuario, token: sessionToken }));
 
+        // Cargar progreso desde el servidor
         if (data.completados && Array.isArray(data.completados)) {
             data.completados.forEach(id => completados.add(id));
         }
 
         actualizarProgreso();
-        setTimeout(() => entrarAlPortal(), 600);
+        entrarAlPortal();
 
     } catch (err) {
-        clearTimeout(avisoTimer);
-        const esTimeout = err.name === 'AbortError';
-        mostrarError(esTimeout
-            ? 'El servidor tardó demasiado en responder. Espera unos segundos y vuelve a intentarlo.'
-            : 'No se pudo conectar al servidor. Verifica tu conexión a internet.');
+        mostrarError('No se pudo conectar al servidor. Intenta de nuevo.');
         btn.textContent = 'Ingresar al Portal';
         btn.disabled = false;
     }
@@ -1430,15 +1402,11 @@ async function ejecutarReinicio() {
         const { nombre, token } = JSON.parse(saved);
         if (!nombre || !token) return;
 
-        const res = await fetchConTimeout(
-            'https://abs-pagina-1-2.onrender.com/api/session',
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token })
-            },
-            15000
-        );
+        const res = await fetch('https://abs-pagina-1-2.onrender.com/api/session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token })
+        });
 
         if (!res.ok) {
             localStorage.removeItem(STORAGE_KEY_SESSION);
