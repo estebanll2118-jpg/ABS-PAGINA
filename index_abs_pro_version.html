@@ -186,12 +186,6 @@
   title="Desactivar voz IA">
   🔊 Voz
 </button>
-<button onclick="testVozIngles()"
-  class="border-2 border-gray-300 rounded-full px-3 py-2 text-xs font-bold hover:bg-gray-100 transition text-gray-500"
-  title="Probar voz en inglés">
-  🧪 Test
-</button>
-
 <button onclick="enviarMensaje()"
   class="abs-blue text-white px-6 py-2 rounded-full font-bold text-sm hover:opacity-90 transition">
   Enviar
@@ -258,6 +252,14 @@
           Presiona el botón para comenzar
         </p>
         <p id="voz-transcripcion" class="mt-2 text-sm text-gray-400 text-center italic max-w-sm" style="min-height:20px;"></p>
+
+        <!-- Botón Finalizar — solo visible cuando la conversación está activa -->
+        <button id="voz-btn-finalizar"
+          onclick="finalizarConversacionVoz()"
+          class="hidden mt-5 px-6 py-2.5 rounded-full font-bold text-sm transition-all"
+          style="background:#fee2e2;color:#b91c1c;border:2px solid #fca5a5;">
+          ⏹ Finalizar conversación
+        </button>
 
         <!-- Última respuesta de la IA -->
         <div id="voz-respuesta-box" class="hidden mt-6 w-full max-w-lg bg-blue-50 border border-blue-200 rounded-2xl p-4">
@@ -2116,6 +2118,7 @@ function toggleModoVoz() {
             interview:     "Good morning! Thank you for coming in for this interview. I'm the HR Director at ABS International. Please, take a seat. Let's begin — could you tell me a little about yourself and why you're interested in this position?"
         };
         vozAgregarHistorial('ai', saludo[tema] || saludo.free);
+        document.getElementById('voz-btn-finalizar').classList.remove('hidden');
         vozHablar(saludo[tema] || saludo.free, function() {
             if (modoVozActivo) iniciarEscucha();
         });
@@ -2335,6 +2338,49 @@ function limpiarHistorialVoz() {
     if (vozAudioActual) { vozAudioActual.pause(); vozAudioActual = null; }
     speechSynthesis.cancel();
     vozSetEstado('idle');
+    document.getElementById('voz-btn-finalizar').classList.add('hidden');
+}
+
+async function finalizarConversacionVoz() {
+    // Detener escucha y audio inmediatamente
+    detenerEscucha();
+    if (vozAudioActual) { vozAudioActual.pause(); vozAudioActual = null; }
+    speechSynthesis.cancel();
+    modoVozActivo = false;
+
+    // Ocultar botón finalizar
+    document.getElementById('voz-btn-finalizar').classList.add('hidden');
+
+    // Generar mensaje de despedida personalizado según el tema
+    const tema = document.getElementById('voz-tema-select').value;
+    const despedidas = {
+        free:          "It was great talking with you, " + nombreUsuario + "! Keep practicing your English every day — you're doing really well. Goodbye and see you next time!",
+        greetings:     "Excellent practice today, " + nombreUsuario + "! You're getting much more confident with greetings and introductions. Keep it up! Goodbye!",
+        office:        "Well done, " + nombreUsuario + "! Your office English is improving. Remember to use these phrases in your daily work. See you next time!",
+        meetings:      "Great session, " + nombreUsuario + "! Your meeting English is getting stronger. You'll be running boardrooms in no time! Goodbye!",
+        negotiations:  "Fantastic work, " + nombreUsuario + "! Negotiation takes practice and you're making real progress. See you in the next session. Goodbye!",
+        presentations: "Brilliant practice, " + nombreUsuario + "! Your presentation skills are developing well. Keep rehearsing and you'll impress any audience. Goodbye!",
+        emails:        "Great work today, " + nombreUsuario + "! Professional email writing is a key skill and you're improving every session. Goodbye and keep writing!",
+        interview:     "Excellent interview practice, " + nombreUsuario + "! You answered confidently and professionally. You're going to do great in real interviews. Good luck and goodbye!"
+    };
+
+    const msg = despedidas[tema] || despedidas.free;
+
+    // Mostrar en la UI
+    vozAgregarHistorial('ai', msg);
+    document.getElementById('voz-respuesta-box').classList.remove('hidden');
+    document.getElementById('voz-respuesta-texto').textContent = msg;
+    vozSetEstado('idle');
+    document.getElementById('voz-estado-texto').textContent = 'Conversación finalizada. ¡Hasta la próxima!';
+
+    // Hablar la despedida
+    vozHablando = true;
+    vozSetEstado('speaking');
+    vozHablar(msg, function() {
+        vozHablando = false;
+        vozSetEstado('idle');
+        document.getElementById('voz-estado-texto').textContent = 'Conversación finalizada. Presiona el botón para empezar de nuevo.';
+    });
 }
 
 // ── Pausar modo voz al cambiar de tab ──────────────────────────────────────
@@ -2353,29 +2399,6 @@ mostrarTab = function(tab, btn) {
     document.getElementById('tab-voz').classList.toggle('hidden', tab !== 'voz');
     _originalMostrarTab(tab, btn);
 };
-// ── Test de voz en inglés ──────────────────────────────────────────────────
-function testVozIngles() {
-    const voices = speechSynthesis.getVoices();
-    const enVoices = voices.filter(v => v.lang.startsWith('en'));
-    console.log("=== VOCES EN INGLÉS DISPONIBLES ===");
-    enVoices.forEach(v => console.log(v.name, v.lang, v.localService ? "(local)" : "(remote)"));
-    console.log("Total voces en inglés:", enVoices.length, "de", voices.length, "total");
-
-    const seleccionada = seleccionarVozIngles();
-    console.log("✅ Voz seleccionada:", seleccionada ? seleccionada.name + " (" + seleccionada.lang + ")" : "ninguna — usando lang=en-US");
-
-    // Hablar frase de prueba
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance("Hello, this is a test of the English voice. Good morning!");
-    u.lang = "en-US";
-    u.rate = 0.90;
-    if (seleccionada) u.voice = seleccionada;
-    speechSynthesis.speak(u);
-
-    alert("Voces en inglés encontradas: " + enVoices.length + "\nVoz seleccionada: " + (seleccionada ? seleccionada.name : "default (lang=en-US)") + "\n\nRevisa la consola (F12) para ver todas las voces disponibles.");
-}
-
-
 </script>
 
 </body>
