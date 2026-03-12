@@ -243,6 +243,46 @@ app.post("/api/progreso/reset", (req, res) => {
 
 
 // ===============================
+// CHAT VOZ — sistema prompt libre
+// ===============================
+
+app.post("/api/chat-voz", async (req, res) => {
+    try {
+        const userMessage = req.body.message || "";
+        const systemPrompt = req.body.systemPrompt || "You are a friendly English tutor. Have a natural conversation.";
+        const history = Array.isArray(req.body.history) ? req.body.history : [];
+
+        if (!userMessage) return res.json({ reply: "Could you repeat that, please?" });
+
+        const messages = [{ role: "system", content: systemPrompt }];
+
+        // Últimos 10 mensajes del historial
+        const validHistory = history
+            .filter(m => m.role === "user" || m.role === "assistant")
+            .slice(-10);
+
+        messages.push(...validHistory);
+        messages.push({ role: "user", content: userMessage });
+
+        const completion = await openai.chat.completions.create({
+            model: "llama-3.1-8b-instant",
+            messages,
+            max_tokens: 120   // respuestas cortas para conversación fluida
+        });
+
+        const reply = completion?.choices?.[0]?.message?.content
+            || "I'm sorry, could you say that again?";
+
+        res.json({ reply });
+
+    } catch (error) {
+        console.error("ERROR chat-voz:", error.message);
+        res.status(500).json({ reply: "Sorry, I had a problem. Please try again." });
+    }
+});
+
+
+// ===============================
 // VOZ IA (ELEVENLABS)
 // ===============================
 

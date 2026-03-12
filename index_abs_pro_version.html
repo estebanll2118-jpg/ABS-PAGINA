@@ -38,6 +38,22 @@
         .tab-btn.active{border-bottom:3px solid #CC0000;color:#003366;font-weight:700;}
         .exercise-dot{width:12px;height:12px;border-radius:50%;background:#e2e8f0;display:inline-block;transition:background .3s;}
         .exercise-dot.done{background:#16a34a;}.exercise-dot.active{background:#003366;}.exercise-dot.wrong{background:#CC0000;}
+        /* ── MODO VOZ ── */
+        @keyframes vozPulse {
+          0%,100% { box-shadow: 0 0 0 0 rgba(0,51,102,0.4); }
+          50% { box-shadow: 0 0 0 18px rgba(0,51,102,0); }
+        }
+        @keyframes vozPulseRed {
+          0%,100% { box-shadow: 0 0 0 0 rgba(204,0,0,0.4); }
+          50% { box-shadow: 0 0 0 18px rgba(204,0,0,0); }
+        }
+        @keyframes barAnimate {
+          0%,100% { height: 8px; }
+          50% { height: 52px; }
+        }
+        .voz-bar-active { animation: barAnimate 0.6s ease-in-out infinite; }
+        .voz-btn-listening { animation: vozPulseRed 1.2s ease-in-out infinite !important; background: #CC0000 !important; }
+        .voz-btn-speaking  { animation: vozPulse 1.4s ease-in-out infinite !important; background: #003366 !important; }
         #overlay-registro{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#003366 0%,#001a33 60%,#110000 100%);display:flex;align-items:center;justify-content:center;transition:opacity .5s ease;}
         #overlay-registro.oculto{opacity:0;pointer-events:none;}
         .reg-card{background:white;border-radius:20px;padding:44px 40px;max-width:430px;width:92%;box-shadow:0 32px 64px rgba(0,0,0,.5);border-top:6px solid #CC0000;animation:slideUp .5s ease;}
@@ -100,6 +116,7 @@
   <div class="flex gap-6 mb-8 border-b border-gray-200 pb-2">
     <button class="tab-btn active text-gray-600 pb-1 text-sm uppercase tracking-wider" onclick="mostrarTab('aprendizaje',this)">Modulos</button>
     <button class="tab-btn text-gray-600 pb-1 text-sm uppercase tracking-wider" onclick="mostrarTab('chat',this)">Tutor IA</button>
+    <button class="tab-btn text-gray-600 pb-1 text-sm uppercase tracking-wider" onclick="mostrarTab('voz',this)">🎙️ Modo Voz</button>
   </div>
   <div id="tab-aprendizaje">
     <div class="mb-8 border-l-8 border-red-600 pl-4">
@@ -177,6 +194,87 @@
       </div>
     </div>
   </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- TAB VOZ — CONVERSACIÓN CONTINUA CON IA -->
+  <!-- ═══════════════════════════════════════ -->
+  <div id="tab-voz" class="hidden">
+    <div class="mb-6 border-l-8 border-red-600 pl-4">
+      <h2 class="text-3xl font-black text-gray-800 uppercase">Modo Voz — Conversación IA</h2>
+      <p class="text-gray-500 text-sm mt-1">Habla con tu tutor de inglés en tiempo real. La IA te escucha, responde y te corrige de forma natural.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+
+      <!-- Panel superior: selector de tema -->
+      <div class="abs-blue p-4 flex flex-wrap items-center gap-3">
+        <span class="text-white text-xs font-bold uppercase tracking-widest opacity-70">Tema de conversación:</span>
+        <select id="voz-tema-select"
+          class="rounded-full px-4 py-1.5 text-sm font-bold border-0 outline-none"
+          style="background:#ffffff;color:#003366;">
+          <option value="free">Conversación libre</option>
+          <option value="greetings">Greetings & Introductions</option>
+          <option value="office">Office Vocabulary</option>
+          <option value="meetings">Business Meetings</option>
+          <option value="negotiations">Negotiations</option>
+          <option value="presentations">Presentations</option>
+          <option value="emails">Business Emails</option>
+          <option value="interview">Job Interview</option>
+        </select>
+        <div class="ml-auto flex items-center gap-2">
+          <div id="voz-status-dot" class="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
+          <span id="voz-status-label" class="text-white text-xs font-bold opacity-80">Listo</span>
+        </div>
+      </div>
+
+      <!-- Área principal -->
+      <div class="flex flex-col items-center justify-center py-10 px-6" style="min-height:380px;">
+
+        <!-- Visualizador de ondas -->
+        <div id="voz-waves" class="flex items-end justify-center gap-1.5 mb-8" style="height:64px;width:160px;">
+          <div class="voz-bar" style="width:8px;border-radius:4px;background:#003366;height:8px;transition:height 0.15s ease;"></div>
+          <div class="voz-bar" style="width:8px;border-radius:4px;background:#003366;height:8px;transition:height 0.15s ease;"></div>
+          <div class="voz-bar" style="width:8px;border-radius:4px;background:#003366;height:8px;transition:height 0.15s ease;"></div>
+          <div class="voz-bar" style="width:8px;border-radius:4px;background:#CC0000;height:16px;transition:height 0.15s ease;"></div>
+          <div class="voz-bar" style="width:8px;border-radius:4px;background:#003366;height:8px;transition:height 0.15s ease;"></div>
+          <div class="voz-bar" style="width:8px;border-radius:4px;background:#003366;height:8px;transition:height 0.15s ease;"></div>
+          <div class="voz-bar" style="width:8px;border-radius:4px;background:#003366;height:8px;transition:height 0.15s ease;"></div>
+        </div>
+
+        <!-- Botón principal -->
+        <button id="voz-btn-main"
+          onclick="toggleModoVoz()"
+          style="width:96px;height:96px;border-radius:50%;background:#003366;border:none;cursor:pointer;box-shadow:0 8px 32px rgba(0,51,102,0.35);transition:all 0.25s;display:flex;align-items:center;justify-content:center;font-size:36px;">
+          🎙️
+        </button>
+
+        <!-- Texto de estado -->
+        <p id="voz-estado-texto" class="mt-6 font-bold text-gray-700 text-base text-center">
+          Presiona el botón para comenzar
+        </p>
+        <p id="voz-transcripcion" class="mt-2 text-sm text-gray-400 text-center italic max-w-sm" style="min-height:20px;"></p>
+
+        <!-- Última respuesta de la IA -->
+        <div id="voz-respuesta-box" class="hidden mt-6 w-full max-w-lg bg-blue-50 border border-blue-200 rounded-2xl p-4">
+          <p class="text-xs font-bold text-abs-blue uppercase tracking-widest mb-1">ABS Tutor respondió:</p>
+          <p id="voz-respuesta-texto" class="text-sm text-gray-700 leading-relaxed"></p>
+        </div>
+
+      </div>
+
+      <!-- Historial de conversación por voz -->
+      <div class="border-t border-gray-100 p-4">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Historial de la sesión</p>
+        <div id="voz-historial" class="space-y-2 max-h-48 overflow-y-auto"></div>
+        <button onclick="limpiarHistorialVoz()"
+          class="mt-3 text-xs text-gray-400 hover:text-red-500 transition font-bold">
+          🗑️ Limpiar historial
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
 </main>
 <!-- FOOTER -->
 <footer style="margin-top:64px;border-top:1px solid #e2e8f0;padding:24px 0;">
@@ -1743,6 +1841,382 @@ function mostrarEvaluacion(texto) {
 
 // iniciarGrabacion() eliminada - usar iniciarVoz()
 
+
+/* ═══════════════════════════════════════════════════════
+   MODO VOZ — CONVERSACIÓN CONTINUA CON IA
+   ═══════════════════════════════════════════════════════ */
+
+let modoVozActivo = false;
+let vozRecognition = null;
+let vozHablando = false;
+let vozEscuchando = false;
+let vozHistorial = [];   // historial exclusivo del modo voz
+let vozAnimFrame = null;
+let waveInterval = null;
+let vozAudioActual = null;
+
+const TEMAS_SISTEMA = {
+    free:          "You are a friendly English tutor. Have a natural conversation in English about any topic the student brings up. Correct grammar gently and naturally within your response.",
+    greetings:     "You are an English tutor practicing 'Greetings & Introductions' in a business context. Guide the student through meeting new colleagues, introducing themselves and others. Correct any errors naturally.",
+    office:        "You are an English tutor practicing 'Office Vocabulary'. Talk about daily office tasks, equipment, locations and routines. Correct errors naturally within conversation.",
+    meetings:      "You are an English tutor practicing 'Business Meetings'. Simulate running or attending a business meeting — agendas, proposals, action items. Correct errors naturally.",
+    negotiations:  "You are an English tutor practicing 'Business Negotiations'. Simulate a negotiation scenario — offers, counteroffers, concessions and closing. Correct errors naturally.",
+    presentations: "You are an English tutor practicing 'Presentations'. Help the student practice presenting data, ideas and reports professionally. Correct errors naturally.",
+    emails:        "You are an English tutor practicing 'Business Email Writing'. Help the student write and respond to professional emails — openings, closings, tone. Correct errors naturally.",
+    interview:     "You are an English tutor practicing 'Job Interviews'. Simulate a professional job interview at an international company. Ask questions, give feedback on answers, correct errors naturally."
+};
+
+// ── Actualizar UI según estado ──────────────────────────────────────────────
+
+function vozSetEstado(estado) {
+    // estados: 'idle' | 'listening' | 'processing' | 'speaking'
+    const btn    = document.getElementById('voz-btn-main');
+    const dot    = document.getElementById('voz-status-dot');
+    const label  = document.getElementById('voz-status-label');
+    const texto  = document.getElementById('voz-estado-texto');
+
+    btn.classList.remove('voz-btn-listening', 'voz-btn-speaking');
+    clearInterval(waveInterval);
+    vozWavesReset();
+
+    if (estado === 'idle') {
+        btn.style.background = '#003366';
+        btn.innerHTML = '🎙️';
+        dot.style.background = '#9ca3af';
+        label.textContent = 'Listo';
+        texto.textContent = 'Presiona el botón para comenzar';
+        document.getElementById('voz-transcripcion').textContent = '';
+    } else if (estado === 'listening') {
+        btn.classList.add('voz-btn-listening');
+        btn.innerHTML = '⏹️';
+        dot.style.background = '#CC0000';
+        label.textContent = 'Escuchando...';
+        texto.textContent = 'Te estoy escuchando, habla ahora...';
+        vozWavesAnimar('listen');
+    } else if (estado === 'processing') {
+        btn.style.background = '#6b7280';
+        btn.innerHTML = '⏳';
+        dot.style.background = '#f59e0b';
+        label.textContent = 'Procesando...';
+        texto.textContent = 'La IA está pensando...';
+        vozWavesAnimar('process');
+    } else if (estado === 'speaking') {
+        btn.classList.add('voz-btn-speaking');
+        btn.innerHTML = '🔊';
+        dot.style.background = '#16a34a';
+        label.textContent = 'Hablando...';
+        texto.textContent = 'El tutor está respondiendo...';
+        vozWavesAnimar('speak');
+    }
+}
+
+// ── Animación de ondas ──────────────────────────────────────────────────────
+
+function vozWavesReset() {
+    const bars = document.querySelectorAll('.voz-bar');
+    bars.forEach(b => {
+        b.style.height = '8px';
+        b.classList.remove('voz-bar-active');
+    });
+}
+
+function vozWavesAnimar(modo) {
+    const bars = document.querySelectorAll('.voz-bar');
+    const heights = {
+        listen:  [12, 28, 44, 56, 44, 28, 12],
+        process: [8,  16, 24, 32, 24, 16, 8 ],
+        speak:   [16, 36, 52, 64, 52, 36, 16]
+    };
+    const base = heights[modo] || heights.listen;
+    const colors = {
+        listen:  '#CC0000',
+        process: '#f59e0b',
+        speak:   '#003366'
+    };
+
+    clearInterval(waveInterval);
+    waveInterval = setInterval(function() {
+        bars.forEach(function(bar, i) {
+            const variation = Math.random() * 0.6 + 0.4; // 40%-100% de la altura base
+            bar.style.height = Math.round(base[i] * variation) + 'px';
+            bar.style.background = colors[modo] || '#003366';
+        });
+    }, 150);
+}
+
+// ── Toggle principal ────────────────────────────────────────────────────────
+
+function toggleModoVoz() {
+    if (vozEscuchando) {
+        detenerEscucha();
+        return;
+    }
+    if (vozHablando && vozAudioActual) {
+        vozAudioActual.pause();
+        vozHablando = false;
+        vozSetEstado('idle');
+        modoVozActivo = false;
+        return;
+    }
+    if (!modoVozActivo) {
+        modoVozActivo = true;
+        // Saludo inicial de la IA
+        const tema = document.getElementById('voz-tema-select').value;
+        const saludo = {
+            free:          "Hello! I'm your ABS English tutor. What would you like to talk about today?",
+            greetings:     "Hello! Let's practice greetings and introductions. Imagine we're meeting for the first time at a business conference. I'll start — Good morning! My name is Alex, I'm the Sales Director at ABS. And you?",
+            office:        "Hello! Let's practice office English. Imagine it's your first day at a new company. I'm your colleague — welcome to the office! What's your role here?",
+            meetings:      "Good morning everyone, let's get started. I'd like to call this meeting to order. Today's agenda has three items. Could you introduce yourself and your department first?",
+            negotiations:  "Hello, thank you for coming in today. I understand you're interested in discussing our partnership proposal. Shall we begin with the terms you had in mind?",
+            presentations: "Hello! Let's practice presentations. Imagine you're presenting quarterly results to the board. Go ahead and start your presentation — I'll play the role of an attendee.",
+            emails:        "Hello! Let's practice business email writing. I'll give you a scenario and you respond as if you're writing a professional email. Ready? Scenario: A client has complained that their order arrived late. How would you begin your response email?",
+            interview:     "Good morning! Thank you for coming in for this interview. I'm the HR Director at ABS International. Please, take a seat. Let's begin — could you tell me a little about yourself and why you're interested in this position?"
+        };
+        vozAgregarHistorial('ai', saludo[tema] || saludo.free);
+        vozHablar(saludo[tema] || saludo.free, function() {
+            if (modoVozActivo) iniciarEscucha();
+        });
+    } else {
+        iniciarEscucha();
+    }
+}
+
+// ── Iniciar escucha ─────────────────────────────────────────────────────────
+
+function iniciarEscucha() {
+    if (vozEscuchando) return;
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        alert('Tu navegador no soporta reconocimiento de voz. Usa Chrome.');
+        return;
+    }
+
+    vozRecognition = new SpeechRecognition();
+    vozRecognition.lang = 'en-US';         // inglés para práctica
+    vozRecognition.continuous = false;
+    vozRecognition.interimResults = true;
+    vozRecognition.maxAlternatives = 1;
+
+    vozRecognition.onstart = function() {
+        vozEscuchando = true;
+        vozSetEstado('listening');
+    };
+
+    vozRecognition.onresult = function(event) {
+        let interino = '';
+        let final = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            if (event.results[i].isFinal) {
+                final += event.results[i][0].transcript;
+            } else {
+                interino += event.results[i][0].transcript;
+            }
+        }
+        document.getElementById('voz-transcripcion').textContent =
+            (final || interino) ? '"' + (final || interino) + '"' : '';
+    };
+
+    vozRecognition.onend = function() {
+        vozEscuchando = false;
+        const transcripcion = document.getElementById('voz-transcripcion').textContent
+            .replace(/^"|"$/g, '').trim();
+
+        if (transcripcion && modoVozActivo) {
+            vozProcesarMensaje(transcripcion);
+        } else if (modoVozActivo) {
+            // No captó nada — volver a escuchar
+            vozSetEstado('idle');
+            document.getElementById('voz-estado-texto').textContent = 'No te escuché. Presiona para intentar de nuevo.';
+        }
+    };
+
+    vozRecognition.onerror = function(event) {
+        vozEscuchando = false;
+        console.warn('Recognition error:', event.error);
+        if (event.error === 'no-speech') {
+            vozSetEstado('idle');
+            document.getElementById('voz-estado-texto').textContent = 'No te escuché. Presiona para intentar de nuevo.';
+        } else if (event.error !== 'aborted') {
+            vozSetEstado('idle');
+            document.getElementById('voz-estado-texto').textContent = 'Error de micrófono: ' + event.error;
+        }
+    };
+
+    vozRecognition.start();
+}
+
+function detenerEscucha() {
+    if (vozRecognition) {
+        vozRecognition.stop();
+        vozRecognition = null;
+    }
+    vozEscuchando = false;
+}
+
+// ── Procesar mensaje del usuario → IA → voz ────────────────────────────────
+
+async function vozProcesarMensaje(texto) {
+    vozSetEstado('processing');
+    vozAgregarHistorial('user', texto);
+
+    const tema = document.getElementById('voz-tema-select').value;
+    const systemPrompt = TEMAS_SISTEMA[tema] || TEMAS_SISTEMA.free;
+
+    // Historial limpio para el API
+    const historialAPI = vozHistorial.slice(-10).map(function(m) {
+        return { role: m.rol === 'user' ? 'user' : 'assistant', content: m.texto };
+    });
+
+    try {
+        const res = await fetch('https://abs-pagina-1-2.onrender.com/api/chat-voz', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                message: texto,
+                systemPrompt: systemPrompt,
+                history: historialAPI
+            })
+        });
+
+        if (!res.ok) throw new Error('Server error ' + res.status);
+
+        const data = await res.json();
+        const reply = data.reply || "I didn't catch that. Could you try again?";
+
+        vozAgregarHistorial('ai', reply);
+        document.getElementById('voz-respuesta-box').classList.remove('hidden');
+        document.getElementById('voz-respuesta-texto').textContent = reply;
+
+        vozHablar(reply, function() {
+            if (modoVozActivo) {
+                // Pausa de 600ms y vuelve a escuchar automáticamente
+                setTimeout(function() {
+                    if (modoVozActivo) iniciarEscucha();
+                }, 600);
+            }
+        });
+
+    } catch (err) {
+        console.error('Error modo voz:', err);
+        vozSetEstado('idle');
+        document.getElementById('voz-estado-texto').textContent = 'Error conectando. Presiona para reintentar.';
+    }
+}
+
+// ── Hablar con ElevenLabs ───────────────────────────────────────────────────
+
+async function vozHablar(texto, onFinish) {
+    vozHablando = true;
+    vozSetEstado('speaking');
+
+    const textoLimpio = texto
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .substring(0, 400);
+
+    try {
+        const res = await fetch('https://abs-pagina-1-2.onrender.com/api/voice', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: textoLimpio })
+        });
+
+        if (!res.ok) throw new Error('Voice error ' + res.status);
+
+        const blob = await res.blob();
+        if (blob.size < 100) throw new Error('Empty audio');
+
+        const url = URL.createObjectURL(blob);
+        vozAudioActual = new Audio(url);
+
+        vozAudioActual.onended = function() {
+            URL.revokeObjectURL(url);
+            vozHablando = false;
+            vozAudioActual = null;
+            if (onFinish) onFinish();
+        };
+
+        vozAudioActual.onerror = function() {
+            URL.revokeObjectURL(url);
+            vozHablando = false;
+            vozAudioActual = null;
+            vozFallbackTTS(textoLimpio, onFinish);
+        };
+
+        await vozAudioActual.play();
+
+    } catch (err) {
+        console.warn('ElevenLabs falló en modo voz:', err.message);
+        vozFallbackTTS(textoLimpio, onFinish);
+    }
+}
+
+function vozFallbackTTS(texto, onFinish) {
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(texto);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.95;
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utterance.voice = voice;
+    utterance.onend = function() {
+        vozHablando = false;
+        if (onFinish) onFinish();
+    };
+    speechSynthesis.speak(utterance);
+}
+
+// ── Historial UI ────────────────────────────────────────────────────────────
+
+function vozAgregarHistorial(rol, texto) {
+    vozHistorial.push({ rol, texto });
+
+    const box = document.getElementById('voz-historial');
+    const div = document.createElement('div');
+    div.className = 'flex gap-2 items-start';
+
+    const isUser = rol === 'user';
+    div.innerHTML =
+        '<div style="flex-shrink:0;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;' +
+        (isUser ? 'background:#e0e7ff;color:#003366;">' + (nombreUsuario ? nombreUsuario.split(" ")[0][0] : "U") :
+                  'background:#003366;color:white;">IA') +
+        '</div>' +
+        '<div style="background:' + (isUser ? '#f8fafc' : '#eff6ff') + ';border-radius:12px;padding:8px 12px;font-size:13px;color:#374151;flex:1;line-height:1.5;">' +
+        texto + '</div>';
+
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
+
+function limpiarHistorialVoz() {
+    vozHistorial = [];
+    document.getElementById('voz-historial').innerHTML = '';
+    document.getElementById('voz-respuesta-box').classList.add('hidden');
+    modoVozActivo = false;
+    detenerEscucha();
+    if (vozAudioActual) { vozAudioActual.pause(); vozAudioActual = null; }
+    speechSynthesis.cancel();
+    vozSetEstado('idle');
+}
+
+// ── Pausar modo voz al cambiar de tab ──────────────────────────────────────
+
+const _originalMostrarTab = mostrarTab;
+mostrarTab = function(tab, btn) {
+    if (tab !== 'voz' && modoVozActivo) {
+        detenerEscucha();
+        if (vozAudioActual) { vozAudioActual.pause(); vozAudioActual = null; }
+        speechSynthesis.cancel();
+        modoVozActivo = false;
+        vozHablando = false;
+        vozSetEstado('idle');
+    }
+    // Mostrar/ocultar tab-voz
+    document.getElementById('tab-voz').classList.toggle('hidden', tab !== 'voz');
+    _originalMostrarTab(tab, btn);
+};
 </script>
 
 </body>
