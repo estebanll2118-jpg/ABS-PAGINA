@@ -1777,36 +1777,74 @@ async function hablarRespuesta(texto) {
 
 
 // ── Fallback: voz del navegador (Web Speech API) ──────────────────
-function usarVozNavegador(texto) {
-  if (!('speechSynthesis' in window)) return;
-
-  speechSynthesis.cancel();
-
-  function speak() {
-    const utterance = new SpeechSynthesisUtterance(texto);
-    utterance.lang = "en-US";
-    utterance.rate = 0.92;
-    utterance.pitch = 1;
-
+// ── Seleccionar la mejor voz en inglés disponible ──────────────────────────
+function seleccionarVozIngles() {
     const voices = speechSynthesis.getVoices();
-    const preferred = voices.find(v =>
-      v.lang === "en-US" && (v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Karen"))
-    ) || voices.find(v => v.lang === "en-US" || v.lang === "en-GB");
 
-    if (preferred) utterance.voice = preferred;
+    // Prioridad 1: Google US English (Chrome Windows/Android)
+    const googleUS = voices.find(v => v.name === "Google US English");
+    if (googleUS) return googleUS;
 
-    speechSynthesis.speak(utterance);
-  }
+    // Prioridad 2: Voces nativas de Chrome/Edge en inglés americano
+    const nativaUS = voices.find(v =>
+        v.lang === "en-US" && (
+            v.name.includes("Zira") ||      // Windows
+            v.name.includes("David") ||     // Windows
+            v.name.includes("Mark") ||      // Windows
+            v.name.includes("Aria") ||      // Edge
+            v.name.includes("Jenny") ||     // Edge
+            v.name.includes("Guy") ||       // Edge
+            v.name.includes("Samantha") ||  // macOS
+            v.name.includes("Karen") ||     // macOS Australia
+            v.name.includes("Moira")        // macOS Ireland
+        )
+    );
+    if (nativaUS) return nativaUS;
 
-  // Las voces pueden no estar cargadas aún en el primer uso
-  if (speechSynthesis.getVoices().length === 0) {
-    speechSynthesis.onvoiceschanged = function() {
-      speechSynthesis.onvoiceschanged = null;
-      speak();
-    };
-  } else {
-    speak();
-  }
+    // Prioridad 3: Cualquier voz en-US
+    const anyUS = voices.find(v => v.lang === "en-US");
+    if (anyUS) return anyUS;
+
+    // Prioridad 4: Cualquier voz en inglés
+    const anyEN = voices.find(v => v.lang.startsWith("en"));
+    if (anyEN) return anyEN;
+
+    // Sin opción — devolver null (el navegador usará su default, pero lang="en-US" ayuda)
+    return null;
+}
+
+function usarVozNavegador(texto) {
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+
+    function speak() {
+        const utterance = new SpeechSynthesisUtterance(texto);
+        utterance.lang = "en-US";   // SIEMPRE inglés — crítico
+        utterance.rate = 0.90;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+
+        const vozIngles = seleccionarVozIngles();
+        if (vozIngles) {
+            utterance.voice = vozIngles;
+            console.log("🔊 Voz seleccionada:", vozIngles.name, vozIngles.lang);
+        } else {
+            console.warn("⚠️ No se encontró voz en inglés — usando default con lang=en-US");
+        }
+
+        speechSynthesis.speak(utterance);
+    }
+
+    // Las voces tardan en cargar — esperar si aún no están
+    const voices = speechSynthesis.getVoices();
+    if (voices.length === 0) {
+        speechSynthesis.onvoiceschanged = function() {
+            speechSynthesis.onvoiceschanged = null;
+            speak();
+        };
+    } else {
+        speak();
+    }
 }
 
 
@@ -2155,17 +2193,43 @@ async function vozHablar(texto, onFinish) {
 
 function vozFallbackTTS(texto, onFinish) {
     speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(texto);
-    utterance.lang = 'en-US';
-    utterance.rate = 0.95;
+
+    function speak() {
+        const utterance = new SpeechSynthesisUtterance(texto);
+        utterance.lang = "en-US";   // SIEMPRE inglés
+        utterance.rate = 0.90;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+
+        const vozIngles = seleccionarVozIngles();
+        if (vozIngles) {
+            utterance.voice = vozIngles;
+            console.log("🔊 Modo voz — voz seleccionada:", vozIngles.name, vozIngles.lang);
+        } else {
+            console.warn("⚠️ Modo voz — sin voz inglés, usando lang=en-US");
+        }
+
+        utterance.onend = function() {
+            vozHablando = false;
+            if (onFinish) onFinish();
+        };
+        utterance.onerror = function() {
+            vozHablando = false;
+            if (onFinish) onFinish();
+        };
+
+        speechSynthesis.speak(utterance);
+    }
+
     const voices = speechSynthesis.getVoices();
-    const voice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
-    if (voice) utterance.voice = voice;
-    utterance.onend = function() {
-        vozHablando = false;
-        if (onFinish) onFinish();
-    };
-    speechSynthesis.speak(utterance);
+    if (voices.length === 0) {
+        speechSynthesis.onvoiceschanged = function() {
+            speechSynthesis.onvoiceschanged = null;
+            speak();
+        };
+    } else {
+        speak();
+    }
 }
 
 // ── Historial UI ────────────────────────────────────────────────────────────
